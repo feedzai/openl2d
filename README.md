@@ -38,7 +38,44 @@ The models used in our experiments and the dataset with limited expert predictio
 
 * ### Step 4: Generating the expert prediction table and capacity constraint tables
 
-To place all the necessary data in the correct directories, and generate the synthetic expert prediction table utilized in our experiments, as well as the capacity constraint tables used in our benchmarks, the user needs to run [this script](asdfadf). The script only requires the user to specify the directory of the datasets downloaded from [this link](https://drive.google.com/drive/folders/1nAUlxdOmwC6ZNtch3rxwKwNUVrYNmxkV).
+To place all the necessary data in the correct directories, and generate the synthetic expert prediction table utilized in our experiments, as well as the capacity constraint tables used in our benchmarks, the user needs to run "[load\_data.py](asdfadf)". The script only requires the user to specify the directory of the datasets downloaded in Step 3.
+
+## Replicating our experiments
+
+### L2D Baseline Results
+After following the steps to obtain the **Fraud Detection Dataset**, detailed in the previous section, the user must run the file "[run_tests.py](asfasf)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in Section 4.2 of the [paper](sadfa),  resulting in a total of 660 sets of assignments. For details on the total compute time necessary to run all experiments, consult Table 7, in Section C.1 of the [appendix](sdfa). 
+
+### ML Model and Human Expertise Model evaluation
+
+The plots, numerical results, and hyperparameter choices relating to our ML model, detailed in Section B.1 of the [appendix](sdfa), are obtained using the script [ml_model/training_and_predicting.py](asdf). 
+
+The plots, numerical results, and hyperparameter choices relating to our Human Expertise model, detailed in Section B.3, are obtained using the notebook [expertise_models/model_analysis.ipynb](asdf). 
+
+### Synthetic expert's decision evaluation
+
+The plots and numerical results regarding our synthetic expert's generation process and decision properties are obtained using the notebook [experts/expert_properties.ipynb](asdf). 
+
+## Using the OpenL2D Framework
+
+### Generating Synthetic Expert Decisions
+To generate synthetic expert decisions, a user can define the necessary parameters in the file [experts/cfg.yaml](experts/config.yaml). For more details on each parameter and the decision generation process, consult Section 3.2 of the [paper](sadfa). Then, the user needs to run the script [experts/expert_gen.py](..). This script produces the decision table as well as information regarding the expert decision generation properties. These include the sampled parameters for each expert, the probabilities of error of each expert for each instance, and other useful information. 
+
+To analyze your generated synthetic expert decisions, and tweak the expert properties according to your needs, consider using the notebook [experts/expert_properties.ipynb](xcv).
+
+### Generating Datasets with limited human predictions
+
+To generate one or more datasets with limited human predictions, the user needs to define the capacity constraints of each desired dataset, in the file [testbed/cfg.yaml](sdf), and run the script [testbed/testbed_train_generation.py](asdf). 
+
+For each desired dataset, this script creates a subfolder within the folder [testbed/train]. Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.parquet" and "capacity.parquet") and the dataset with limited expert predictions ("train.parquet").
+
+### Generating test scenarios with different capacity constraints
+
+To generate a set of capacity constraints to be applied in testing, the user needs to define the capacity constraints of each scenario, in the file [testbed/cfg.yaml](sdf), and run the script [testbed/testbed_test_generation.py](asdf). For each of the defined test scenarios, the script creates a subfolder within [testbed/test](adf). This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
+
+### Running your own L2D testing
+
+To run your own experiments within your generated tested scenarios, OpenL2D currently supports the use of the baselines described in Section 4.2 of the [paper](asdf). The user may define the experiments' parameters in the file [testbed/cfg.yaml](sdf), and then run the script [testbed/run\_tests.py](asdf).
+
 
 
 
