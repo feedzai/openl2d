@@ -12,9 +12,9 @@ In this repo, we provide users with:
 
 The submitted version of the paper, the appendix, and the Datasheet are available in the following links:
 
-* [Paper](documents/paper.pdf)
-* [Appendix](documents/appendix.pdf)
-* [Datasheet](documents/datasheet.pdf)
+* [Paper](Documents/Paper.pdf)
+* [Appendix](Documents/Appendix.pdf)
+* [Datasheet](Documents/Datasheet.pdf)
 
 ## Using the OpenL2D Fraud Detection Dataset
 
