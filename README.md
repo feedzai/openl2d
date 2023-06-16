@@ -6,7 +6,10 @@ Public resource limitations have significantly hindered the development and benc
 
 ## Overview
 
-[Testlink](#Using-the-OpenL2D-Fraud-Detection-Dataset)
+* [Resources](#Resources)
+* [Using the OpenL2D Fraud Detection Dataset](#Using-the-OpenL2D-Fraud-Detection-Dataset)
+* [Replicating our Experiments](#Replicating-our-experiments)
+* [Using the OpenL2D Framework](#Using-the-OpenL2D-Framework)
 
 ## Resources
 In this repo, we provide users with:
