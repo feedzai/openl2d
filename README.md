@@ -25,6 +25,8 @@ The submitted version of the paper, the appendix, and the Datasheet are availabl
 
 ## Using the OpenL2D Fraud Detection Dataset
 
+![alt text](Images/dataset_diagram.png)
+
 In our experiments, for training and testing of assignment methods, we utilized the **OpenL2D Fraud Detection Dataset**. This dataset is comprised of:
 
 * An Input Dataset.
@@ -63,6 +65,8 @@ The plots, numerical results, and hyperparameter choices relating to our Human E
 The plots and numerical results regarding our synthetic expert's generation process and decision properties are obtained using the notebook [OpenL2D/experts/expert_properties.ipynb](OpenL2D/experts/expert_properties.ipynb). 
 
 ## Using the OpenL2D Framework
+
+![alt text](Images/framework_diagram.png)
 
 ### Generating Synthetic Expert Decisions
 To generate synthetic expert decisions, a user can define the necessary parameters in the file [OpenL2D/experts/cfg.yaml](OpenL2D/experts/cfg.yaml). For more details on each parameter and the decision generation process, consult Section 3.2 of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [OpenL2D/experts/expert_gen.py](OpenL2D/experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties. These include the sampled parameters for each expert, the probabilities of error of each expert for each instance, and other useful information. 
