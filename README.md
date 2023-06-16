@@ -43,7 +43,7 @@ To place all the necessary data in the correct directories, and generate the syn
 ## Replicating our experiments
 
 ### L2D Baseline Results
-After following the steps to obtain the **Fraud Detection Dataset**, detailed in the previous section, the user must run the file "[run_tests.py](asfasf)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in Section 4.2 of the [paper](sadfa),  resulting in a total of 660 sets of assignments. For details on the total compute time necessary to run all experiments, consult Table 7, in Section C.1 of the [appendix](sdfa). 
+After following the steps to obtain the **Fraud Detection Dataset**, detailed in the previous section, the user must run the file "[testbed/run_tests.py](testbed/run_tests.py)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in Section 4.2 of the [paper](sadfa),  resulting in a total of 660 sets of assignments. For details on the total compute time necessary to run all experiments, consult Table 7, in Section C.1 of the [appendix](sdfa). 
 
 ### ML Model and Human Expertise Model evaluation
 
