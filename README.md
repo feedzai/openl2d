@@ -7,6 +7,7 @@ Public resource limitations have significantly hindered the development and benc
 ## Overview
 
 * [Resources](#Resources)
+* [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
 * [Using the OpenL2D Fraud Detection Dataset](#Using-the-OpenL2D-Fraud-Detection-Dataset)
 * [Replicating our Experiments](#Replicating-our-experiments)
 * [Using the OpenL2D Framework](#Using-the-OpenL2D-Framework)
@@ -22,6 +23,10 @@ The submitted version of the paper, the appendix, and the Datasheet are availabl
 * [Paper](Documents/Paper.pdf)
 * [Appendix](Documents/Appendix.pdf)
 * [Datasheet](Documents/Datasheet.pdf)
+
+## Installing Necessary Dependencies
+
+To use the provided code, please install the package available in the folder [Dependencies](Dependencies).
 
 ## Using the OpenL2D Fraud Detection Dataset
 
