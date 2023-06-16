@@ -4,6 +4,10 @@
 
 Public resource limitations have significantly hindered the development and benchmarking of learning to defer (L2D) algorithms, which aim to optimally combine human and AI capabilities in hybrid decision-making systems. In such systems, human availability and domain-specific concerns introduce complexity, while obtaining human predictions for training and evaluation is costly. To overcome these challenges, we introduce OpenL2D, a novel framework designed to generate synthetic expert decisions and testbed settings for L2D methods. OpenL2D facilitates the creation of synthetic experts with adjustable bias and feature dependence, simulates realistic human work capacity constraints, and provides diverse training and testing scenarios. To demonstrate its utility, we employ OpenL2D on a public fraud detection dataset, synthesizing a team of 50 fraud analysts, and we benchmark L2D baselines under an array of 220 distinct testing scenarios. We believe that OpenL2D will serve as a pivotal instrument in facilitating a systematic, rigorous, reproducible, and transparent evaluation and comparison of L2D methods, thereby fostering the development of more synergistic human-AI collaboration in decision-making systems.
 
+## Overview
+
+[Testlink](Using-the-OpenL2D-Fraud-Detection-Dataset)
+
 ## Resources
 In this repo, we provide users with:
 
