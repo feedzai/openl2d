@@ -22,7 +22,7 @@ random.seed(cfg['random_seed'])
 np_rng = np.random.default_rng(cfg['random_seed'])
 
 # DATA LOADING -------------------------------------------------------------------------------------
-data = pd.read_parquet(data_cfg['data_path'])
+data = pd.read_parquet('../data/BAF.parquet')
 TIMESTAMP_COL = data_cfg['data_cols']['timestamp']
 
 EXPERT_CATS = EXPERT_IDS['human_ids'] +  EXPERT_IDS['model_ids']
@@ -94,19 +94,19 @@ def generate_capacity_single_batch(batch_size: int, properties: dict, model_id: 
     :param human_ids: identification of the humans to be used in the output dictionary.
     """
     capacity_dict = dict()
-    capacity_dict[model_id] = int(properties['model'] * batch_size)
+    capacity_dict[model_id] = int((1 - properties['deferral_rate']) * batch_size)
 
-    if properties['experts'] == 'homogeneous':
+    if properties['distribution'] == 'homogeneous':
         humans_capacity_value = int(
             (batch_size - capacity_dict[model_id]) /
             len(human_ids)
         )
         unc_human_capacities = np.full(shape=(len(human_ids),), fill_value=humans_capacity_value)
-    elif properties['experts'] == 'gaussian':  # capacity follows a random Gaussian
+    elif properties['distribution'] == 'variable':  # capacity follows a random Gaussian
         mean_individual_capacity = (batch_size - capacity_dict[model_id]) / len(human_ids)
         unc_human_capacities = np_rng.normal(
             loc=mean_individual_capacity,
-            scale=properties['stdev'] * mean_individual_capacity,
+            scale=properties['distribution_stdev'] * mean_individual_capacity,
             size=(len(human_ids),),
         )
         unc_human_capacities += (
@@ -115,10 +115,10 @@ def generate_capacity_single_batch(batch_size: int, properties: dict, model_id: 
         )
 
     available_humans_ix = list(range(len(human_ids)))
-    if 'absent' in properties:  # some experts are randomly unavailable
+    if 'absence' in properties:  # some experts are randomly unavailable
         absent_humans_ix = random.sample(  # without replacement
             available_humans_ix,
-            k=int(properties['absent'] * len(human_ids)),
+            k=int(properties['absence'] * len(human_ids)),
         )
         unc_human_capacities[absent_humans_ix] = 0
 

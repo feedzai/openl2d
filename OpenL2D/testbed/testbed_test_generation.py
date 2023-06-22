@@ -92,19 +92,19 @@ def generate_capacity_single_batch(batch_size: int, properties: dict, model_id: 
     """
     capacity_dict = dict()
     capacity_dict['batch_size'] = batch_size
-    capacity_dict[model_id] = int(properties['model'] * batch_size)
-    if properties['experts'] == 'homogeneous':
+    capacity_dict[model_id] = int((1 - properties['deferral_rate']) * batch_size)
+    if properties['distribution'] == 'homogeneous':
         humans_capacity_value = int(
             (batch_size - capacity_dict[model_id]) /
             len(human_ids)
         )
         unc_human_capacities = np.full(shape=(len(human_ids),), fill_value=humans_capacity_value)
-    elif properties['experts'] == 'gaussian':  # capacity follows a random Gaussian
+    elif properties['distribution'] == 'variable':  # capacity follows a random Gaussian
         mean_individual_capacity = (batch_size - capacity_dict[model_id]) / len(human_ids)
-        np_rng = np.random.default_rng(properties['cap_seed'])
+        np_rng = np.random.default_rng(properties['distribution_seed'])
         unc_human_capacities = np_rng.normal(
             loc=mean_individual_capacity,
-            scale=properties['stdev'] * mean_individual_capacity,
+            scale=properties['distribution_stdev'] * mean_individual_capacity,
             size=(len(human_ids),),
         )
         unc_human_capacities += (
@@ -128,11 +128,11 @@ def generate_capacity_single_batch(batch_size: int, properties: dict, model_id: 
         absent_humans_ix = []
         available_humans_ix = list(range(len(human_ids)))
 
-    if 'absent' in properties:  # some experts are randomly unavailable
-        random.seed(properties['absent_seed'])
+    if 'absence' in properties:  # some experts are randomly unavailable
+        random.seed(properties['absence_seed'])
         absent_humans_ix += random.sample(  # without replacement
             available_humans_ix,
-            k=int(properties['absent'] * len(available_humans_ix)),
+            k=int(properties['absence'] * len(available_humans_ix)),
         )
         unc_human_capacities[absent_humans_ix] = 0
 
@@ -171,18 +171,18 @@ def generate_capacity(batches: pd.Series, capacity_properties: dict) -> pd.DataF
         n_batches = len(batches.iloc[:, 0].unique())
         absent_seeds = None
         distribution_seeds = None
-        if capacity_properties['experts'] == 'gaussian' and 'distribution' in capacity_properties['batch_shuffle']:
-            np.random.seed(capacity_properties['cap_seed'])
+        if capacity_properties['distribution'] == 'variable' and 'distribution' in capacity_properties['batch_shuffle']:
+            np.random.seed(capacity_properties['distribution_seed'])
             distribution_seeds = np.random.randint(low = 1e10, size = n_batches)
-        if 'absent' in capacity_properties and 'absence' in capacity_properties['batch_shuffle']:
-            np.random.seed(capacity_properties['absent_seed'])
+        if 'absence' in capacity_properties and 'absence' in capacity_properties['batch_shuffle']:
+            np.random.seed(capacity_properties['absence_seed'])
             absent_seeds = np.random.randint(low = 1e10, size = n_batches)
 
         for b_ix in batches.iloc[:, 0].unique():
             if absent_seeds is not None:
-                capacity_properties['absent_seed'] = absent_seeds[b_ix-1]
+                capacity_properties['absence_seed'] = absent_seeds[b_ix-1]
             if distribution_seeds is not None:
-                capacity_properties['cap_seed'] = distribution_seeds[b_ix-1]
+                capacity_properties['distribution_seed'] = distribution_seeds[b_ix-1]
             dictionary[b_ix] = generate_capacity_single_batch(
                 batch_size=int((batches == b_ix).sum()),
                 properties=capacity_properties,

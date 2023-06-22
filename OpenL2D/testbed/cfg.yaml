@@ -4,7 +4,7 @@ output_paths:
   train_dir: './train/'
 
 test_run:
-  models_path:  '../expertise_models/models/'
+  model_path:  '../expertise_models/models/'
   results_path: './test_results/'
   n_jobs: 1
 
@@ -78,8 +78,8 @@ environments_train:
       seed: 42
   capacity:
     regular:
-      model: 0.5
-      experts: 'homogeneous'
+      deferral_rate: 0.5
+      distribution: 'homogeneous'
 
 environments_test:
   batch:
@@ -115,134 +115,134 @@ environments_test:
       seed: 46
   capacity:
     homogenous_fullteam_def50:
-      model: 0.5
-      experts: 'homogeneous'
+      deferral_rate: 0.5
+      distribution: 'homogeneous'
     #Now variable capacity, same 5 batches
     variable-1_fullteam_def50:
-      model: 0.5
-      experts: 'gaussian'
-      cap_seed: 42
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      distribution_seed: 42
+      distribution_stdev: 0.2
     variable-2_fullteam_def50:
-      model: 0.5
-      experts: 'gaussian'
-      cap_seed: 43
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      distribution_seed: 43
+      distribution_stdev: 0.2
     variable-3_fullteam_def50:
-      model: 0.5
-      experts: 'gaussian'
-      cap_seed: 44
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      distribution_seed: 44
+      distribution_stdev: 0.2
     variable-4_fullteam_def50:
-      model: 0.5
-      experts: 'gaussian'
-      cap_seed: 45
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      distribution_seed: 45
+      distribution_stdev: 0.2
     #...Now for the homogenous Team 1
     homogenous_partialteam-1_def50:
-      model: 0.5
-      experts: 'homogeneous'
-      absent: 0.5
-      absent_seed: 42
+      deferral_rate: 0.5
+      distribution: 'homogeneous'
+      absence: 0.5
+      absence_seed: 42
     #Team 2
     homogenous_partialteam-2_def50:
-      model: 0.5
-      experts: 'homogeneous'
-      absent: 0.5
-      absent_seed: 43
+      deferral_rate: 0.5
+      distribution: 'homogeneous'
+      absence: 0.5
+      absence_seed: 43
     #Variable capacity -------
     variable-1_partialteam-1_def50:
-      model: 0.5
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 42
-      cap_seed: 42
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 42
+      distribution_seed: 42
+      distribution_stdev: 0.2
     variable-1_partialteam-2_def50:
-      model: 0.5
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 43
-      cap_seed: 42
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 43
+      distribution_seed: 42
+      distribution_stdev: 0.2
     variable-2_partialteam-1_def50:
-      model: 0.5
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 42
-      cap_seed: 43
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 42
+      distribution_seed: 43
+      distribution_stdev: 0.2
     variable-2_partialteam-2_def50:
-      model: 0.5
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 43
-      cap_seed: 43
-      stdev: 0.2
+      deferral_rate: 0.5
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 43
+      distribution_seed: 43
+      distribution_stdev: 0.2
 
     homogenous_fullteam_def20:
-      model: 0.8
-      experts: 'homogeneous'
+      deferral_rate: 0.2
+      distribution: 'homogeneous'
     #Now variable capacity, same 5 batches
     variable-1_fullteam_def20:
-      model: 0.8
-      experts: 'gaussian'
-      cap_seed: 42
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      distribution_seed: 42
+      distribution_stdev: 0.2
     variable-2_fullteam_def20:
-      model: 0.8
-      experts: 'gaussian'
-      cap_seed: 43
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      distribution_seed: 43
+      distribution_stdev: 0.2
     variable-3_fullteam_def20:
-      model: 0.8
-      experts: 'gaussian'
-      cap_seed: 44
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      distribution_seed: 44
+      distribution_stdev: 0.2
     variable-4_fullteam_def20:
-      model: 0.8
-      experts: 'gaussian'
-      cap_seed: 45
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      distribution_seed: 45
+      distribution_stdev: 0.2
     #...Now for the homogenous Team 1
     homogenous_partialteam-1_def20:
-      model: 0.8
-      experts: 'homogeneous'
-      absent: 0.5
-      absent_seed: 42
+      deferral_rate: 0.2
+      distribution: 'homogeneous'
+      absence: 0.5
+      absence_seed: 42
     #Team 2
     homogenous_partialteam-2_def20:
-      model: 0.8
-      experts: 'homogeneous'
-      absent: 0.5
-      absent_seed: 43
+      deferral_rate: 0.2
+      distribution: 'homogeneous'
+      absence: 0.5
+      absence_seed: 43
     #Variable capacity -------
     variable-1_partialteam-1_def20:
-      model: 0.8
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 42
-      cap_seed: 42
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 42
+      distribution_seed: 42
+      distribution_stdev: 0.2
     variable-1_partialteam-2_def20:
-      model: 0.8
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 43
-      cap_seed: 42
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 43
+      distribution_seed: 42
+      distribution_stdev: 0.2
     variable-2_partialteam-1_def20:
-      model: 0.8
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 42
-      cap_seed: 43
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 42
+      distribution_seed: 43
+      distribution_stdev: 0.2
     variable-2_partialteam-2_def20:
-      model: 0.8
-      experts: 'gaussian'
-      absent: 0.5
-      absent_seed: 43
-      cap_seed: 43
-      stdev: 0.2
+      deferral_rate: 0.2
+      distribution: 'variable'
+      absence: 0.5
+      absence_seed: 43
+      distribution_seed: 43
+      distribution_stdev: 0.2
 
