@@ -52,7 +52,7 @@ The models used in our experiments and the dataset with limited expert predictio
 
 * ### Step 4: Generating the expert prediction table and capacity constraint tables
 
-To place all the necessary data in the correct directories, and generate the synthetic expert prediction table utilized in our experiments, as well as the capacity constraint tables used in our benchmarks, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3.
+To place all the necessary data in the correct directories, and generate the synthetic expert prediction table utilized in our experiments, as well as the capacity constraint tables used in our benchmarks, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits. For more information consult Section 4.1 of the [paper](Documents/Paper.pdf)
 
 ### Uses of the L2D Fraud Detection Dataset
 
