@@ -36,13 +36,6 @@ cat_dict = data_cfg['categorical_dict']
 os.makedirs(RESULTS_PATH, exist_ok=True)
 os.makedirs(MODELS_PATH, exist_ok=True)
 
-# import matplotlib; matplotlib.use('Agg')
-width = 450
-pd.set_option('display.width', width)
-np.set_printoptions(linewidth=width)
-pd.set_option('display.max_columns', 25)
-
-# DATA LOADING -------------------------------------------------------------------------------------
 with open(cfg['metadata'], 'r') as infile:
     metadata = yaml.safe_load(infile)
 
@@ -184,7 +177,7 @@ def make_params_combos(params_cfg):
             if p_params['fp_cost'] == 'theoretical':
                 p_params['fp_cost'] = THEORETICAL_FP_COST
             if not (
-                p_params['calibration'] and  # useless to calibrate in these cases
+                p_params['calibration'] and 
                 (p_params['confidence_deferral'] or p_params['solver'] == 'random')
             ):
                 params_list.append(p_params)
@@ -215,15 +208,11 @@ def predicted_evaluation(X, assignments, rma, fp_cost):
     X[ASSIGNMENT_COL] = X[ASSIGNMENT_COL].astype('category')
     X['index'] = X.index
 
-    print('hi')
-
     pred_out_proba = rma.predict_outcome_probabilities(
         X=X, score_col=SCORE_COL,
         ml_model_threshold=ml_model_threshold,
         calibration=True
     )
-
-    print('hi2')
 
     pred_out_proba = rma.predict_outcome_probabilities(
         X=X, score_col=SCORE_COL,
@@ -264,6 +253,7 @@ print(tuple(FIELDS))
 
 BASE_CFG = cfg['base_cfg']
 
+
 print("----Experiments start----\n")
 val_results_dict = dict()
 if cfg['n_jobs'] > 1:
@@ -284,7 +274,7 @@ for exp_params in make_params_combos(cfg['experiments']):
             envs=VAL_ENVS,
             rma=RMAs[(exp_params['batch'], exp_params['capacity'])],
             exp_params=exp_params)
-    )#Tipo aqui o diogo usa os modelos de cada um dos training environments. não muda só o deployment. 
+    )
     val_results_dict[exp_id] = dict(
         pred_loss=pred_loss, pred_tpr=pred_tpr, pred_fpr=pred_fpr,
         pred_fpr_disparity=pred_fpr_disparity
