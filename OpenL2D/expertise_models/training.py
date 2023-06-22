@@ -78,8 +78,6 @@ ml_model_recall = 1 - ml_model_properties['fnr']
 ml_model_fpr_diff = ml_model_properties['disparity']
 ml_model_fpr = ml_model_properties['fpr']
 
-# theoretical cost
-# t = fp_protected_penalty / (fp_protected_penalty + 1) <=> t.fp_protected_penalty + t = fp_protected_penalty <=> fp_protected_penalty(t-1) = -t <=> fp_protected_penalty= -t/t-1
 THEORETICAL_FP_COST = -ml_model_threshold / (ml_model_threshold - 1)
 
 # Risk Minimizing Assigners & Validation Set Construction ------------------------------------------
@@ -266,15 +264,6 @@ print(tuple(FIELDS))
 
 BASE_CFG = cfg['base_cfg']
 
-#Leo: So i guess if the experiments are made under the various environments, what Diogo does
-#Leo: is to test the results in the validation dataset, where the assignments and predictions are done by us
-#Leo: So what Pedro wants is to check how the validation loss changes with the capacity imposed to the 
-#Leo: assigner ONLY on the validation set. (either for batch or online? both?)
-#Leo: So which of the training regiments do we choose? Regular? Scarce?
-#Leo: Anyway they all perform similarly (on average) when predicting the expert's probability of error, so it doesn't matter (?)
-#Leo: Maybe it's terrible at modeling SOME of the experts, so it can make the whole system worse.
-
-# EXPERIMENTS --------------------------------------------------------------------------------------
 print("----Experiments start----\n")
 val_results_dict = dict()
 if cfg['n_jobs'] > 1:
@@ -287,9 +276,6 @@ if cfg['n_jobs'] > 1:
         )
         for exp_params in make_params_combos(cfg['experiments'])
     )
-
-
-
 
 for exp_params in make_params_combos(cfg['experiments']):
     exp_id, pred_loss, pred_tpr, pred_fpr, pred_fpr_disparity = (
@@ -307,173 +293,3 @@ for exp_params in make_params_combos(cfg['experiments']):
 val_results = pd.DataFrame(val_results_dict).T.reset_index(drop=False)
 val_results.columns = FIELDS + ['pred_loss', 'pred_tpr', 'pred_fpr', 'pred_fpr_disparity']
 val_results.to_parquet('val_results.parquet')
-
-val_results = val_results.drop(
-    columns=['dynamic', 'target_fpr_disparity', 'fpr_learning_rate', 'fpr_disparity_learning_rate']
-)
-# RENAME FOR PLOTS
-col_renamings = {
-    'batch': 'Batch',
-    'capacity': 'Capacity',
-    'confidence_deferral': 'Confidence Deferral',
-    'calibration': 'Calibration',
-    'solver': 'Solver',
-    'fp_cost': 'lambda',
-    'fp_protected_penalty': 'alpha',
-    'pred_loss': 'Loss',
-    'pred_fpr': 'Predicted FPR',
-    'pred_tpr': 'Predicted TPR',
-    'pred_fpr_disparity': 'Predicted FPR Parity'
-}
-
-architecture_results = val_results[
-    (val_results['fp_cost'] == THEORETICAL_FP_COST) &
-    (val_results['fp_protected_penalty'] == 0)
-]
-architecture_results = architecture_results[
-    ((architecture_results['confidence_deferral']) & (architecture_results['solver'] == 'random'))
-    | ((architecture_results['confidence_deferral'] == False) & (architecture_results['solver'] != 'random'))
-]
-(
-    architecture_results
-    .groupby(['confidence_deferral', 'solver', 'calibration'])
-    .mean()
-    .sort_values(by='pred_loss')
-    .reset_index()
-)
-
-architecture_results['Method'] = (
-    architecture_results['confidence_deferral'].map({
-        True: 'Model-Confidence Deferral',
-        False: 'Learning to Assign'
-    })
-)
-plot_data = architecture_results[architecture_results['solver'] != 'random'].copy()
-plot_data = plot_data.rename(columns={'calibration': 'Calibration'})
-plot_data = (
-    plot_data
-    .replace('individual', 'Greedy \n (instance-based)')
-    .replace('scheduler', 'Linear Programming \n (batch-based)')
-)
-sns.stripplot(
-    data=plot_data, x='solver', y='pred_loss',
-    hue='Calibration'
-)
-plt.ylim(bottom=0)
-plt.xlabel('')
-plt.ylabel('Predicted Loss')
-plt.show()
-"""
-sns.scatterplot(
-    data=architecture_results, x='Method', y='pred_loss',
-    hue='calibration', style='solver',
-    alpha=0
-)
-handles, labels = plt.gca().get_legend_handles_labels()
-greedy = architecture_results[architecture_results['solver'] == 'greedy']
-m = sns.stripplot(
-    data=greedy, x='solver', y='pred_loss', hue='calibration',
-    marker='o', edgecolor='grey', jitter=1,
-)
-
-scheduler = architecture_results[architecture_results['solver'] == 'scheduler']
-n = sns.stripplot(
-    data=scheduler, x='solver', y='pred_loss', hue='calibration',
-    marker='X', edgecolor='grey', jitter=1,
-)
-plt.legend(handles, labels)
-plt.show()
-"""
-
-fp_cost_results = val_results[
-    (val_results['confidence_deferral'] == False) &
-    (val_results['solver'] == 'scheduler') &
-    (val_results['calibration'] == True) &
-    (val_results['fp_protected_penalty'] == 0)
-]
-
-(
-    fp_cost_results
-    .pivot(index='fp_cost', columns=['batch', 'capacity'], values='pred_fpr')
-    .T.reset_index()
-)
-sns.lineplot(
-    data=fp_cost_results[fp_cost_results['fp_cost'].isin([THEORETICAL_FP_COST, 0.05, 1, 2])],
-    x='fp_cost', y='pred_fpr', markers=True,
-    hue='capacity', style='batch',
-    palette='colorblind'
-)
-plt.show()
-
-plot_data = fp_cost_results[fp_cost_results['fp_cost'] < 1]
-plot_data = plot_data.rename(columns={'capacity': 'Capacity', 'batch': 'Batch'})
-plot_data = (
-    plot_data
-    .replace('regular', 'Regular')
-    .replace('inconstant', 'Inconstant')
-    .replace('model_dominant', 'Human-Scarce')
-    .replace('irregular', 'Disparate')
-    .replace('small', 'Small')
-    .replace('large', 'Large')
-)
-sns.lineplot(
-    data=plot_data,
-    x='fp_cost', y='pred_fpr', markers=True,
-    hue='Capacity', style='Batch',
-    palette='colorblind',
-)
-plt.xlabel(r'$\lambda$')
-plt.ylabel('Predicted FPR')
-plt.axhline(cfg['fpr'], linestyle='dashed', color='grey')
-plt.show()
-
-fairness_results = val_results[
-    (val_results['confidence_deferral'] == False)
-    & (val_results['solver'] == 'scheduler')
-    & (val_results['calibration'] == True)
-]
-sns.scatterplot(
-    data=fairness_results,
-    x='pred_fpr',
-    y='pred_tpr',
-    hue='fp_protected_penalty'
-)
-plt.show()
-
-# fairness_results['violation'] = (fairness_results['pred_fpr'] - cfg['fpr']).abs()
-fairness_results_below_fpr = fairness_results[fairness_results['pred_fpr'] <= cfg['fpr']]
-fairness_results_below_fpr[
-    (fairness_results_below_fpr['batch'] == 'large')
-    & (fairness_results_below_fpr['capacity'] == 'inconstant')
-].sort_values(by=['fp_protected_penalty', 'pred_fpr'])
-fairness_results_at_fpr = (
-    fairness_results_below_fpr
-    # .sort_values(by='violation', ascending=True)
-    .sort_values(by='pred_fpr', ascending=False)
-    .groupby(['batch', 'capacity', 'fp_protected_penalty'])
-    .head(1)
-    .sort_values(by=['batch', 'capacity', 'fp_protected_penalty'])
-)
-plot_data = fairness_results_at_fpr
-plot_data = plot_data.rename(columns={'capacity': 'Capacity', 'batch': 'Batch'})
-plot_data = (
-    plot_data
-    .replace('regular', 'Regular')
-    .replace('inconstant', 'Inconstant')
-    .replace('model_dominant', 'Human-Scarce')
-    .replace('irregular', 'Disparate')
-    .replace('small', 'Small')
-    .replace('large', 'Large')
-)
-sns.lineplot(
-    data=plot_data,
-    x='pred_tpr', y='pred_fpr_disparity', markers=True,
-    hue='Capacity', style='Batch',
-    palette='colorblind',
-    sort=False,
-)
-plt.xlabel('Predicted TPR')
-plt.ylabel('Predicted FPR Parity')
-plt.xlim(0.5, 0.7)
-plt.ylim(0, 1)
-plt.show()
