@@ -54,6 +54,18 @@ The models used in our experiments and the dataset with limited expert predictio
 
 To place all the necessary data in the correct directories, and generate the synthetic expert prediction table utilized in our experiments, as well as the capacity constraint tables used in our benchmarks, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3.
 
+### Uses of the L2D Fraud Detection Dataset
+
+This dataset can be used to develop L2D methods under realistic conditions. Our dataset poses realistic challenges, such as:
+
+* Limited expert prediction availability
+* Developing algorithms under dynamic environments
+* Human work capacity constraints
+
+The Dataset with limited expert predictions can be used to train assignment systemds under realistic human data availability. Our expert prediction table contains 50 synthetic fraud analyst's predictions for each of the 1M instances of the BAF dataset. It can be used to train more data demanding algorithms, or to generate different training scenarios with the use of new capacity constraints. Our capacity constraint tables are also available, and are useful to test capacity aware assignment under a vast array of expert team configurations.
+
+
+
 ## Replicating our experiments
 
 ### L2D Baseline Results
