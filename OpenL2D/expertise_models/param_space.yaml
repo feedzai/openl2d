@@ -8,13 +8,11 @@ LGBM:
         boosting_type:
             - goss
             - gbdt
-            # - dart  # Takes ~6 times longer than goss and gbdt
+            # - dart 
 
         enable_bundle:
             - True
             - False
-        
-        #class_weight: 'balanced' #New change
 
         # Number of base estimators
         n_estimators:
