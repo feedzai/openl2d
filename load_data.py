@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import yaml
 import os
-dataset_models_path = '/mnt/home/jean.alves/datasets_and_models'
+dataset_models_path = ''
 
 #Copy Datasets and Models to the main code structure
 
