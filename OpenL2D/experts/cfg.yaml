@@ -16,11 +16,11 @@ experts:
       alpha_mean: 4
       alpha_stdev: 0.2
       fnr:
-        intercept_mean: 'model - stdev'
-        intercept_stdev: 0.05
+        target_mean: 'model - stdev'
+        target_stdev: 0.05
       fpr:
-        intercept_mean: 'model - stdev'
-        intercept_stdev: 0.01
+        target_mean: 'model - stdev'
+        target_stdev: 0.01
 
     model_agreeing:
       n: 15
@@ -33,11 +33,11 @@ experts:
       alpha_mean: 12
       alpha_stdev: 0.5
       fnr:
-        intercept_mean: 'model - stdev'
-        intercept_stdev: 0.05
+        target_mean: 'model - stdev'
+        target_stdev: 0.05
       fpr:
-        intercept_mean: 'model - stdev'
-        intercept_stdev: 0.01
+        target_mean: 'model - stdev'
+        target_stdev: 0.01
 
     unfair:
       n: 15
@@ -50,8 +50,8 @@ experts:
       alpha_mean: 4
       alpha_stdev: 0.1
       fnr:
-        intercept_mean: 'model - stdev'
-        intercept_stdev: 0.05
+        target_mean: 'model - stdev'
+        target_stdev: 0.05
       fpr:
-        intercept_mean: 'model - stdev'
-        intercept_stdev: 0.01
+        target_mean: 'model - stdev'
+        target_stdev: 0.01

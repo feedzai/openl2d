@@ -44,7 +44,6 @@ def splitter(df, timestamp_col, beginning: int, end: int):
         (df[timestamp_col] >= beginning) &
         (df[timestamp_col] < end)].copy()
 
-# Leo: Temporal splits as defined on cfg.yaml (same folder)
 train = splitter(data, TIMESTAMP_COL, *cfg['splits']['train']).drop(columns=TIMESTAMP_COL)
 ml_val = splitter(data, TIMESTAMP_COL, *cfg['splits']['ml_val']).drop(columns=TIMESTAMP_COL)
 deployment = splitter(data, TIMESTAMP_COL, *cfg['splits']['deployment']).drop(columns=TIMESTAMP_COL)
@@ -101,23 +100,6 @@ tpr = metrics.recall_score(y_test, pred)
 
 deployment['model_score'] = y_pred
 deployment.to_parquet(Path(__file__).parent/'../data/BAF_deployment_score.parquet')
-
-f, ax = plt.subplots(figsize=(5, 5))
-
-plt.plot(roc_curve_clf['fpr'], roc_curve_clf['tpr'])
-
-plt.plot(np.arange(0,1,0.01), np.arange(0,1,0.01), c = 'gray', linestyle = 'dashed')
-plt.xlim(0, 1)
-plt.ylim(0, 1)
-plt.gca().set_aspect('equal')
-plt.xlabel('FPR')
-plt.ylabel('TPR')
-plt.title(f'ROC-Curve - ML Model')
-print(f'Recall at 5% FPR (defined in val): {tpr}')
-plt.show()
-
-# %%
-
 
 model_perf_test = pd.DataFrame(index = deployment.index)
 model_perf_test['model_pred'] = (deployment['model_score'] >= thresh).astype(int)

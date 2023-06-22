@@ -48,11 +48,12 @@ train = splitter(data, TIMESTAMP_COL, *cfg['splits']['train']).drop(columns=TIME
 ml_val = splitter(data, TIMESTAMP_COL, *cfg['splits']['ml_val']).drop(columns=TIMESTAMP_COL)
 deployment = splitter(data, TIMESTAMP_COL, *cfg['splits']['deployment']).drop(columns=TIMESTAMP_COL)
 
-# EXPERTS ------------------------------------------------------------------------------------------
+# Creating ExpertTeam object. 
 expert_team = haic.experts.ExpertTeam()
 EXPERT_IDS = dict(model_ids=list(), human_ids=list())
 THRESHOLDS = dict()
 
+#Loading ML Model and its properties
 with open(Path(__file__).parent/'../ml_model/model/best_model.pickle', 'rb') as infile:
     ml_model = pickle.load(infile)
 
@@ -64,25 +65,34 @@ ml_model_recall = 1 - ml_model_properties['fnr']
 ml_model_fpr_diff = ml_model_properties['disparity']
 ml_model_fpr = ml_model_properties['fpr']
 
+#Inserting ML Model to the team.
 expert_team['model#0'] = haic.experts.MLModelExpert(fitted_model=ml_model, threshold=None)
 EXPERT_IDS['model_ids'].append('model#0')
 THRESHOLDS['model#0'] = ml_model_threshold
 
-
+#Loading or creating the transformed data for expert generation
 if( os.path.isfile(Path(__file__).parent/'./transformed_data/X_deployment_experts.parquet') and os.path.isfile(Path(__file__).parent/'./transformed_data/X_deployment_experts.parquet')):
     experts_deployment_X = pd.read_parquet(Path(__file__).parent/'./transformed_data/X_deployment_experts.parquet')
     experts_train_X = pd.read_parquet(Path(__file__).parent/'./transformed_data/X_train_experts.parquet')
 else:
+    #We use the ML Model training split to fit our experts.
+    #The expert fitting process involves determining the ideal Beta_0 and Beta_1 to obtain the user's desired target FPR and FNR
     experts_train_X = train.copy().drop(columns=LABEL_COL)
+
+    #Obtain model score for each instance
     experts_train_X['score'] = expert_team[EXPERT_IDS['model_ids'][0]].predict(
         train.drop(columns=LABEL_COL))
+    
+    #Change customer_age variable to a binary
     experts_train_X[PROTECTED_COL] = (experts_train_X[PROTECTED_COL] >= 50).astype(int)
 
+    #Apply same process to the deployment split
     experts_deployment_X = deployment.copy().drop(columns=LABEL_COL)
     experts_deployment_X['score'] = expert_team[EXPERT_IDS['model_ids'][0]].predict(
         deployment.drop(columns=LABEL_COL))
     experts_deployment_X[PROTECTED_COL] = (experts_deployment_X[PROTECTED_COL] >= 50).astype(int)
 
+    #Transform the model score into the range [-0.5, 0.5], centered around the threshold
     new_score_train = pd.Series(index = experts_train_X.index, dtype = 'float64')
     new_score_deployment = pd.Series(index = experts_deployment_X.index, dtype = 'float64')
 
@@ -92,6 +102,7 @@ else:
     new_score_deployment.loc[experts_deployment_X['score'] <= ml_model_threshold] = (0.5/ml_model_threshold) * experts_deployment_X['score'].loc[experts_deployment_X['score'] <= ml_model_threshold] - 0.5
     new_score_deployment.loc[experts_deployment_X['score'] > ml_model_threshold] = (0.5/(1 - ml_model_threshold)) * experts_deployment_X['score'].loc[experts_deployment_X['score'] > ml_model_threshold] + (0.5 - (0.5/(1-ml_model_threshold)))
 
+    #Transform the numerical columns into quantiles and subtract 0.5 so they exist in the [-0.5, 0.5] interval
     cols_to_quantile = experts_train_X.drop(columns=CATEGORICAL_COLS).columns.tolist()
     qt = QuantileTransformer(random_state=42)
     experts_train_X[cols_to_quantile] = (
@@ -99,10 +110,9 @@ else:
         - 0.5  # centered on 0
     )
 
+    #Target encode and transform the categorical columns
     oe = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
     experts_train_X[CATEGORICAL_COLS] = oe.fit_transform(experts_train_X[CATEGORICAL_COLS])
-
-    #Payment type for example, is now converted.
 
     ss = StandardScaler(with_std=False)
     experts_train_X[:] = ss.fit_transform(experts_train_X)
@@ -115,7 +125,7 @@ else:
     )
     experts_train_X[cols_to_scale] *= scaling_factors
 
-    # preprocess other splits
+    # Preprocess the deployment splits and save the transformed data
     def preprocess(df):
         processed_X = df.copy()
         processed_X[cols_to_quantile] = qt.transform(processed_X[cols_to_quantile]) - 0.5  # centered on 0
@@ -133,11 +143,12 @@ else:
     experts_deployment_X.to_parquet(Path(__file__).parent/'./transformed_data/X_deployment_experts.parquet')
     experts_train_X.to_parquet(Path(__file__).parent/'./transformed_data/X_train_experts.parquet')
 
-# %%
-# 2.2 GENERATION -----------------------------------------------------------------------------------
+
+# Synthetic Expert Generation -----------------------------------------------------------------------------------
 if os.path.isdir(Path(__file__).parent/'./expert_info/'):
     print('Experts already Generated')
 else:
+    #This function allows a user to create other groups by only defining the parameters that differ from the regular experts
     def process_groups_cfg(groups_cfg, baseline_name='regular'):
         full_groups_cfg = dict()
         for g_name in groups_cfg:
@@ -160,21 +171,25 @@ else:
 
     ensemble_cfg = process_groups_cfg(cfg['experts']['groups'])
     expert_properties_list = list()
+
+    #For each expert group generate the number of experts
     for group_name, group_cfg in ensemble_cfg.items():
+        #Setting group random seed
         np.random.seed(group_cfg['group_seed'])
-        # substitute anchored values by actual values
-        if group_cfg['fnr']['intercept_mean'] == 'model - stdev':
-            group_cfg['fnr']['intercept_mean'] = (
+
+        if group_cfg['fnr']['target_mean'] == 'model - stdev':
+            group_cfg['fnr']['target_mean'] = (
                 (1 - ml_model_recall)
-                - group_cfg['fnr']['intercept_stdev']
+                - group_cfg['fnr']['target_stdev']
             )
-        if group_cfg['fpr']['intercept_mean'] == 'model - stdev':
-            group_cfg['fpr']['intercept_mean'] = (
+        if group_cfg['fpr']['target_mean'] == 'model - stdev':
+            group_cfg['fpr']['target_mean'] = (
                 ml_model_fpr
-                - group_cfg['fpr']['intercept_stdev']
+                - group_cfg['fpr']['target_stdev']
             )
 
         coefs_gen = dict()
+        #Generate the set of w_M, w_p, and alpha for the group
         for coef in ['score', 'protected', 'alpha']:
             coefs_gen[coef] = np.random.normal(
                     loc=group_cfg[f'{coef}_mean'],
@@ -183,22 +198,23 @@ else:
             )
         
         coefs_spe = dict()
+        #Generate the set of T_FPR, T_FNR for the group
         for eq in ['fnr', 'fpr']:
             coefs_spe[eq] = dict()
-            for coef in ['intercept']:
+            for coef in ['target']:
                 coefs_spe[eq][coef] = np.random.normal(
                     loc=group_cfg[eq][f'{coef}_mean'],
                     scale=group_cfg[eq][f'{coef}_stdev'],
                     size=group_cfg['n']
             )
-                
+        #Setting each expert's seed (for sampling of individual feature weights)       
         expert_seeds = np.random.randint(low = 2**32-1, size = group_cfg['n'])
 
         for i in range(group_cfg['n']):
             expert_name = f'{group_name}#{i}'
             expert_args = dict(
-                fnr_base=coefs_spe['fnr']['intercept'][i],
-                fpr_base=coefs_spe['fpr']['intercept'][i], #Purposefully setting the same one
+                fnr_target=coefs_spe['fnr']['target'][i],
+                fpr_target=coefs_spe['fpr']['target'][i],
                 features_w_std = group_cfg['w_std'],
                 alpha = coefs_gen['alpha'][i],
                 fpr_noise = 0.0,
@@ -207,11 +223,12 @@ else:
                 score_w = coefs_gen['score'][i],
                 seed = expert_seeds[i]
             )
+            #Creating the expert objects
             expert_team[expert_name] = haic.experts.SigmoidExpert(**expert_args)
             expert_properties_list.append({**{'expert': expert_name}, **expert_args})
             EXPERT_IDS['human_ids'].append(expert_name)
 
-
+    #Fitting the experts
     expert_team.fit(
         X=experts_train_X,
         y=train[LABEL_COL],
@@ -219,6 +236,7 @@ else:
         protected_col=PROTECTED_COL,
     )
 
+    #Saving expert's properties and parameters
     full_w_table = pd.DataFrame(columns = experts_train_X.columns)
     for expert in expert_team:
         if(expert) != "model#0":
@@ -226,21 +244,19 @@ else:
 
     for expert in expert_team:
         if(expert) != "model#0":
-            full_w_table.loc[expert, 'fp_intercept'] = expert_team[expert].fpr_intercept
-            full_w_table.loc[expert, 'fn_intercept'] = expert_team[expert].fnr_intercept
+            full_w_table.loc[expert, 'fp_beta'] = expert_team[expert].fpr_beta
+            full_w_table.loc[expert, 'fn_beta'] = expert_team[expert].fnr_beta
             full_w_table.loc[expert, 'alpha'] = expert_team[expert].alpha
 
     os.makedirs(Path(__file__).parent/'./expert_info', exist_ok = True)
     full_w_table.to_parquet(Path(__file__).parent/'./expert_info/full_w_table.parquet')
 
-    # properties
     expert_properties = pd.DataFrame(expert_properties_list)
 
     expert_properties.to_parquet(Path(__file__).parent/'./expert_info/expert_properties.parquet')
 
-    # 2.2 PREDICTIONS ----------------------------------------------------------------------------------
-    #Leo: This is the file with all the expert predictions for training
-    #Leo: These contain all the expert's 0,1 predictions.
+    #Obtaining the predictions ----------------------------------------------------------------------------------
+
     ml_train = train.copy()
     ml_train[CATEGORICAL_COLS] = ml_train[CATEGORICAL_COLS].astype('category')
 
@@ -272,6 +288,7 @@ else:
     )
     deployment_expert_pred.to_parquet(Path(__file__).parent/'./expert_info/deployment_predictions.parquet')
 
+    #saving the probability of error associated with each instance
     perror = pd.DataFrame()
 
     for expert in expert_team:
@@ -285,7 +302,7 @@ else:
     perror.to_parquet(Path(__file__).parent/'./expert_info/p_of_error.parquet')
 
 
-
+    #Saving the generated experts' ids
     # %%
     with open(Path(__file__).parent/'./expert_info/expert_ids.yaml', 'w') as outfile:
         yaml.dump(EXPERT_IDS, outfile)

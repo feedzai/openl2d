@@ -23,8 +23,8 @@ cfg_path ='cfg.yaml'
 with open(cfg_path, 'r') as infile:
     cfg = yaml.safe_load(infile)
 
-RESULTS_PATH = cfg['results_path'] + cfg['exp_name'] + '/'
-MODELS_PATH = cfg['models_path'] + cfg['exp_name'] + '/'
+RESULTS_PATH = cfg['results_path'] + '/'
+MODELS_PATH = cfg['models_path']  + '/'
 
 data_cfg_path = '../data/dataset_cfg.yaml'
 with open(data_cfg_path, 'r') as infile:
@@ -61,7 +61,7 @@ TRAIN_ENVS = {
     if os.path.isdir(cfg['train_paths']['environments']+exp_dir)
 }
 
-# DEFINING FP COST ---------------------------------------------------------------------------------
+# DEFINING Lambda (fp cost) ---------------------------------------------------------------------------------
 
 with open(f'../ml_model/model/model_properties.pickle', 'rb') as infile:
     ml_model_properties = pickle.load(infile)
@@ -71,9 +71,10 @@ ml_model_recall = 1 - ml_model_properties['fnr']
 ml_model_fpr_diff = ml_model_properties['disparity']
 ml_model_fpr = ml_model_properties['fpr']
 
+#Our defined lambda
 THEORETICAL_FP_COST = -ml_model_threshold / (ml_model_threshold - 1)
 
-# Risk Minimizing Assigners & Validation Set Construction ------------------------------------------
+# Training our Expertise Model. A user can train this model under various training conditions, defined in testbed_train_generation.py
 VAL_ENVS = dict()
 VAL_X = None
 RMAs = dict()
@@ -83,12 +84,12 @@ for env_id in TRAIN_ENVS:
     os.makedirs(models_dir, exist_ok=True)
 
     train_with_val = TRAIN_ENVS[env_id]['train']
-    train_with_val = train_with_val.copy().drop(columns=BATCH_COL)  # not needed
+    train_with_val = train_with_val.copy().drop(columns=BATCH_COL)
     is_val = (train_with_val[TIMESTAMP_COL] == 6)
     train_with_val = train_with_val.drop(columns=TIMESTAMP_COL)
     train = train_with_val[~is_val].copy()
     val = train_with_val[is_val].copy()
-    #Here it trains the human models and assigners for each of the settings
+
     RMAs[env_id] = haic.assigners.RiskMinimizingAssigner(
         expert_ids=EXPERT_IDS,
         outputs_dir=f'{models_dir}human_expertise_model/',
@@ -106,7 +107,7 @@ for env_id in TRAIN_ENVS:
     )
 
     VAL_ENVS[env_id] = dict()
-    if VAL_X is None:  # does not change w/ env
+    if VAL_X is None: 
         VAL_X_COMPLETE = val.copy()
         VAL_X = VAL_X_COMPLETE.copy().drop(columns=[ASSIGNMENT_COL, DECISION_COL, LABEL_COL])
     VAL_ENVS[env_id]['batches'] = (
@@ -253,7 +254,7 @@ print(tuple(FIELDS))
 
 BASE_CFG = cfg['base_cfg']
 
-
+#These experiments can be used to check the predicted fpr and fnr by the model for various values of lambda.
 print("----Experiments start----\n")
 val_results_dict = dict()
 if cfg['n_jobs'] > 1:
