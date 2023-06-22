@@ -89,12 +89,12 @@ for env_id in TRAIN_ENVS:
     train_with_val = train_with_val.drop(columns=TIMESTAMP_COL)
     train = train_with_val[~is_val].copy()
     val = train_with_val[is_val].copy()
-
+    
     RMAs[env_id] = haic.assigners.RiskMinimizingAssigner(
         expert_ids=EXPERT_IDS,
         outputs_dir=f'{models_dir}human_expertise_model/',
     )
-
+    # The LGBM is trained in this function
     RMAs[env_id].fit(
         train=train,
         val=val,
