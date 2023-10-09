@@ -81,29 +81,4 @@ The plots, numerical results, and hyperparameter choices relating to our Human E
 
 The plots and numerical results regarding our synthetic expert's generation process and decision properties are obtained using the notebook [OpenL2D/experts/expert_properties.ipynb](OpenL2D/experts/expert_properties.ipynb). 
 
-## Using the OpenL2D Framework
-
-![alt text](Images/framework_diagram.png)
-
-### Generating Synthetic Expert Decisions
-To generate synthetic expert decisions, a user can define the necessary parameters in the file [OpenL2D/experts/cfg.yaml](OpenL2D/experts/cfg.yaml). For more details on each parameter and the decision generation process, consult Section 3.2 of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [OpenL2D/experts/expert_gen.py](OpenL2D/experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties. These include the sampled parameters for each expert, the probabilities of error of each expert for each instance, and other useful information. 
-
-To analyze your generated synthetic expert decisions, and tweak the expert properties according to your needs, consider using the notebook [OpenL2D/experts/expert_properties.ipynb](OpenL2D/experts/expert_properties.ipynb).
-
-### Generating Datasets with limited human predictions
-
-To generate one or more datasets with limited human predictions, the user needs to define the capacity constraints of each desired dataset, in the file [OpenL2D/testbed/cfg.yaml](OpenL2D/testbed/cfg.yaml), and run the script [OpenL2D/testbed/testbed_train_generation.py](OpenL2D/testbed/testbed_train_generation.py). 
-
-For each desired dataset, this script creates a subfolder within a folder "OpenL2D/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.parquet" and "capacity.parquet") and the dataset with limited expert predictions ("train.parquet").
-
-### Generating test scenarios with different capacity constraints
-
-To generate a set of capacity constraints to be applied in testing, the user needs to define the capacity constraints of each scenario, in the file [OpenL2D/testbed/cfg.yaml](OpenL2D/testbed/cfg.yaml), and run the script [OpenL2D/testbed/testbed_test_generation.py](OpenL2D/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within [OpenL2D/testbed/test](OpenL2D/testbed/test). This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
-
-### Running your own L2D testing
-
-To run your own experiments within your generated tested scenarios, OpenL2D currently supports the use of the baselines described in Section 4.2 of the [paper](Documents/Paper.pdf). The user may define the experiments' parameters in the file [OpenL2D/testbed/cfg.yaml](OpenL2D/testbed/cfg.yaml), and then run the script [OpenL2D/testbed/run\_tests.py](OpenL2D/testbed/run_tests.py).
-
-
-
 
