@@ -21,7 +21,7 @@ In this repo, we provide users with:
 The submitted version of the paper, the appendix, and the datasheet are available in the following links:
 
 * [Paper](Documents/Paper.pdf)
-* [datasheet](Documents/datasheet.pdf)
+* [Datasheet](Documents/datasheet.pdf)
 
 ## Installing Necessary Dependencies
 
