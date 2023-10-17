@@ -1,17 +1,16 @@
-﻿# **O**pen**L2D**
+﻿# **F**i**FAR** - A Fraud Detection Dataset for Learning to Defer
 
 ## Abstract
 
-Public dataset limitations have significantly hindered the development and benchmarking of \textit{learning to defer} (L2D) algorithms, which aim to optimally combine human and AI capabilities in hybrid decision-making systems. In such systems, human availability and domain-specific concerns introduce complexity, while obtaining human predictions for training and evaluation is costly. Financial fraud detection is a high-stakes setting where often algorithms and human experts work in tandem, however, there are no publicly available datasets for L2D concerning this key application of human-AI teaming. To fill this gap in L2D research, we introduce a synthetic bank account fraud detection dataset, containing the predictions of a team of 50 highly complex and varied synthetic fraud analysts, with adjustable bias and feature dependence. We also provide a realistic definition of human work capacity constraints, an aspect of L2D systems which is often overlooked, allowing for extensive testing of assignment systems under real-world conditions.
-We use our dataset to develop a capacity aware L2D method and rejection learning approach under realistic data availability conditions, benchmarking these baselines under an array of 300 distinct testing scenarios. We believe that this dataset will serve as a pivotal instrument in facilitating a systematic, rigorous, reproducible, and transparent evaluation and comparison of L2D methods, thereby fostering the development of more synergistic human-AI collaboration in decision-making systems. The instantiated public dataset and detailed synthetic expert information are available [here](https://anonymous.4open.science/r/openl2ddataset-2590/).
+Public dataset limitations have significantly hindered the development and benchmarking of \textit{learning to defer} (L2D) algorithms, which aim to optimally combine human and AI capabilities in hybrid decision-making systems. In such systems, human availability and domain-specific concerns introduce difficulties, while obtaining human predictions for training and evaluation is costly. Financial fraud detection is a high-stakes setting where algorithms and human experts often work in tandem; however, there are no publicly available datasets for L2D concerning this important application of human-AI teaming. To fill this gap in L2D research, we introduce the \textit{Financial Fraud Alert Review} Dataset (FiFAR), a synthetic bank account fraud detection dataset, containing the predictions of a team of 50 highly complex and varied synthetic fraud analysts, with varied bias and feature dependence. We also provide a realistic definition of human work capacity constraints, an aspect of L2D systems that is often overlooked, allowing for extensive testing of assignment systems under real-world conditions.
+We use our dataset to develop a capacity-aware L2D method and rejection learning approach under realistic data availability conditions, and benchmark these baselines under an array of 300 distinct testing scenarios. We believe that this dataset will serve as a pivotal instrument in facilitating a systematic, rigorous, reproducible, and transparent evaluation and comparison of L2D methods, thereby fostering the development of more synergistic human-AI collaboration in decision-making systems. The instantiated public dataset and detailed synthetic expert information are available [here](https://anonymous.4open.science/r/openl2ddataset-2590/).
 
 ## Overview
 
 * [Resources](#Resources)
 * [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
-* [Using the OpenL2D Fraud Detection Dataset](#Using-the-OpenL2D-Fraud-Detection-Dataset)
+* [Using the FiFAR Dataset](#Using-the-OpenL2D-Fraud-Detection-Dataset)
 * [Replicating our Experiments](#Replicating-our-experiments)
-* [Using the OpenL2D Framework](#Using-the-OpenL2D-Framework)
 
 ## Resources
 In this repo, we provide users with:
@@ -70,13 +69,13 @@ The Dataset with limited expert predictions can be used to train assignment syst
 ## Replicating our experiments
 
 ### L2D Baseline Results
-After following the steps to obtain the **Fraud Detection Dataset**, detailed in the previous section, the user must run the file "[OpenL2D/testbed/run_tests.py](OpenL2D/testbed/run_tests.py)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in Section 4.2 of the [paper](Documents/Paper.pdf),  resulting in a total of 660 sets of assignments. For details on the total compute time necessary to run all experiments, consult Table 7, in Section C.1 of the [appendix](Documents/Appendix.pdf). 
+After following the steps to obtain the **FiFAR Dataset**, detailed in the previous section, the user must run the file "[OpenL2D/testbed/run_tests.py](Code/testbed/run_tests.py)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in the [paper](Documents/Paper.pdf), resulting in a total of 900 sets of assignments.
 
 ### ML Model and Human Expertise Model evaluation
 
-The plots, numerical results, and hyperparameter choices relating to our ML model, detailed in Section B.1 of the [appendix](Documents/Appendix.pdf), are obtained using the script [OpenL2D/ml_model/training_and_predicting.py](OpenL2D/ml_model/training_and_predicting.py). 
+The plots, numerical results, and hyperparameter choices relating to our ML model. are obtained using the script [OpenL2D/ml_model/training_and_predicting.py](OpenL2D/ml_model/training_and_predicting.py). 
 
-The plots, numerical results, and hyperparameter choices relating to our Human Expertise model, detailed in Section B.3, are obtained using the notebook [OpenL2D/expertise_models/model_analysis.ipynb](OpenL2D/expertise_models/model_analysis.ipynb). 
+The plots, numerical results, and hyperparameter choices relating to our Human Expertise model are obtained using the notebook [OpenL2D/expertise_models/model_analysis.ipynb](OpenL2D/expertise_models/model_analysis.ipynb). 
 
 ### Synthetic expert's decision evaluation
 
