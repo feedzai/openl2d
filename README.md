@@ -47,11 +47,9 @@ The sets of capacity constraint tables and the synthetic expert prediction table
 Our input dataset is the base variant of the Bank Account Fraud Tabular Dataset, available [here](https://www.kaggle.com/datasets/sgpjesus/bank-account-fraud-dataset-neurips-2022?resource=download&select=Base.csv). This dataset should then be placed in the folder [Code/data](Code/data).
 
 * ### Step 3: Download the Models, Dataset with limited expert predictions and other necessary data.
-The models used in our experiments and the dataset with limited expert predictions are available [here](https://drive.google.com/file/d/1R6NgMgLd4wrRiQz5WrZUzFx0ljCHgDZl/view). We also include the transformed input dataset in order to generate synthetic experts with our framework. 
+The models used in our experiments and the dataset with limited expert predictions are available [here](https://drive.google.com/file/d/1R6NgMgLd4wrRiQz5WrZUzFx0ljCHgDZl/view).
 
-* ### Step 4: Generating the expert prediction table and capacity constraint tables
-
-To place all the necessary data in the correct directories, and generate the synthetic expert prediction table utilized in our experiments, as well as the capacity constraint tables used in our benchmarks, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits. For more information consult Section 4.1 of the [paper](Documents/Paper.pdf)
+To place all the necessary data in the correct directories, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits.
 
 ### Uses of the L2D Fraud Detection Dataset
 
@@ -68,11 +66,11 @@ The Dataset with limited expert predictions can be used to train assignment syst
 ## Replicating our experiments
 
 ### L2D Baseline Results
-After following the steps to obtain the **FiFAR Dataset**, detailed in the previous section, the user must run the file "[Code/testbed/run_tests.py](Code/testbed/run_tests.py)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in the [paper](Documents/Paper.pdf), resulting in a total of 900 sets of assignments.
+After following the steps to obtain the **FiFAR Dataset**, detailed in the previous section, the user must run the file "[Code/testbed/run_tests.py](Code/testbed/run_tests.py)". This script produces the test split assignments for each testing scenario. These assignments are obtained by using each of our 3 baseline models, detailed in the [paper](Documents/Paper.pdf), resulting in a total of 900 sets of assignments.
 
 ### ML Model evaluation
 
-The plots, numerical results, and hyperparameter choices relating to our ML model. are obtained using the script [Code/ml_model/training_and_predicting.py](Code/ml_model/training_and_predicting.py). 
+The plots, numerical results, and hyperparameter choices relating to our ML model are obtained using the script [Code/ml_model/training_and_predicting.py](Code/ml_model/training_and_predicting.py). 
 
 ### Synthetic expert's decision evaluation
 
