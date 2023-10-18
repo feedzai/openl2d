@@ -54,7 +54,7 @@ Within the provided folder you will find:
 * Experts - Folder containing the expert information, including the generated probabilities of error and the resulting predictions
 * Testbed - Folder containing the dataset with limited expert predictions and the test capacity constraints
 
-Our methods can b
+Our methods can be trained on the dataset with limited expert predictions, which simulates a realistic scenario.
 
 * ### Step 4: Load data into correct directories.
 To place all the necessary data in the correct directories, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits.
