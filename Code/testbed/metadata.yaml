@@ -14,26 +14,26 @@ data_cols:
   timestamp: month
 expert_ids:
   human_ids:
-  - regular#0
-  - regular#1
-  - regular#2
-  - regular#3
-  - regular#4
-  - regular#5
-  - regular#6
-  - regular#7
-  - regular#8
-  - regular#9
-  - regular#10
-  - regular#11
-  - regular#12
-  - regular#13
-  - regular#14
-  - regular#15
-  - regular#16
-  - regular#17
-  - regular#18
-  - regular#19
+  - standard#0
+  - standard#1
+  - standard#2
+  - standard#3
+  - standard#4
+  - standard#5
+  - standard#6
+  - standard#7
+  - standard#8
+  - standard#9
+  - standard#10
+  - standard#11
+  - standard#12
+  - standard#13
+  - standard#14
+  - standard#15
+  - standard#16
+  - standard#17
+  - standard#18
+  - standard#19
   - model_agreeing#0
   - model_agreeing#1
   - model_agreeing#2
@@ -44,11 +44,6 @@ expert_ids:
   - model_agreeing#7
   - model_agreeing#8
   - model_agreeing#9
-  - model_agreeing#10
-  - model_agreeing#11
-  - model_agreeing#12
-  - model_agreeing#13
-  - model_agreeing#14
   - unfair#0
   - unfair#1
   - unfair#2
@@ -59,10 +54,15 @@ expert_ids:
   - unfair#7
   - unfair#8
   - unfair#9
-  - unfair#10
-  - unfair#11
-  - unfair#12
-  - unfair#13
-  - unfair#14
+  - sparse#0
+  - sparse#1
+  - sparse#2
+  - sparse#3
+  - sparse#4
+  - sparse#5
+  - sparse#6
+  - sparse#7
+  - sparse#8
+  - sparse#9
   model_ids:
   - model#0

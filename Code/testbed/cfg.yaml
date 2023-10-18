@@ -35,9 +35,9 @@ test_run:
       confidence_deferral:
         - True
       solver:
+        - individual
         - random
         - scheduler
-        - individual
       fp_cost:
         - 'theoretical'
     

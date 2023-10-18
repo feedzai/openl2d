@@ -76,8 +76,9 @@ file.close()
 ML_MODEL_THRESHOLD = model_properties['threshold']
 THEORETICAL_FP_COST = ML_MODEL_THRESHOLD/(1-ML_MODEL_THRESHOLD)
 
+
 test = pd.read_parquet(cfg['test_paths']['data'])
-print(test.columns)
+
 test_experts_pred = pd.read_parquet(cfg['test_paths']['experts_pred'])
 
 TEST_X = test.drop(columns=[TIMESTAMP_COL, LABEL_COL])
@@ -199,6 +200,8 @@ TEST_ENVS = dict()
 
 batches_cap_path = './test/'
 
+#Just need to make sure tht whatever ends up in TEST_ENVS is the same thing. So basically they can be saved and viewed in an appealing fashion but they
+#Must actually go into the model in the proper format which is one column per expert (model+human)
 for dir in os.listdir(batches_cap_path):
     if(os.path.isfile(batches_cap_path + dir)):
         continue
@@ -227,7 +230,7 @@ for env_id, rma in RMAs.items():
     os.makedirs(rma.outputs_dir, exist_ok = True)
 
 
-test_env_df = pd.DataFrame(columns = ['batch_size','batch_seed', 'absence_rate', 'absence_seed', 'distribution', 'distribution_std', 'distribution_seed', 'deferral_rate', 'fpr_disp'])
+test_env_df = pd.DataFrame(columns = ['batch_size','batch_seed', 'absence_rate', 'absence_seed', 'distribution', 'distribution_std', 'distribution_seed', 'deferral_rate', 'exp_pool','fpr_disp'])
 
 
 # %%
@@ -261,7 +264,7 @@ else:
             if test_env_id[0].split('_')[0] == 'large':
                 batch_size = 5000
             elif test_env_id[0].split('_')[0] == 'small':
-                batch_size = 1000
+                batch_size = 250
 
             batch_seed = test_env_id[0].split('-')[1]
 
@@ -285,6 +288,17 @@ else:
                 deferral_rate = 0.2
             else:
                 deferral_rate = 0.5
+
+            if test_env_id[1].split('_')[-1] == 'sp':
+                exp_pool = 'sparse'
+            elif test_env_id[1].split('_')[-1] == 'ma':
+                exp_pool = 'agreeing'
+            elif test_env_id[1].split('_')[-1] == 'un':
+                exp_pool = 'unfair'
+            elif test_env_id[1].split('_')[-1] == 'st':
+                exp_pool = 'standard'
+            else:
+                exp_pool = 'all'
             
             exp_id, assigner_params, a = make_assignments(
                 X=TEST_X,
@@ -305,6 +319,7 @@ else:
                 decisions=d,
                 assert_capacity_constraints=False
             )
+            print(exp_pool)
 
             old_ix = TEST_X.loc[TEST_X['customer_age'] >= 50].index
             yng_ix = TEST_X.loc[TEST_X['customer_age'] < 50].index
@@ -324,8 +339,8 @@ else:
             fpr_yng = fp_yng/(fp_yng + tn_yng)
             fpr_old = fp_old/(fp_old + tn_old)
 
-            fpr_disp =  fpr_old - fpr_yng
-            test_env_df = test_env_df.append(pd.Series([batch_size, batch_seed, absence, absence_seed, distribution, distribution_std, distribution_seed, deferral_rate, fpr_disp], index = test_env_df.columns), ignore_index = True)
+            fpr_disp =  fpr_yng/fpr_old
+            test_env_df = test_env_df.append(pd.Series([batch_size, batch_seed, absence, absence_seed, distribution, distribution_std, distribution_seed, deferral_rate, exp_pool, fpr_disp], index = test_env_df.columns), ignore_index = True)
 
 
 print(test_env_df)
@@ -333,5 +348,5 @@ test_results = test_eval.get_results(short=False)
 test_results['loss'] = (THEORETICAL_FP_COST * test_results['fp'] + test_results['fn']).astype('float')
 test_results = pd.concat([test_results, test_env_df], axis = 1, join = 'inner')
 
-test_results.to_parquet('./test_results/test_results_06_06_2023.parquet')
+test_results.to_parquet('./test_results/test_results_08_15_2023.parquet')
 
