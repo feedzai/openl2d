@@ -8,8 +8,8 @@ We use our dataset to develop a capacity-aware L2D method and rejection learning
 ## Overview
 
 * [Resources](#Resources)
-* [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
 * [Using the FiFAR Dataset](#Using-the-FiFAR-Dataset)
+* [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
 * [Replicating our Experiments](#Replicating-our-experiments)
 
 ## Resources
@@ -23,9 +23,7 @@ The submitted version of the paper and the datasheet are available in the follow
 * [Paper](Documents/Paper.pdf)
 * [Datasheet](Documents/datasheet.pdf)
 
-## Installing Necessary Dependencies
 
-To use the provided code to replicate our experiments, please install the package available in the folder [Dependencies](Dependencies).
 
 ## Using the FiFAR Dataset
 
@@ -62,6 +60,9 @@ This dataset can be used to develop L2D methods under realistic conditions. Our 
 The Dataset with limited expert predictions can be used to train assignment systemds under realistic human data availability. Our expert prediction table contains 50 synthetic fraud analyst's predictions for each of the 1M instances of the BAF dataset. It can be used to train more data demanding algorithms, or to generate different training scenarios with the use of new capacity constraints. Our capacity constraint tables are also available, and are useful to test capacity aware assignment under a vast array of expert team configurations.
 
 
+## Installing Necessary Dependencies
+
+To use the provided code to replicate our experiments, please install the package available in the folder [Dependencies](Dependencies).
 
 ## Replicating our experiments
 
