@@ -44,10 +44,21 @@ For easy use of our dataset and available notebooks, we encourage users to downl
 * ### Step 2: Download the Input Dataset
 Our input dataset is the base variant of the Bank Account Fraud Tabular Dataset, available [here](https://www.kaggle.com/datasets/sgpjesus/bank-account-fraud-dataset-neurips-2022?resource=download&select=Base.csv). This dataset should then be placed in the folder [Code/data](Code/data).
 
-* ### Step 3: Download the Models and the Dataset.
+* ### Step 3: Download the Models and FiFAR.
 The models used in our experiments and the dataset with limited expert predictions are available [here](https://drive.google.com/file/d/1ZjK7DKMvkIxApTVk6RjGa_DSKqqGtl-F/view).
 
+Within the provided folder you will find:
+
+* Expertise Models - Folder containing the models used for deferral
+* ML Model - Folder containing the ML model used in the task
+* Experts - Folder containing the expert info, including the generated probabilities of error and the resulting predictions
+* Testbed - Folder containing the dataset with limited expert predictions and the test capacity constraints
+
+
+* ### Step 4: Load data into correct directories.
 To place all the necessary data in the correct directories, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits.
+
+
 
 ### Uses of the FiFAR Dataset
 
