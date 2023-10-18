@@ -51,9 +51,10 @@ Within the provided folder you will find:
 
 * Expertise Models - Folder containing the models used for deferral
 * ML Model - Folder containing the ML model used in the task
-* Experts - Folder containing the expert info, including the generated probabilities of error and the resulting predictions
+* Experts - Folder containing the expert information, including the generated probabilities of error and the resulting predictions
 * Testbed - Folder containing the dataset with limited expert predictions and the test capacity constraints
 
+Our methods can b
 
 * ### Step 4: Load data into correct directories.
 To place all the necessary data in the correct directories, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits.
