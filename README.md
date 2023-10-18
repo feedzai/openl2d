@@ -25,7 +25,7 @@ The submitted version of the paper and the datasheet are available in the follow
 
 ## Installing Necessary Dependencies
 
-To use the provided code, please install the package available in the folder [Dependencies](Dependencies).
+To use the provided code to replicate our experiments, please install the package available in the folder [Dependencies](Dependencies).
 
 ## Using the FiFAR Dataset
 
