@@ -199,8 +199,6 @@ TEST_ENVS = dict()
 
 batches_cap_path = './test/'
 
-#Just need to make sure tht whatever ends up in TEST_ENVS is the same thing. So basically they can be saved and viewed in an appealing fashion but they
-#Must actually go into the model in the proper format which is one column per expert (model+human)
 for dir in os.listdir(batches_cap_path):
     if(os.path.isfile(batches_cap_path + dir)):
         continue
@@ -329,23 +327,6 @@ else:
             fpr_disp =  fpr_old - fpr_yng
             test_env_df = test_env_df.append(pd.Series([batch_size, batch_seed, absence, absence_seed, distribution, distribution_std, distribution_seed, deferral_rate, fpr_disp], index = test_env_df.columns), ignore_index = True)
 
-            """
-            batch_results_df = batch_results_df.append(get_batches(batch_df = TEST_ENVS[test_env_id]['batches'],
-                        assignments = a,
-                        decisions = d, 
-                        exp_id = exp_id, 
-                        test_experts_pred = test_experts_pred,
-                        exp_id_cols = FIELDS,
-                        THEORETICAL_FP_COST = THEORETICAL_FP_COST), ignore_index = True)
-            """
-            
-            
-            #temp = test_eval.get_results(short=False)
-            #temp['loss'] = (THEORETICAL_FP_COST * temp['fp'] + temp['fn']).astype('float')
-            #temp.to_parquet('/mnt/home/leonardo.alves/learning-to-defer/experiments/baf_haic/assigners/test_results/test_leo.parquet')
-            
-    
-        
 
 print(test_env_df)
 test_results = test_eval.get_results(short=False)

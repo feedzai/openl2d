@@ -1,5 +1,5 @@
-models_path:  './models' #'/mnt/home/diogo.leitao/models/learning-to-defer/baf_haic/22_10_26'
-results_path: './models' #'/mnt/home/diogo.leitao/results/learning-to-defer/baf_haic/22_10_26'
+models_path:  './models' 
+results_path: './models'
 
 metadata: '../testbed/metadata.yaml'
 train_paths:
