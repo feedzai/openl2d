@@ -16,7 +16,7 @@ We use our dataset to develop a capacity-aware L2D method and rejection learning
 In this repo, we provide users with:
 
 * Code for use of our framework.
-* [FiFAR and models used for our benchmark](https://drive.google.com/file/d/1R6NgMgLd4wrRiQz5WrZUzFx0ljCHgDZl/view).
+* [FiFAR and models used for our benchmark](https://drive.google.com/file/d/1ZjK7DKMvkIxApTVk6RjGa_DSKqqGtl-F/view).
 
 The submitted version of the paper and the datasheet are available in the following links:
 
@@ -47,7 +47,7 @@ For easy use of our dataset and available notebooks, we encourage users to downl
 Our input dataset is the base variant of the Bank Account Fraud Tabular Dataset, available [here](https://www.kaggle.com/datasets/sgpjesus/bank-account-fraud-dataset-neurips-2022?resource=download&select=Base.csv). This dataset should then be placed in the folder [Code/data](Code/data).
 
 * ### Step 3: Download the Models and the Dataset.
-The models used in our experiments and the dataset with limited expert predictions are available [here](https://drive.google.com/file/d/1R6NgMgLd4wrRiQz5WrZUzFx0ljCHgDZl/view).
+The models used in our experiments and the dataset with limited expert predictions are available [here](https://drive.google.com/file/d/1ZjK7DKMvkIxApTVk6RjGa_DSKqqGtl-F/view).
 
 To place all the necessary data in the correct directories, the user needs to run "[load\_data.py](load_data.py)". The script only requires the user to specify the directory of the datasets downloaded in Step 3. The expert prediction table is split according to the expert preprocessing and deployment splits.
 
