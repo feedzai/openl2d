@@ -12,7 +12,7 @@ We use our dataset to develop a capacity-aware L2D method and rejection learning
 * [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
 * [Replicating our Experiments](#Replicating-our-experiments)
 
-## Resources
+## Dataset Downloads and Other Resources
 In this repo, we provide users with:
 
 * Code for use of our framework.
