@@ -7,22 +7,19 @@ We use our dataset to develop a capacity-aware L2D method and rejection learning
 
 ## Overview
 
-* [Resources](#Resources)
+* [Dataset Download](#Dataset-Download)
 * [Using the FiFAR Dataset](#Using-the-FiFAR-Dataset)
 * [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
 * [Replicating our Experiments](#Replicating-our-experiments)
 
-## Dataset Download and Other Resources
-In this repo, we provide users with:
+## Dataset Download
 
-* Code for use of our framework.
 * [FiFAR and models used for our benchmark](https://drive.google.com/file/d/1edQZOYe1HI-b8C0G4ZpPa8980o2spPSq/view).
 
 The submitted version of the paper and the datasheet are available in the following links:
 
 * [Paper](Documents/Paper.pdf)
 * [Datasheet](Documents/datasheet.pdf)
-
 
 
 ## Using the FiFAR Dataset
