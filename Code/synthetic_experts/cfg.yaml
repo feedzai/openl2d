@@ -1,0 +1,117 @@
+cost_cfg:
+  fp_cost: 0.057
+  fn_cost: 1.0
+    
+experts:
+  groups:
+    standard:
+      n: 50
+      group_seed: 1
+      w_dict:
+        bank_branch_count_8w:
+        - 0.0
+        - 0.05
+        bank_months_count:
+        - 0.0
+        - 0.05
+        credit_risk_score:
+        - 0.626
+        - 0.1
+        current_address_months_count:
+        - 0.0
+        - 0.05
+        customer_age:
+        - 0.07
+        - 0.02
+        date_of_birth_distinct_emails_4w:
+        - -0.342
+        - 0.1
+        days_since_request:
+        - 0.0
+        - 0.05
+        device_distinct_emails_8w:
+        - 0.378
+        - 0.1
+        device_fraud_count:
+        - 0.0
+        - 0.05
+        device_os:
+        - 0.354
+        - 0.1
+        email_is_free:
+        - 0.383
+        - 0.1
+        employment_status:
+        - 0.0
+        - 0.05
+        foreign_request:
+        - 0.0
+        - 0.05
+        has_other_cards:
+        - 0.0
+        - 0.05
+        housing_status:
+        - 0.0
+        - 0.05
+        income:
+        - 0.326
+        - 0.1
+        intended_balcon_amount:
+        - 0.0
+        - 0.05
+        keep_alive_session:
+        - -0.44
+        - 0.1
+        model_score:
+        - 0.7
+        - 0.3
+        name_email_similarity:
+        - -0.388
+        - 0.1
+        payment_type:
+        - 0.362
+        - 0.1
+        phone_home_valid:
+        - -0.347
+        - 0.1
+        phone_mobile_valid:
+        - 0.0
+        - 0.05
+        prev_address_months_count:
+        - 0.0
+        - 0.05
+        proposed_credit_limit:
+        - 0.735
+        - 0.1
+        session_length_in_minutes:
+        - 0.0
+        - 0.05
+        source:
+        - 0.0
+        - 0.05
+        velocity_24h:
+        - 0.0
+        - 0.05
+        velocity_4w:
+        - -0.447
+        - 0.1
+        velocity_6h:
+        - -0.41
+        - 0.1
+        zip_count_4w:
+        - 0.0
+        - 0.05
+        
+      alpha_mean: 15
+      alpha_stdev: 3.5
+      cost:
+        target_mean: 0.035
+        target_stdev: 0.005
+        top_clip: 0.046
+        bottom_clip: 0.02
+        max_FPR: 1
+        min_FPR: 0.01
+        max_FNR: 1
+        min_FNR: 0.01
+
+      

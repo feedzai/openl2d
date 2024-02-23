@@ -1,0 +1,224 @@
+random_seed: 42
+
+environments_train:
+  batch:
+    shuffle_1:
+      size: 5000
+      seed: 42
+    shuffle_2:
+      size: 5000
+      seed: 43
+    shuffle_3:
+      size: 5000
+      seed: 44
+    shuffle_4:
+      size: 5000
+      seed: 45
+    shuffle_5:
+      size: 5000
+      seed: 46
+
+  capacity:
+    team_1:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'homogeneous'
+    team_2:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'homogeneous'
+    team_3:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 44
+      distribution: 'homogeneous'
+    team_4:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 45
+      distribution: 'homogeneous'
+    team_5:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 46
+      distribution: 'homogeneous'
+
+environments_test:
+  batch:
+    testsize:
+      size: 4457
+      seed: 42
+  capacity:
+    team_1-hom:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'homogeneous'
+    team_2-hom:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'homogeneous'
+    team_3-hom:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 44
+      distribution: 'homogeneous'
+    team_4-hom:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 45
+      distribution: 'homogeneous'
+    team_5-hom:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 46
+      distribution: 'homogeneous'
+    #-----
+    team_1-var_1:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 42
+    team_2-var_1:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 42
+    team_3-var_1:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 44
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 42
+    team_4-var_1:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 45
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 42
+    team_5-var_1:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 46
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 42
+    #-----
+    team_1-var_2:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 43
+    team_2-var_2:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 43
+    team_3-var_2:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 44
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 43
+    team_4-var_2:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 45
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 43
+    team_5-var_2:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 46
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 43
+    #-----
+    team_1-var_3:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 44
+    team_2-var_3:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 44
+    team_3-var_3:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 44
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 44
+    team_4-var_3:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 45
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 44
+    team_5-var_3:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 46
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 44
+    #-----
+    team_1-var_4:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 45
+    team_2-var_4:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 45
+    team_3-var_4:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 44
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 45
+    team_4-var_4:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 45
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 45
+    team_5-var_4:
+      deferral_rate: 0.9090909090
+      n_experts: 10
+      n_experts_seed: 46
+      distribution: 'variable'
+      distribution_stdev: 0.2
+      distribution_seed: 45
+    
+    

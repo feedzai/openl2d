@@ -1,0 +1,51 @@
+startups: 200
+
+total: 300
+
+params:
+  boosting_type:
+            #- goss
+            #- gbdt
+            - dart  # Takes ~6 times longer than goss and gbdt
+
+  enable_bundle:
+      - True
+      - False
+
+  max_depth:
+      type: int
+      range: [2,5]
+      log: False
+  
+  n_estimators:
+      type: int
+      range: [50, 250]
+      log: False
+
+  # Max tree leaves for base learners
+  num_leaves:
+      type: int
+      range: [ 100, 1000 ]
+      log: False
+
+  # min_data_in_leaf
+  min_child_samples:
+      type: int
+      range: [ 5, 200]
+      log: False
+
+  learning_rate:
+      type: float
+      range: [ 0.001, 1 ]
+      log: False
+
+  # Regularization
+  reg_alpha:
+      type: float
+      range: [ 0.001, 2]
+      log: False
+
+  reg_lambda:
+      type: float
+      range: [ 0.001, 2]
+      log: False
