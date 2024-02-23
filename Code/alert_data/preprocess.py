@@ -21,7 +21,7 @@ def fpr_thresh(y_true, y_pred, fpr):
 
     return tpr, threshold
 
-BAF = pd.read_csv('../../Dataset/alert_data/Base.csv')
+BAF = pd.read_csv('../../FiFAR/alert_data/Base.csv')
 BAF.sort_values(by = 'month', inplace = True)
 BAF.reset_index(inplace=True)
 BAF.drop(columns = 'index', inplace = True)
@@ -33,15 +33,15 @@ with open(data_cfg_path, 'r') as infile:
 
 BAF.loc[:,data_cfg['data_cols']['categorical']] = BAF.loc[:,data_cfg['data_cols']['categorical']].astype('category')
 
-if not os.path.isfile('../../Dataset/alert_model/best_model.pickle'):
+if not os.path.isfile('../../FiFAR/alert_model/best_model.pickle'):
     print('The Alert Model is not Trained! - Please run ./alert_model/training_and_predicting.py')
 else:
-    BAF_dep = pd.read_parquet('../../Dataset/alert_data/processed_data/BAF_alert_model_score.parquet')
+    BAF_dep = pd.read_parquet('../../FiFAR/alert_data/processed_data/BAF_alert_model_score.parquet')
     BAF_dep["month"] = BAF.loc[BAF_dep.index,"month"]
 
     BAF_val = BAF_dep.loc[BAF_dep['month'] == 3]
     tpr, t = fpr_thresh(BAF_val['fraud_bool'], BAF_val['model_score'], 0.05)
     alerts_5 = BAF_dep.loc[BAF_dep['model_score'] > t]
 
-    if not os.path.isfile('../../Dataset/alert_data/processed_data/alerts.parquet'):
-        alerts_5.to_parquet('../../Dataset/alert_data/processed_data/alerts.parquet')
+    if not os.path.isfile('../../FiFAR/alert_data/processed_data/alerts.parquet'):
+        alerts_5.to_parquet('../../FiFAR/alert_data/processed_data/alerts.parquet')

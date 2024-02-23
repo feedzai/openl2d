@@ -23,9 +23,9 @@ with open('../alert_data/dataset_cfg.yaml', 'r') as infile:
     data_cfg = yaml.safe_load(infile)
 
 # DATA LOADING -------------------------------------------------------------------------------------
-data = pd.read_parquet(f'../../Dataset/alert_data/processed_data/alerts.parquet')
+data = pd.read_parquet(f'../../FiFAR/alert_data/processed_data/alerts.parquet')
 
-with open(f'../../Dataset/synthetic_experts/expert_ids.yaml', 'r') as infile:
+with open(f'../../FiFAR/synthetic_experts/expert_ids.yaml', 'r') as infile:
     EXPERT_IDS = yaml.safe_load(infile)
 
 EXPERT_CATS = EXPERT_IDS['human_ids']
@@ -35,7 +35,7 @@ train = cat_checker(train, data_cfg['data_cols']['categorical'], data_cfg['categ
 
 # EXPERTS ------------------------------------------------------------------------------------------
 # produced in experts/experts_generation.py
-experts_pred = pd.read_parquet(f'../../Dataset/synthetic_experts/expert_predictions.parquet')
+experts_pred = pd.read_parquet(f'../../FiFAR/synthetic_experts/expert_predictions.parquet')
 train_expert_pred = experts_pred.loc[train.index, ]
 # BATCH & CAPACITY ---------------------------------------------------------------------------------
 def generate_batches(df, batch_properties: dict, months: pd.Series) -> pd.DataFrame:
@@ -220,7 +220,7 @@ train_envs = generate_environments(
     df=train,
     batch_cfg=cfg['environments_train']['batch'],
     capacity_cfg=cfg['environments_train']['capacity'],
-    output_dir=f'../../Dataset/testbed/train_alert/',
+    output_dir=f'../../FiFAR/testbed/train_alert/',
 )
 
 for (batch_scheme, capacity_scheme), (train_batches, train_capacity) in train_envs.items():
@@ -236,7 +236,7 @@ for (batch_scheme, capacity_scheme), (train_batches, train_capacity) in train_en
         .merge(env_assignment_and_pred, left_index=True, right_index=True)
     )
     env_train.to_parquet(
-        f'../../Dataset/testbed/train_alert/{batch_scheme}#{capacity_scheme}/train.parquet'
+        f'../../FiFAR/testbed/train_alert/{batch_scheme}#{capacity_scheme}/train.parquet'
     )
 
 

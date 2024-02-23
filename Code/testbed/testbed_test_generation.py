@@ -194,9 +194,9 @@ def generate_environments(df, batch_cfg: dict, capacity_cfg: dict, output_dir=No
 np.random.seed(cfg['random_seed'])
 random.seed(cfg['random_seed'])
 
-data = pd.read_parquet(f'../../Dataset/alert_data/processed_data/alerts.parquet')
+data = pd.read_parquet(f'../../FiFAR/alert_data/processed_data/alerts.parquet')
 
-with open(f'../../Dataset/synthetic_experts/expert_ids.yaml', 'r') as infile:
+with open(f'../../FiFAR/synthetic_experts/expert_ids.yaml', 'r') as infile:
     EXPERT_IDS = yaml.safe_load(infile)
 
 
@@ -208,17 +208,17 @@ test = data.loc[data['month'] == 7]
 
 # EXPERTS ------------------------------------------------------------------------------------------
 # produced in experts/experts_generation.py
-experts_pred = pd.read_parquet(f'../../Dataset/synthetic_experts/expert_predictions.parquet')
+experts_pred = pd.read_parquet(f'../../FiFAR/synthetic_experts/expert_predictions.parquet')
 test_expert_pred = experts_pred.loc[test.index, ]
 
 # TEST ---------------------------------------------------------------------------------------------
-os.makedirs(f'../../Dataset/testbed/test/', exist_ok=True)
+os.makedirs(f'../../FiFAR/testbed/test/', exist_ok=True)
 
 generate_environments(
     df=test,
     batch_cfg=cfg['environments_test']['batch'],
     capacity_cfg=cfg['environments_test']['capacity'],
-    output_dir=f'../../Dataset/testbed/test/'
+    output_dir=f'../../FiFAR/testbed/test/'
 )
 
 print('Testbed generated.')

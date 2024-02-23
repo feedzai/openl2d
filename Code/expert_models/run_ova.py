@@ -25,8 +25,8 @@ with open('../alert_data/dataset_cfg.yaml', 'r') as infile:
     data_cfg = yaml.safe_load(infile)
 
 
-for train in os.listdir(f'../../Dataset/testbed/train_alert'):
-    train_set = pd.read_parquet(f'../../Dataset/testbed/train_alert/{train}/train.parquet')
+for train in os.listdir(f'../../FiFAR/testbed/train_alert'):
+    train_set = pd.read_parquet(f'../../FiFAR/testbed/train_alert/{train}/train.parquet')
     train_set = train_set.loc[train_set["assignment"] != 'classifier_h']
     experts = train_set['assignment'].unique()
     for expert in experts:
@@ -44,21 +44,21 @@ for train in os.listdir(f'../../Dataset/testbed/train_alert'):
         train_y = (train_exp['decision'] == train_exp['fraud_bool']).astype(int)
         val_y = (val_exp['decision'] == val_exp['fraud_bool']).astype(int)
 
-        if not (os.path.exists(f'../../Dataset/expert_models/ova/{train}/{expert}/')):
-            os.makedirs(f'../../Dataset/expert_models/ova/{train}/{expert}/')
+        if not (os.path.exists(f'../../FiFAR/expert_models/ova/{train}/{expert}/')):
+            os.makedirs(f'../../FiFAR/expert_models/ova/{train}/{expert}/')
 
-        if not (os.path.exists(f'../../Dataset/expert_models/ova/{train}/{expert}/best_model.pickle')):
-            opt = hpo.HPO(train_x,val_x,train_y,val_y,train_w, val_w, method = 'TPE', path = f'../../Dataset/expert_models/ova/{train}/{expert}/')
+        if not (os.path.exists(f'../../FiFAR/expert_models/ova/{train}/{expert}/best_model.pickle')):
+            opt = hpo.HPO(train_x,val_x,train_y,val_y,train_w, val_w, method = 'TPE', path = f'../../FiFAR/expert_models/ova/{train}/{expert}/')
             opt.initialize_optimizer(data_cfg['data_cols']['categorical'], 10)
 
 
-test = pd.read_parquet('../../Dataset/alert_data/processed_data/alerts.parquet')
+test = pd.read_parquet('../../FiFAR/alert_data/processed_data/alerts.parquet')
 test = test.loc[test['month'] == 7]
 X_test = test.drop(columns = ['fraud_bool','model_score','month']) 
 
-with open(f"../../Dataset/classifier_h/selected_model/best_model.pickle", 'rb') as fp:
+with open(f"../../FiFAR/classifier_h/selected_model/best_model.pickle", 'rb') as fp:
     classifier_h = pickle.load(fp)
-with open(f"../../Dataset/classifier_h/selected_model/model_properties.yaml", 'r') as fp:
+with open(f"../../FiFAR/classifier_h/selected_model/model_properties.yaml", 'r') as fp:
     classifier_h_properties = yaml.safe_load(fp)
 
 h_preds = output(X_test, classifier_h, classifier_h_properties['init_score'])
@@ -69,11 +69,11 @@ X_test = test.drop(columns = ['month','fraud_bool'])
 
 preds = dict()
 
-for env in os.listdir(f'../../Dataset/expert_models/ova/'):
-    table = pd.DataFrame(index = test.index, columns = os.listdir(f'../../Dataset/expert_models/ova/{env}'))
-    for expert in os.listdir(f'../../Dataset/expert_models/ova/{env}'):
+for env in os.listdir(f'../../FiFAR/expert_models/ova/'):
+    table = pd.DataFrame(index = test.index, columns = os.listdir(f'../../FiFAR/expert_models/ova/{env}'))
+    for expert in os.listdir(f'../../FiFAR/expert_models/ova/{env}'):
         
-        with open(f"../../Dataset/expert_models/ova/{env}/{expert}/best_model.pickle", "rb") as input_file:
+        with open(f"../../FiFAR/expert_models/ova/{env}/{expert}/best_model.pickle", "rb") as input_file:
             model = pickle.load(input_file)
         
         table.loc[:, expert] = model.predict_proba(X_test)[:,1]
@@ -81,9 +81,9 @@ for env in os.listdir(f'../../Dataset/expert_models/ova/'):
     table.loc[:,'classifier_h'] = np.maximum(h_preds,  1-h_preds)
     preds[env] = table
 
-os.makedirs('../../Dataset/deferral/l2d_predictions', exist_ok=True)
+os.makedirs('../../FiFAR/deferral/l2d_predictions', exist_ok=True)
 
-with open(f"../../Dataset/deferral/l2d_predictions/ova.pkl", "wb") as out_file:
+with open(f"../../FiFAR/deferral/l2d_predictions/ova.pkl", "wb") as out_file:
     pickle.dump(preds, out_file)
 
 

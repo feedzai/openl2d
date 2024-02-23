@@ -30,7 +30,7 @@ with open('../alert_data/dataset_cfg.yaml', 'r') as infile:
 n_jobs = 10
 
 # DATA LOADING ---------------------------------------------------------------------------------
-data = pd.read_parquet(f'../../Dataset/alert_data/processed_data/alerts.parquet')
+data = pd.read_parquet(f'../../FiFAR/alert_data/processed_data/alerts.parquet')
 data = cat_checker(data, data_cfg['data_cols']['categorical'], data_cfg['categorical_dict'])
 
 train = data.loc[(data["month"] > 2) & (data["month"] < 6)]
@@ -58,10 +58,10 @@ for param_space_dic in os.listdir('./param_spaces/'):
 
     for initial in np.arange(init_train, init_train + 2, 0.2):
         param_space['init_score'] = initial
-        os.makedirs(f'../../Dataset/classifier_h/models/', exist_ok=True)
+        os.makedirs(f'../../FiFAR/classifier_h/models/', exist_ok=True)
         
-        if not (os.path.exists(f'../../Dataset/classifier_h/models/model_{n}')):
-            opt = hpo_wce.HPO(X_train,X_val,y_train,y_val,w_train,w_val, parameters = param_space, method = 'TPE', path = f"../../Dataset/classifier_h/models/model_{n}")
+        if not (os.path.exists(f'../../FiFAR/classifier_h/models/model_{n}')):
+            opt = hpo_wce.HPO(X_train,X_val,y_train,y_val,w_train,w_val, parameters = param_space, method = 'TPE', path = f"../../FiFAR/classifier_h/models/model_{n}")
             opt.initialize_optimizer(data_cfg['categorical_dict'], n_jobs)
             n +=1
         else:
@@ -70,12 +70,12 @@ for param_space_dic in os.listdir('./param_spaces/'):
 
 Trials = []
 
-for model in os.listdir('../../Dataset/classifier_h/models/'):
+for model in os.listdir('../../FiFAR/classifier_h/models/'):
     study = int(model.split('_')[-1])
-    with open('../../Dataset/classifier_h/models/' + model + '/history.yaml', 'r') as infile:
+    with open('../../FiFAR/classifier_h/models/' + model + '/history.yaml', 'r') as infile:
         param_hist = yaml.safe_load(infile)
 
-    with open('../../Dataset/classifier_h/models/' + model + '/config.yaml', 'r') as infile:
+    with open('../../FiFAR/classifier_h/models/' + model + '/config.yaml', 'r') as infile:
         conf = yaml.safe_load(infile)
     
     temp = pd.DataFrame(param_hist)
@@ -90,7 +90,7 @@ a = Trials
 
 selec_ix = a.loc[a['ll'] == a['ll'].min(),'study'].to_numpy()[0]
 
-selected_model_path = f'../../Dataset/classifier_h/models/model_{selec_ix}'
+selected_model_path = f'../../FiFAR/classifier_h/models/model_{selec_ix}'
 
 with open(f'{selected_model_path}/best_model.pickle', 'rb') as infile:
     model = pickle.load(infile)
@@ -157,10 +157,10 @@ avg_cost_full_rej = (data_cfg['l']*fp + fn)/(tn+fp+fn+tp)
 
 print(f"Test Set -- Model: {avg_cost_model:.5f}. Rejecting all: {avg_cost_full_rej:.5f}")
 
-os.makedirs(f'../../Dataset/classifier_h/selected_model/', exist_ok=True)
+os.makedirs(f'../../FiFAR/classifier_h/selected_model/', exist_ok=True)
 
-with open(f'../../Dataset/classifier_h/selected_model/best_model.pickle', 'wb') as outfile:
+with open(f'../../FiFAR/classifier_h/selected_model/best_model.pickle', 'wb') as outfile:
     pickle.dump(model, outfile)
 
-with open(f'../../Dataset/classifier_h/selected_model/model_properties.yaml', 'w') as outfile:
+with open(f'../../FiFAR/classifier_h/selected_model/model_properties.yaml', 'w') as outfile:
     yaml.dump(selected_model, outfile)

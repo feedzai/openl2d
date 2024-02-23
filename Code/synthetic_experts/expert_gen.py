@@ -53,13 +53,13 @@ PROTECTED_COL = data_cfg['data_cols']['protected']
 CATEGORICAL_COLS = data_cfg['data_cols']['categorical']
 
 #Loading ML Model and its properties
-with open(Path(__file__).parent/'../../Dataset/alert_model/best_model.pickle', 'rb') as infile:
+with open(Path(__file__).parent/'../../FiFAR/alert_model/best_model.pickle', 'rb') as infile:
     ml_model = pickle.load(infile)
 
-with open(Path(__file__).parent/'../../Dataset/alert_model/model_properties.pickle', 'rb') as infile:
+with open(Path(__file__).parent/'../../FiFAR/alert_model/model_properties.pickle', 'rb') as infile:
     ml_model_properties = pickle.load(infile)
 
-data = pd.read_parquet(f'../../Dataset/alert_data/processed_data/alerts.parquet')
+data = pd.read_parquet(f'../../FiFAR/alert_data/processed_data/alerts.parquet')
 data = cat_checker(data, CATEGORICAL_COLS, cat_dict)
 
 train_test = data.loc[data["month"] != 6]
@@ -252,8 +252,8 @@ for expert in expert_team:
     full_w_table.loc[expert, 'fn_beta'] = expert_team[expert].fnr_beta
     full_w_table.loc[expert, 'alpha'] = expert_team[expert].alpha
 
-os.makedirs(Path(__file__).parent/f'../../Dataset/synthetic_experts/', exist_ok = True)
-full_w_table.to_parquet(Path(__file__).parent/f'../../Dataset/synthetic_experts/expert_parameters.parquet')
+os.makedirs(Path(__file__).parent/f'../../FiFAR/synthetic_experts/', exist_ok = True)
+full_w_table.to_parquet(Path(__file__).parent/f'../../FiFAR/synthetic_experts/expert_parameters.parquet')
 
 #Obtaining the predictions ----------------------------------------------------------------------------------
 
@@ -282,7 +282,7 @@ deployment_expert_pred = expert_team.predict(
 
 expert_pred = pd.concat([train_expert_pred,deployment_expert_pred])
 
-expert_pred.to_parquet(Path(__file__).parent/f'../../Dataset/synthetic_experts/expert_predictions.parquet')
+expert_pred.to_parquet(Path(__file__).parent/f'../../FiFAR/synthetic_experts/expert_predictions.parquet')
 
 #saving the probability of error associated with each instance
 perror = pd.DataFrame()
@@ -295,9 +295,9 @@ for expert in expert_team:
         perror[column2] = expert_team[expert].error_prob['p_of_fp']
 
 
-perror.to_parquet(Path(__file__).parent/f'../../Dataset/synthetic_experts/prob_of_error.parquet')
+perror.to_parquet(Path(__file__).parent/f'../../FiFAR/synthetic_experts/prob_of_error.parquet')
 
-with open(Path(__file__).parent/f'../../Dataset/synthetic_experts/expert_ids.yaml', 'w') as outfile:
+with open(Path(__file__).parent/f'../../FiFAR/synthetic_experts/expert_ids.yaml', 'w') as outfile:
     yaml.dump(EXPERT_IDS, outfile)
 
 
