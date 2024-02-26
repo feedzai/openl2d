@@ -41,13 +41,13 @@ conda activate openl2d-env
 The FiFAR dataset is publicly available [here](https://drive.google.com/file/d/1ZHleGXqi3Oxu-gmvRnKEsiBXjjAMAdi4/view?usp=sharing). 
 This dataset includes
 
-* Version 1 of the Base Variant of the Bank Account Fraud Dataset
-* Alerts raised by the Alert Model, accompanied by said model's score
-* Synthetically generated predictions from a team of 50 fraud analysts
+* Version 1 of the Base Variant of the Bank Account Fraud Dataset.
+* Alerts raised by the Alert Model, accompanied by said model's score.
+* Synthetically generated predictions from a team of 50 fraud analysts.
 * 25 distinct training scenarios, as well as 5 distinct testing scenarios for each trained algorithm.
-* ML models used in the data generation process, technical validation, and L2D benchmarking
-  * Alert Model
-  * Feature Dependence Models
+* ML models used in the data generation process, technical validation, and L2D benchmarking.
+  * Alert Model.
+  * Feature Dependence Models.
   * DeCCaF and OvA Models - Classifier *h*, OvA Classifiers, and DeCCaF's team correctness prediction models.
 
 This dataset is more thouroughly described in Section 4 of the [Data Descriptor](Documents/Paper.pdf).
