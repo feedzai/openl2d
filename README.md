@@ -25,11 +25,11 @@ The submitted version of the paper is available [here](Documents/Paper.pdf).
 
 To ensure complete reproducibility, all the models, data (generated or otherwise), and results mentioned in our paper are included in the FiFAR dataset.
 
-## Creating the Python Environment
+### Creating the Python Environment
 Requirements:
 * anaconda3
   
-After cloning the repo, please create and activate the Python environment by running
+Before using any of the provided code, to ensure reproducibility, please create and activate the Python environment by running
 
 ```
 conda env create -f openl2d-environment.yml
