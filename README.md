@@ -26,6 +26,7 @@ The submitted version of the paper is available [here](Documents/Paper.pdf).
 To ensure complete reproducibility, all the models, data (generated or otherwise), and results mentioned in our paper are included in the FiFAR dataset.
 
 ### Creating the Python Environment
+
 Requirements:
 * anaconda3
   
@@ -70,7 +71,7 @@ We also facilitate further analysis of our generated experts and the conducted b
 To replicate the generation of FiFAR, please execute the following steps:
 
 ### Step 1 - Clone the Repo and Download Dataset
-After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that both directories "FiFAR" and "Code" are placed as such
+After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that your directory looks like this
 
 ```
 openl2d
@@ -95,6 +96,10 @@ Then, run the file [Code/alert_data/preprocess.py](Code/alert_data/preprocess.py
 
 ### Step 4 - Generate the Synthetic Expert predictions
 To generate all the data within the folder "synthetic_experts" of FiFAR, run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py), which will generate the synthetic expert predictions, and also save their sampled parameters, calculated probabilities of error for each alerted instance, as well as the list of expert id's.
+
+### Step 5 - Generate the Training and Testing Scenarios
+To generate all 25 training scenarios, run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py).
+To generate the 5 distinct capacity constraints to be applied to each of the deferral methods in testing, run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py).
 
 
 
