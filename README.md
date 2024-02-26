@@ -81,10 +81,12 @@ openl2d
 └─── Code
 │   │   ...
 │   
-└─── Dataset
+└─── FiFAR
     │   ...
 ```
 
+### Step 2 - Activate the Environment
+To activate the Python environment with the necessary dependencies please follow [these steps](#Creating-the-Python-Environment)
 
 ## Using the OpenL2D Framework
 
