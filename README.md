@@ -29,10 +29,11 @@ To ensure complete reproducibility, all the models, data, and results shown in o
 Requirements:
 * anaconda3
   
-After cloning the repo, please create the Python environment by running
+After cloning the repo, please create and activate the Python environment by running
 
 ```
 conda env create -f openl2d-environment.yml
+conda activate openl2d-env
 ```
 
 ## Using the OpenL2D Fraud Detection Dataset
