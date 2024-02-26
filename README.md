@@ -69,7 +69,16 @@ We also facilitate further analysis of our generated experts and the conducted b
 
 To replicate the generation of FiFAR, please execute the following steps:
 
-### * Step 1 - 
+### Step 1 - Clone the Repo and Download Dataset
+After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that both directories "FiFAR" and "Code" are placed as such
+
+├── openl2d
+│   ├── Code
+│   ├── FiFAR
+│   ├── .gitignore
+│   ├── README.md
+│   ├── openl2d-environment.yml
+
 
 ## Using the OpenL2D Framework
 
