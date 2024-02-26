@@ -1,9 +1,8 @@
-﻿# OpenL2D: A Benchmarking Framework for Learning1
-to Defer in Human-AI Decision-Making
+﻿# OpenL2D: A Benchmarking Framework for Learning to Defer in Human-AI Decision-Making
 
 ## Abstract
 
-Public resource limitations have significantly hindered the development and benchmarking of learning to defer (L2D) algorithms, which aim to optimally combine human and AI capabilities in hybrid decision-making systems. In such systems, human availability and domain-specific concerns introduce complexity, while obtaining human predictions for training and evaluation is costly. To overcome these challenges, we introduce OpenL2D, a novel framework designed to generate synthetic expert decisions and testbed settings for L2D methods. OpenL2D facilitates the creation of synthetic experts with adjustable bias and feature dependence, simulates realistic human work capacity constraints, and provides diverse training and testing scenarios. To demonstrate its utility, we employ OpenL2D on a public fraud detection dataset, synthesizing a team of 50 fraud analysts, and we benchmark L2D baselines under an array of 220 distinct testing scenarios. We believe that OpenL2D will serve as a pivotal instrument in facilitating a systematic, rigorous, reproducible, and transparent evaluation and comparison of L2D methods, thereby fostering the development of more synergistic human-AI collaboration in decision-making systems.
+Public dataset limitations have significantly hindered the development and benchmarking of _learning to defer_ (L2D) algorithms, which aim to optimally combine human and AI capabilities in hybrid decision-making systems. The development of these systems is primarily hindered by the high cost of obtaining human predictions for training and evaluation, leading researchers to often consider simplistic simulated human behaviour in their benchmarks. To overcome this challenge, we introduce OpenL2D, a novel framework designed to generate synthetic expert decisions and testbed settings for L2D methods. OpenL2D facilitates the creation of synthetic experts with adjustable bias and feature dependence, simulates realistic human work capacity constraints, and provides diverse training and testing conditions. We employ OpenL2D on a public fraud detection dataset to generate the _Financial Fraud Alert Review Dataset_ (FiFAR), containing predictions from a team of 50 fraud analysts for 30K alerted instances. We benchmark L2D baselines under a diverse array of conditions, subject to expert capacity constraints, demonstrating the unique, real-world challenges posed by FiFAR relative to previous benchmarks.
 
 ## Overview
 
@@ -16,8 +15,11 @@ Public resource limitations have significantly hindered the development and benc
 ## Resources
 In this repo, we provide users with:
 
-* Code for use of our framework.
-* [Datasets and models](https://drive.google.com/drive/folders/1nAUlxdOmwC6ZNtch3rxwKwNUVrYNmxkV) used in our benchmark.
+* Code necessary to:
+  * Use the OpenL2D synthetic data generation framework.
+  * Generate the FiFAR dataset.
+  * Conduct our L2D benchmarks.
+* Notebooks for evaluation of FiFAR experts' properties and L2D benchmarks.
 
 The submitted version of the paper, the appendix, and the Datasheet are available in the following links:
 
