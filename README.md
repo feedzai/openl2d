@@ -41,9 +41,9 @@ conda activate openl2d-env
 The FiFAR dataset is publicly available [here](https://drive.google.com/file/d/1ZHleGXqi3Oxu-gmvRnKEsiBXjjAMAdi4/view?usp=sharing). 
 This dataset includes
 * ML models used in the data generation process, technical validation, and L2D benchmarking
- * Alert Model
- * Feature Dependence Models
- * DeCCaF and OvA Models - Classifier *h* and Correctness prediction models
+  * Alert Model
+  * Feature Dependence Models
+  * DeCCaF and OvA Models - Classifier *h* and Correctness prediction models
   
 The structure of the dataset is schematically represented as follows
 
