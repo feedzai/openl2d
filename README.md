@@ -101,6 +101,11 @@ To generate all the data within the folder "synthetic_experts" of FiFAR, run the
 To generate all 25 training scenarios, run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py).
 To generate the 5 distinct capacity constraints to be applied to each of the deferral methods in testing, run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py).
 
+### Step 6 - Train OvA and DeCCaF algorithms
+As both of these algorithms share the classifier *h* (see Section 3 of the [paper](Documents/Paper.pdf)), we first train this classifier, by running the script [Code/classifier_h/training.py](Code/classifier_h/training.py).
+
+To train the OvA Classifiers run [Code/expert_models/run_ova.py](Code/expert_models/run_ova.py). To train the DeCCaF classifiers run [Code/expert_models/run_deccaf.py](Code/expert_models/run_deccaf.py)
+
 
 
 ## Using the OpenL2D Framework
