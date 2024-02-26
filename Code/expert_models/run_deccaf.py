@@ -85,12 +85,13 @@ preds = dict()
 
 for env in os.listdir(f'../../FiFAR/expert_models/deccaf/'):
     train_set = pd.read_parquet(f'../../FiFAR/testbed/train_alert/{env}/train.parquet')
-    table = pd.DataFrame(index = test.index, columns = os.listdir(f'../../FiFAR/expert_models/deccaf/{env}'))
+    table = pd.DataFrame(index = test.index)
         
     with open(f"../../FiFAR/expert_models/deccaf/{env}/best_model.pickle", "rb") as input_file:
         model = pickle.load(input_file)
     
     for expert in train_set['assignment'].unique():
+        print(expert)
         X_test['assignment'] = expert
 
         X_test = cat_checker(X_test, data_cfg['data_cols']['categorical'] + ['assignment'], cat_dict)
