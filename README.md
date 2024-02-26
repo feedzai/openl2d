@@ -106,6 +106,9 @@ As both of these algorithms share the classifier *h* (see Section 3 of the [pape
 
 To train the OvA Classifiers run [Code/expert_models/run_ova.py](Code/expert_models/run_ova.py). To train the DeCCaF classifiers run [Code/expert_models/run_deccaf.py](Code/expert_models/run_deccaf.py)
 
+### Step 7 - Run the Deferral Experiments
+
+To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Code/deferral/run_alert.py). These results can then be evaluated with the notebook [Code/deferral/results.ipynb](Code/deferral/results.ipynb)
 
 
 ## Using the OpenL2D Framework
