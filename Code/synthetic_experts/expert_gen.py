@@ -295,7 +295,7 @@ for expert in expert_team:
         perror[column2] = expert_team[expert].error_prob['p_of_fp']
 
 
-perror.to_parquet(Path(__file__).parent/f'../../FiFAR/synthetic_experts/prob_of_error.parquet')
+perror.loc[expert_pred.index].to_parquet(Path(__file__).parent/f'../../FiFAR/synthetic_experts/prob_of_error.parquet')
 
 with open(Path(__file__).parent/f'../../FiFAR/synthetic_experts/expert_ids.yaml', 'w') as outfile:
     yaml.dump(EXPERT_IDS, outfile)
