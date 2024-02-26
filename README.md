@@ -73,22 +73,16 @@ To replicate the generation of FiFAR, please execute the following steps:
 After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that both directories "FiFAR" and "Code" are placed as such
 
 ```
-project
+openl2d
 │   README.md
-│   file001.txt    
+│   .gitignore  
+│   openl2d-environment.yml
 │
-└───folder1
-│   │   file011.txt
-│   │   file012.txt
-│   │
-│   └───subfolder1
-│       │   file111.txt
-│       │   file112.txt
-│       │   ...
+└─── Code
+│   │   ...
 │   
-└───folder2
-    │   file021.txt
-    │   file022.txt
+└─── Dataset
+    │   ...
 ```
 
 
