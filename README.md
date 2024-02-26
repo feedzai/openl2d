@@ -65,20 +65,8 @@ We also facilitate further analysis of our generated experts and the conducted b
   * evaluation of the performance and calibration of Classifier *h*, OvA Classifiers, and DeCCaF's team correctness prediction models.
 * expert_analysis.ipynb - which contains the evaluation of the expert decision-making process properties (intra and inter-rater agreement, feature dependence, fairness and performance) 
 
-## Replicating our experiments
+## Replicating the Data Generation Process and L2D Benchmarking
 
-### L2D Baseline Results
-After following the steps to obtain the **Fraud Detection Dataset**, detailed in the previous section, the user must run the file "[OpenL2D/testbed/run_tests.py](OpenL2D/testbed/run_tests.py)". This script produces the test split assignments for each testing scenario generated in Step 4 of the previous section. These assignments are obtained by using each of our 3 baseline models, detailed in Section 4.2 of the [paper](Documents/Paper.pdf),  resulting in a total of 660 sets of assignments. For details on the total compute time necessary to run all experiments, consult Table 7, in Section C.1 of the [appendix](Documents/Appendix.pdf). 
-
-### ML Model and Human Expertise Model evaluation
-
-The plots, numerical results, and hyperparameter choices relating to our ML model, detailed in Section B.1 of the [appendix](Documents/Appendix.pdf), are obtained using the script [OpenL2D/ml_model/training_and_predicting.py](OpenL2D/ml_model/training_and_predicting.py). 
-
-The plots, numerical results, and hyperparameter choices relating to our Human Expertise model, detailed in Section B.3, are obtained using the notebook [OpenL2D/expertise_models/model_analysis.ipynb](OpenL2D/expertise_models/model_analysis.ipynb). 
-
-### Synthetic expert's decision evaluation
-
-The plots and numerical results regarding our synthetic expert's generation process and decision properties are obtained using the notebook [OpenL2D/experts/expert_properties.ipynb](OpenL2D/experts/expert_properties.ipynb). 
 
 ## Using the OpenL2D Framework
 
@@ -98,10 +86,6 @@ For each desired dataset, this script creates a subfolder within a folder "OpenL
 ### Generating test scenarios with different capacity constraints
 
 To generate a set of capacity constraints to be applied in testing, the user needs to define the capacity constraints of each scenario, in the file [OpenL2D/testbed/cfg.yaml](OpenL2D/testbed/cfg.yaml), and run the script [OpenL2D/testbed/testbed_test_generation.py](OpenL2D/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within [OpenL2D/testbed/test](OpenL2D/testbed/test). This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
-
-### Running your own L2D testing
-
-To run your own experiments within your generated tested scenarios, OpenL2D currently supports the use of the baselines described in Section 4.2 of the [paper](Documents/Paper.pdf). The user may define the experiments' parameters in the file [OpenL2D/testbed/cfg.yaml](OpenL2D/testbed/cfg.yaml), and then run the script [OpenL2D/testbed/run\_tests.py](OpenL2D/testbed/run_tests.py).
 
 
 
