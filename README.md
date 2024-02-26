@@ -67,6 +67,9 @@ We also facilitate further analysis of our generated experts and the conducted b
 
 ## Replicating the Data Generation Process and L2D Benchmarking
 
+To replicate the generation of FiFAR, please execute the following steps:
+
+### * Step 1 - 
 
 ## Using the OpenL2D Framework
 
