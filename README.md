@@ -15,21 +15,25 @@ Public dataset limitations have significantly hindered the development and bench
 ## Resources
 In this repo, we provide users with:
 
-* Code necessary to:
+* Instructions and code necessary to:
   * Use the OpenL2D synthetic data generation framework.
-  * Generate the FiFAR dataset.
+  * Generate the FiFAR dataset, available [here](https://drive.google.com/file/d/1ZHleGXqi3Oxu-gmvRnKEsiBXjjAMAdi4/view?usp=sharing).
   * Conduct our L2D benchmarks.
 * Notebooks for evaluation of FiFAR experts' properties and L2D benchmarks.
 
-The submitted version of the paper, the appendix, and the Datasheet are available in the following links:
+The submitted version of the paper is available [here](Documents/Paper.pdf).
 
-* [Paper](Documents/Paper.pdf)
-* [Appendix](Documents/Appendix.pdf)
-* [Datasheet](Documents/Datasheet.pdf)
+To ensure complete reproducibility, all the models, data, and results shown in our paper are included in the FiFAR dataset.
 
-## Installing Necessary Dependencies
+## Creating the Python Environment
+Requirements:
+* anaconda3
+  
+After cloning the repo, please create the Python environment by running
 
-To use the provided code, please install the package available in the folder [Dependencies](Dependencies).
+```
+conda env create -f openl2d-environment.yml
+```
 
 ## Using the OpenL2D Fraud Detection Dataset
 
