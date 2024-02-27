@@ -7,9 +7,8 @@ Public dataset limitations have significantly hindered the development and bench
 ## Overview
 
 * [Resources](#Resources)
-* [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
-* [Using the OpenL2D Fraud Detection Dataset](#Using-the-OpenL2D-Fraud-Detection-Dataset)
-* [Replicating our Experiments](#Replicating-our-experiments)
+* [Using FiFAR](#Using-FiFAR)
+* [Replicating the Data Generation Process and L2D Benchmarking](#Replicating-the-Data-Generation-Process-and-L2D-Benchmarking)
 * [Using the OpenL2D Framework](#Using-the-OpenL2D-Framework)
 
 ## Resources
