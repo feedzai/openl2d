@@ -17,7 +17,7 @@ def cat_checker(data, features, cat_dict):
 
 def full_auto_func(capacities, batches, testset, env, model):
     print(f'solving {env}: fullauto')
-    if os.path.isdir(f'../../Dataset/deferral/results/{model}/'  + env):
+    if os.path.isdir(f'../../FiFAR/deferral/results/{model}/'  + env):
         return
 
     assignments = pd.DataFrame(columns = ['assignment'])
@@ -29,18 +29,18 @@ def full_auto_func(capacities, batches, testset, env, model):
             results.loc[ix] = 1
         
             
-    if not os.path.isdir(f'../../Dataset/deferral/results/{model}/'  + env):
-        os.makedirs(f'../../Dataset/deferral/results/{model}/' + env)
+    if not os.path.isdir(f'../../FiFAR/deferral/results/{model}/'  + env):
+        os.makedirs(f'../../FiFAR/deferral/results/{model}/' + env)
 
     assignments = assignments.astype('object')
-    assignments.to_parquet(f'../../Dataset/deferral/results/{model}/' + env +'/assignments.parquet')
-    results.to_parquet(f'../../Dataset/deferral/results/{model}/' + env +'/results.parquet')
+    assignments.to_parquet(f'../../FiFAR/deferral/results/{model}/' + env +'/assignments.parquet')
+    results.to_parquet(f'../../FiFAR/deferral/results/{model}/' + env +'/results.parquet')
 
     return assignments, results
 
 def full_model_func(capacities, batches, testset, expert_preds, env, model):
     print(f'solving {env}: fullauto')
-    if os.path.isdir(f'../../Dataset/deferral/results/{model}/'  + env):
+    if os.path.isdir(f'../../FiFAR/deferral/results/{model}/'  + env):
         return
 
     assignments = pd.DataFrame(columns = ['assignment'])
@@ -52,18 +52,18 @@ def full_model_func(capacities, batches, testset, expert_preds, env, model):
             results.loc[ix] = expert_preds.loc[ix,'classifier_h']
         
             
-    if not os.path.isdir(f'../../Dataset/deferral/results/{model}/'  + env):
-        os.makedirs(f'../../Dataset/deferral/results/{model}/' + env)
+    if not os.path.isdir(f'../../FiFAR/deferral/results/{model}/'  + env):
+        os.makedirs(f'../../FiFAR/deferral/results/{model}/' + env)
 
     assignments = assignments.astype('object')
-    assignments.to_parquet(f'../../Dataset/deferral/results/{model}/' + env +'/assignments.parquet')
-    results.to_parquet(f'../../Dataset/deferral/results/{model}/' + env +'/results.parquet')
+    assignments.to_parquet(f'../../FiFAR/deferral/results/{model}/' + env +'/assignments.parquet')
+    results.to_parquet(f'../../FiFAR/deferral/results/{model}/' + env +'/results.parquet')
 
     return assignments, results
 
 def rand_deferral_func(capacities, batches, testset, expert_preds, env, model, seed):
     print(f'solving {env}: rand')
-    if os.path.isdir(f'../../Dataset/deferral/results/{model}/{seed}/'  + env):
+    if os.path.isdir(f'../../FiFAR/deferral/results/{model}/{seed}/'  + env):
         return
     assignments = pd.DataFrame(columns = ['assignment'])
     results = pd.DataFrame(columns = ['prediction'])
@@ -89,12 +89,12 @@ def rand_deferral_func(capacities, batches, testset, expert_preds, env, model, s
                 if len(choice) == 0:
                     done = 1
             
-    if not os.path.isdir(f'../../Dataset/deferral/results/{model}/{seed}/' + env):
-        os.makedirs(f'../../Dataset/deferral/results/{model}/{seed}/' + env)
+    if not os.path.isdir(f'../../FiFAR/deferral/results/{model}/{seed}/' + env):
+        os.makedirs(f'../../FiFAR/deferral/results/{model}/{seed}/' + env)
 
     assignments = assignments.astype('object')
-    assignments.to_parquet(f'../../Dataset/deferral/results/{model}/{seed}/' + env +'/assignments.parquet')
-    results.to_parquet(f'../../Dataset/deferral/results/{model}/{seed}/' + env +'/results.parquet')
+    assignments.to_parquet(f'../../FiFAR/deferral/results/{model}/{seed}/' + env +'/assignments.parquet')
+    results.to_parquet(f'../../FiFAR/deferral/results/{model}/{seed}/' + env +'/results.parquet')
     
     return assignments, results
 
@@ -104,7 +104,7 @@ def ova_deferral_func(capacities, batches, testset, expert_preds, model_preds, e
         return
 
     print(f'Calculating OvA for {env}')
-    if os.path.isdir(f'../../Dataset/deferral/results/{model}/{seed}/'  + env):
+    if os.path.isdir(f'../../FiFAR/deferral/results/{model}/{seed}/'  + env):
         return
     assignments = pd.DataFrame(columns = ['assignment'])
     results = pd.DataFrame(columns = ['prediction'])
@@ -124,12 +124,12 @@ def ova_deferral_func(capacities, batches, testset, expert_preds, model_preds, e
                     results.loc[ix] = expert_preds.loc[ix, choice]
                     break
 
-    if not os.path.isdir(f'../../Dataset/deferral/results/{model}/{seed}/' + env):
-        os.makedirs(f'../../Dataset/deferral/results/{model}/{seed}/' + env)
+    if not os.path.isdir(f'../../FiFAR/deferral/results/{model}/{seed}/' + env):
+        os.makedirs(f'../../FiFAR/deferral/results/{model}/{seed}/' + env)
 
     assignments = assignments.astype('object')
-    assignments.to_parquet(f'../../Dataset/deferral/results/{model}/{seed}/' + env +'/assignments.parquet')
-    results.to_parquet(f'../../Dataset/deferral/results/{model}/{seed}/' + env +'/results.parquet')
+    assignments.to_parquet(f'../../FiFAR/deferral/results/{model}/{seed}/' + env +'/assignments.parquet')
+    results.to_parquet(f'../../FiFAR/deferral/results/{model}/{seed}/' + env +'/results.parquet')
     return assignments, results
 
 def deccaf_deferral_func(capacities, batches, testset, expert_preds, model_preds, env, model, seed, team):
@@ -137,7 +137,7 @@ def deccaf_deferral_func(capacities, batches, testset, expert_preds, model_preds
     if team1 != team:
         return
     
-    if os.path.isdir(f'../../Dataset/deferral/results/{model}/{seed}/'  + env):
+    if os.path.isdir(f'../../FiFAR/deferral/results/{model}/{seed}/'  + env):
         return
 
     model_name = model
@@ -203,12 +203,12 @@ def deccaf_deferral_func(capacities, batches, testset, expert_preds, model_preds
 
     
     
-    if not os.path.isdir(f'../../Dataset/deferral/results/{model_name}/{seed}/' + env):
-        os.makedirs(f'../../Dataset/deferral/results/{model_name}/{seed}/' + env)
+    if not os.path.isdir(f'../../FiFAR/deferral/results/{model_name}/{seed}/' + env):
+        os.makedirs(f'../../FiFAR/deferral/results/{model_name}/{seed}/' + env)
 
     assignments = assignments.astype('object')
-    assignments.to_parquet(f'../../Dataset/deferral/results/{model_name}/{seed}/' + env +'/assignments.parquet')
-    results.to_parquet(f'../../Dataset/deferral/results/{model_name}/{seed}/' + env +'/results.parquet')
+    assignments.to_parquet(f'../../FiFAR/deferral/results/{model_name}/{seed}/' + env +'/assignments.parquet')
+    results.to_parquet(f'../../FiFAR/deferral/results/{model_name}/{seed}/' + env +'/results.parquet')
 
     return assignments, results
 
@@ -219,16 +219,16 @@ with open(data_cfg_path, 'r') as infile:
 
 cat_dict = data_cfg['categorical_dict']
 
-alerts = pd.read_parquet(f'../../Dataset/alert_data/processed_data/alerts.parquet')
+alerts = pd.read_parquet(f'../../FiFAR/alert_data/processed_data/alerts.parquet')
 
 
 test = alerts.loc[alerts['month'] == 7]
-exp_pred = pd.read_parquet(f'../../Dataset/synthetic_experts/expert_predictions.parquet').loc[test.index]
+exp_pred = pd.read_parquet(f'../../FiFAR/synthetic_experts/expert_predictions.parquet').loc[test.index]
 
 
-with open(f"../../Dataset/classifier_h/selected_model/best_model.pickle", 'rb') as fp:
+with open(f"../../FiFAR/classifier_h/selected_model/best_model.pickle", 'rb') as fp:
     classifier_h = pickle.load(fp)
-with open(f"../../Dataset/classifier_h/selected_model/model_properties.yaml", 'r') as fp:
+with open(f"../../FiFAR/classifier_h/selected_model/model_properties.yaml", 'r') as fp:
     classifier_h_properties = yaml.safe_load(fp)
 
 def sig(x):
@@ -246,19 +246,19 @@ exp_pred['classifier_h'] = h_preds
 exp_pred = (exp_pred>=0.5).astype(int)
 CATEGORICAL_COLS = data_cfg['data_cols']['categorical']
 
-with open(f'../../Dataset/deferral/l2d_predictions/ova.pkl', 'rb') as fp:
+with open(f'../../FiFAR/deferral/l2d_predictions/ova.pkl', 'rb') as fp:
         ova_model_preds = pickle.load(fp)
 
-with open(f'../../Dataset/deferral/l2d_predictions/deccaf.pkl', 'rb') as fp:
+with open(f'../../FiFAR/deferral/l2d_predictions/deccaf.pkl', 'rb') as fp:
         deccaf_model_preds = pickle.load(fp)
 
 a = dict()
-for direc in os.listdir(f'../../Dataset/testbed/test'):
-    if os.path.isfile(f'../../Dataset/testbed/test/' + direc):
+for direc in os.listdir(f'../../FiFAR/testbed/test'):
+    if os.path.isfile(f'../../FiFAR/testbed/test/' + direc):
         continue
     a[direc] = dict()
-    a[direc]['bat'] = pd.read_csv(f'../../Dataset/testbed/test/' + direc + '/batches.csv')
-    a[direc]['cap'] = pd.read_csv(f'../../Dataset/testbed/test/' + direc + '/capacity.csv')
+    a[direc]['bat'] = pd.read_csv(f'../../FiFAR/testbed/test/' + direc + '/batches.csv')
+    a[direc]['cap'] = pd.read_csv(f'../../FiFAR/testbed/test/' + direc + '/capacity.csv')
     a[direc]['team'] = direc.split('#')[1].split('-')[0]
 
 for seed in deccaf_model_preds:
