@@ -47,6 +47,7 @@ class SigmoidExpert(AbstractExpert):
     def __init__(
             self,
             fnr_target: float, fpr_target: float,
+            features_w_mean: float,
             features_w_std: float,
             protected_w: float,
             score_w: float,
@@ -57,6 +58,7 @@ class SigmoidExpert(AbstractExpert):
     ):
         self.fnr = fnr_target
         self.fpr = fpr_target
+        self.features_w_mean = features_w_mean
         self.features_w_std = features_w_std
         self.alpha = alpha
         self.fpr_noise = fpr_noise
@@ -82,7 +84,7 @@ class SigmoidExpert(AbstractExpert):
         if self.features_dict is None:
             np.random.seed(self.seed)
             spike = np.random.binomial(n=1, p=self.theta, size = (X.shape[1],))
-            slab = np.random.normal(loc=0, scale=self.features_w_std, size=(X.shape[1],))
+            slab = np.random.normal(loc=self.features_w_mean, scale=self.features_w_std, size=(X.shape[1],))
             self.w = np.multiply(spike,slab)
 
             if self.score_w is not None:

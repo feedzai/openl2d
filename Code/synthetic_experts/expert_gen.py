@@ -204,11 +204,14 @@ for group_name, group_cfg in ensemble_cfg.items():
     
     #Setting each expert's seed (for sampling of individual feature weights)
     
-    if group_cfg['w_dict'] == 'None':
+    if 'w_dict' not in group_cfg:
         group_cfg['w_dict'] = None
     
     if 'w_std' not in group_cfg:
         group_cfg['w_std'] = None
+    
+    if 'w_mean' not in group_cfg:
+        group_cfg['w_mean'] = None
     
     if 'theta' not in group_cfg:
         group_cfg['theta'] = None
@@ -218,7 +221,8 @@ for group_name, group_cfg in ensemble_cfg.items():
         expert_args = dict(
             fnr_target=coefs_spe['fnr']['target'][i],
             fpr_target=coefs_spe['fpr']['target'][i],
-            features_w_std = group_cfg['w_std'],
+            features_w_std = group_cfg['w_stdev'],
+            features_w_mean = group_cfg['w_mean'],
             alpha = coefs_gen['alpha'][i],
             fpr_noise = 0.0,
             fnr_noise = 0.0,
