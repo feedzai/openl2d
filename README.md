@@ -96,7 +96,7 @@ To generate all 25 training scenarios, run the script [Code/testbed/testbed_trai
 To generate the 5 distinct capacity constraints to be applied to each of the deferral methods in testing, run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py).
 
 ### Step 6 - Train OvA and DeCCaF algorithms
-As both of these algorithms share the classifier *h* (see Section 3 of the [paper](Documents/Paper.pdf)), we first train this classifier, by running the script [Code/classifier_h/training.py](Code/classifier_h/training.py).
+As both of these algorithms share the classifier *h* (see Section *Training OvA and DeCCaF Baselines* of the [paper](Documents/Paper.pdf)), we first train this classifier, by running the script [Code/classifier_h/training.py](Code/classifier_h/training.py).
 
 To train the OvA Classifiers run [Code/expert_models/run_ova.py](Code/expert_models/run_ova.py). To train the DeCCaF classifiers run [Code/expert_models/run_deccaf.py](Code/expert_models/run_deccaf.py)
 
@@ -115,74 +115,42 @@ To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_
 * Defining the categorical variables
 * Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
 
-Here is an example config file
-```yaml
-data_cols:
-  label: 'fraud_bool'
-  timestamp: 'month'
-  protected: 'customer_age'
-  categorical:
-    - "payment_type"
-    - "employment_status"
-    - "housing_status"
-    - "source"
-    - "device_os"
-  
-categorical_dict:
-  device_os:
-  - linux
-  - macintosh
-  - other
-  - windows
-  - x11
-  employment_status:
-  - CA
-  - CB
-  - CC
-  - CD
-  - CE
-  - CF
-  - CG
-  housing_status:
-  - BA
-  - BB
-  - BC
-  - BD
-  - BE
-  - BF
-  - BG
-  payment_type:
-  - AA
-  - AB
-  - AC
-  - AD
-  - AE
-  source:
-  - INTERNET
-  - TELEAPP
-```
-
 ### Generating Synthetic Expert Decisions
-To generate synthetic expert decisions, a user can define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). For more details on each parameter and the decision generation process, consult Section 3 of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
+To generate synthetic expert decisions, a user must define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
 
-```yaml
-standard:
-      n: 9
-      group_seed: 1 
-      theta: 0.3
-      w_std : 1
-      score_mean: -2
-      score_stdev: 0.5
-      protected_mean: -1
-      protected_stdev: 0.1
-      alpha_mean: 4
-      alpha_stdev: 0.2
-      cost:
-        setting: 'proportion'
-        target_mean: 1
-        target_stdev: 0.2
-        rejec_all_margin: 0.3
 ```
+experts:
+  groups:
+    standard:
+      n: 50
+      group_seed: 1
+      w_stdev: 1
+      w_mean: 0
+      theta: 0.3
+      score_stdev: 1
+      score_mean: 0
+      protected_stdev: 1
+      protected_mean: 0
+      alpha_mean: 15
+      alpha_stdev: 3.5
+      cost:
+        target_mean: 0.035
+        target_stdev: 0.005
+        top_clip: 0.046
+        bottom_clip: 0.02
+        max_FPR: 1
+        min_FPR: 0.01
+        max_FNR: 1
+        min_FNR: 0.01
+```
+
+
+
+
+For more details on each parameter and the decision generation process, consult Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
+
+
+
 
 
 ### Generating Training and Testing Scenarios
