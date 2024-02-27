@@ -69,6 +69,8 @@ We also facilitate further analysis of our generated experts and the conducted b
 
 To replicate the generation of FiFAR, please execute the following steps:
 
+*Note*: Run each python script *inside* the folder where it is located, to ensure the relative paths within each script work correctly
+
 ### Step 1 - Clone the Repo and Download Dataset
 After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that your directory looks like this
 
