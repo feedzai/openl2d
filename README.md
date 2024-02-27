@@ -152,9 +152,6 @@ experts:
 For more details on each parameter and the decision generation process, consult Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
 
 
-
-
-
 ### Generating Training and Testing Scenarios
 To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py).  For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
 
