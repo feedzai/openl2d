@@ -53,10 +53,10 @@ This dataset includes
 This dataset is more thouroughly described in Section 4 of the [Data Descriptor](Documents/Paper.pdf).
 
 We also facilitate further analysis of our generated experts and the conducted benchmarks, by providing users with two Jupyter Notebooks
-* results.ipynb - which contains
+* [Code/deferral/results.ipynb](Code/deferral/results.ipynb) - which contains
   * evaluation of the deferral performance of all considered L2D baselines
   * evaluation of the performance and calibration of Classifier *h*, OvA Classifiers, and DeCCaF's team correctness prediction models.
-* expert_analysis.ipynb - which contains the evaluation of the expert decision-making process properties (intra and inter-rater agreement, feature dependence, fairness and performance) 
+* [Code/synthetic_experts/expert_analysis.ipynb](Code/synthetic_experts/expert_analysis.ipynb) - which contains the evaluation of the expert decision-making process properties (intra and inter-rater agreement, feature dependence, fairness and performance) 
 
 ## Replicating the Data Generation Process and L2D Benchmarking
 
