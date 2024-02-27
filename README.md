@@ -7,9 +7,8 @@ Public dataset limitations have significantly hindered the development and bench
 ## Overview
 
 * [Resources](#Resources)
-* [Installing Necessary Dependencies](#Installing-Necessary-Dependencies)
-* [Using the OpenL2D Fraud Detection Dataset](#Using-the-OpenL2D-Fraud-Detection-Dataset)
-* [Replicating our Experiments](#Replicating-our-experiments)
+* [Using FiFAR](#Using-FiFAR)
+* [Replicating the Data Generation Process and L2D Benchmarking](#Replicating-the-Data-Generation-Process-and-L2D-Benchmarking)
 * [Using the OpenL2D Framework](#Using-the-OpenL2D-Framework)
 
 ## Resources
@@ -53,22 +52,17 @@ This dataset includes
 
 This dataset is more thouroughly described in Section 4 of the [Data Descriptor](Documents/Paper.pdf).
 
-We encourage researchers to use FiFAR in order to develop L2D methods under realistic conditions. Our dataset poses realistic challenges, such as
-
-* Limited expert prediction availability - only one prediction per expert.
-* Dynamic environment - subject to label and concept shift.
-* Human work capacity constraints.
-
 We also facilitate further analysis of our generated experts and the conducted benchmarks, by providing users with two Jupyter Notebooks
-
-* results.ipynb - which contains
+* [Code/deferral/results.ipynb](Code/deferral/results.ipynb) - which contains
   * evaluation of the deferral performance of all considered L2D baselines
   * evaluation of the performance and calibration of Classifier *h*, OvA Classifiers, and DeCCaF's team correctness prediction models.
-* expert_analysis.ipynb - which contains the evaluation of the expert decision-making process properties (intra and inter-rater agreement, feature dependence, fairness and performance) 
+* [Code/synthetic_experts/expert_analysis.ipynb](Code/synthetic_experts/expert_analysis.ipynb) - which contains the evaluation of the expert decision-making process properties (intra and inter-rater agreement, feature dependence, fairness and performance) 
 
 ## Replicating the Data Generation Process and L2D Benchmarking
 
-To replicate the generation of FiFAR, please execute the following steps:
+To replicate the generation of FiFAR, as well as our experiments, please execute the following steps:
+
+**Attention**: Run each python script **inside** the folder where it is located, to ensure the relative paths within each script work correctly
 
 ### Step 1 - Clone the Repo and Download Dataset
 After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that your directory looks like this
@@ -102,7 +96,7 @@ To generate all 25 training scenarios, run the script [Code/testbed/testbed_trai
 To generate the 5 distinct capacity constraints to be applied to each of the deferral methods in testing, run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py).
 
 ### Step 6 - Train OvA and DeCCaF algorithms
-As both of these algorithms share the classifier *h* (see Section 3 of the [paper](Documents/Paper.pdf)), we first train this classifier, by running the script [Code/classifier_h/training.py](Code/classifier_h/training.py).
+As both of these algorithms share the classifier *h* (see Section *Training OvA and DeCCaF Baselines* of the [paper](Documents/Paper.pdf)), we first train this classifier, by running the script [Code/classifier_h/training.py](Code/classifier_h/training.py).
 
 To train the OvA Classifiers run [Code/expert_models/run_ova.py](Code/expert_models/run_ova.py). To train the DeCCaF classifiers run [Code/expert_models/run_deccaf.py](Code/expert_models/run_deccaf.py)
 
@@ -115,12 +109,101 @@ To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Co
 
 ![alt text](Images/framework_diagram.png)
 
+### Defining the Input Dataset Properties
+To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_data/dataset_cfg.yaml](Code/alert_data/dataset_cfg.yaml) must be adapted to your particular needs. This involves
+* Defining the protected attribute column.
+* Defining the categorical variables
+* Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
+
 ### Generating Synthetic Expert Decisions
-To generate synthetic expert decisions, a user can define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). For more details on each parameter and the decision generation process, consult Section 3 of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
+To generate synthetic expert decisions, a user must define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
+
+The included [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) demonstrates how to manually define the weight distributions for each feature in the dataset. This is an example of how experts could be generated by using the spike and slab distribution
+
+```yaml
+experts:
+  groups:
+    standard:
+      n: 50
+      group_seed: 1
+      w_stdev: 1
+      w_mean: 0
+      theta: 0.3
+      score_stdev: 1
+      score_mean: 0
+      protected_stdev: 1
+      protected_mean: 0
+      alpha_mean: 15
+      alpha_stdev: 3.5
+      cost:
+        target_mean: 0.035
+        target_stdev: 0.005
+        top_clip: 0.046
+        bottom_clip: 0.02
+        max_FPR: 1
+        min_FPR: 0.01
+        max_FNR: 1
+        min_FNR: 0.01
+```
+
+
+
+
+For more details on each parameter and the decision generation process, consult Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
 
 
 ### Generating Training and Testing Scenarios
-To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py).  For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
+To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml). In this config file, the user must define the set of batch and capacity properties they desire, for the training and testing environments. An example follows:
+
+```yaml
+environments_train:
+  batch:
+    shuffle_1:
+      size: 5000
+      seed: 42
+    shuffle_2:
+      size: 5000
+      seed: 43
+
+  capacity:
+    team_1:
+      deferral_rate: 1
+      n_experts: 10 #If n_experts is ommited, the entire team is used
+      n_experts_seed: 42
+      distribution: 'homogeneous' # If the distribution is homogeneous, we can ommit the other parameters
+    team_2:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_seed: 42
+      distribution_stdev: 0.2
+
+environments_test:
+  batch:
+    shuffle_1:
+      size: 5000
+      seed: 42
+    shuffle_2:
+      size: 5000
+      seed: 43
+
+  capacity:
+    team_1:
+      deferral_rate: 0.6
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'homogeneous'
+    team_2:
+      deferral_rate: 0.6
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_seed: 42
+      distribution_stdev: 0.2
+```
+
+Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
 
 To generate a set of capacity constraints to be applied in testing, the user needs to define the capacity constraints of each scenario, again in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within [OpenL2D/testbed/test](OpenL2D/testbed/test). This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
 
