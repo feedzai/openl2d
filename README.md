@@ -153,7 +153,57 @@ For more details on each parameter and the decision generation process, consult 
 
 
 ### Generating Training and Testing Scenarios
-To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py).  For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
+To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml). In this config file, the user must define the set of batch and capacity properties they desire, for the training and testing environments. An example follows:
+
+```yaml
+environments_train:
+  batch:
+    shuffle_1:
+      size: 5000
+      seed: 42
+    shuffle_2:
+      size: 5000
+      seed: 43
+
+  capacity:
+    team_1:
+      deferral_rate: 1
+      n_experts: 10 #If n_experts is ommited, the entire team is used
+      n_experts_seed: 42
+      distribution: 'homogeneous' # If the distribution is homogeneous, we can ommit the other parameters
+    team_2:
+      deferral_rate: 1
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_seed: 42
+      distribution_stdev: 0.2
+
+environments_test:
+  batch:
+    shuffle_1:
+      size: 5000
+      seed: 42
+    shuffle_2:
+      size: 5000
+      seed: 43
+
+  capacity:
+    team_1:
+      deferral_rate: 0.6
+      n_experts: 10
+      n_experts_seed: 42
+      distribution: 'homogeneous'
+    team_2:
+      deferral_rate: 0.6
+      n_experts: 10
+      n_experts_seed: 43
+      distribution: 'variable'
+      distribution_seed: 42
+      distribution_stdev: 0.2
+```
+
+Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
 
 To generate a set of capacity constraints to be applied in testing, the user needs to define the capacity constraints of each scenario, again in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within [OpenL2D/testbed/test](OpenL2D/testbed/test). This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
 
