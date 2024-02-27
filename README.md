@@ -112,6 +112,25 @@ To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Co
 ### Generating Synthetic Expert Decisions
 To generate synthetic expert decisions, a user can define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). For more details on each parameter and the decision generation process, consult Section 3 of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
 
+```yaml
+standard:
+      n: 9
+      group_seed: 1 
+      theta: 0.3
+      w_std : 1
+      score_mean: -2
+      score_stdev: 0.5
+      protected_mean: -1
+      protected_stdev: 0.1
+      alpha_mean: 4
+      alpha_stdev: 0.2
+      cost:
+        setting: 'proportion'
+        target_mean: 1
+        target_stdev: 0.2
+        rejec_all_margin: 0.3
+```
+
 
 ### Generating Training and Testing Scenarios
 To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py).  For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
