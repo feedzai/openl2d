@@ -60,9 +60,9 @@ We also facilitate further analysis of our generated experts and the conducted b
 
 ## Replicating the Data Generation Process and L2D Benchmarking
 
-To replicate the generation of FiFAR, please execute the following steps:
+To replicate the generation of FiFAR, as well as our experiments, please execute the following steps:
 
-**Note**: Run each python script **inside** the folder where it is located, to ensure the relative paths within each script work correctly
+**Attention**: Run each python script **inside** the folder where it is located, to ensure the relative paths within each script work correctly
 
 ### Step 1 - Clone the Repo and Download Dataset
 After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that your directory looks like this
@@ -108,6 +108,54 @@ To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Co
 ## Using the OpenL2D Framework
 
 ![alt text](Images/framework_diagram.png)
+
+### Defining Dataset properties
+
+```yaml
+data_cols:
+  label: 'fraud_bool'
+  timestamp: 'month'
+  protected: 'customer_age'
+  categorical:
+    - "payment_type"
+    - "employment_status"
+    - "housing_status"
+    - "source"
+    - "device_os"
+  
+categorical_dict:
+  device_os:
+  - linux
+  - macintosh
+  - other
+  - windows
+  - x11
+  employment_status:
+  - CA
+  - CB
+  - CC
+  - CD
+  - CE
+  - CF
+  - CG
+  housing_status:
+  - BA
+  - BB
+  - BC
+  - BD
+  - BE
+  - BF
+  - BG
+  payment_type:
+  - AA
+  - AB
+  - AC
+  - AD
+  - AE
+  source:
+  - INTERNET
+  - TELEAPP
+```
 
 ### Generating Synthetic Expert Decisions
 To generate synthetic expert decisions, a user can define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). For more details on each parameter and the decision generation process, consult Section 3 of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
