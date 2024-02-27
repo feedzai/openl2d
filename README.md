@@ -52,14 +52,7 @@ This dataset includes
 
 This dataset is more thouroughly described in Section 4 of the [Data Descriptor](Documents/Paper.pdf).
 
-We encourage researchers to use FiFAR in order to develop L2D methods under realistic conditions. Our dataset poses realistic challenges, such as
-
-* Limited expert prediction availability - only one prediction per expert.
-* Dynamic environment - subject to label and concept shift.
-* Human work capacity constraints.
-
 We also facilitate further analysis of our generated experts and the conducted benchmarks, by providing users with two Jupyter Notebooks
-
 * results.ipynb - which contains
   * evaluation of the deferral performance of all considered L2D baselines
   * evaluation of the performance and calibration of Classifier *h*, OvA Classifiers, and DeCCaF's team correctness prediction models.
@@ -69,7 +62,7 @@ We also facilitate further analysis of our generated experts and the conducted b
 
 To replicate the generation of FiFAR, please execute the following steps:
 
-*Note*: Run each python script *inside* the folder where it is located, to ensure the relative paths within each script work correctly
+**Note**: Run each python script **inside** the folder where it is located, to ensure the relative paths within each script work correctly
 
 ### Step 1 - Clone the Repo and Download Dataset
 After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that your directory looks like this
