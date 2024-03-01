@@ -1,0 +1,39 @@
+random_seed: 42
+
+dataset_path: '../data/preprocessed.parquet'
+data_cfg_path: '../data/dataset_cfg.yaml'
+expert_folder_path:  '../synthetic_experts/expert_team'
+destination_path_train: './train_alert'
+destination_path_test: './test'
+random_seed: 42
+
+#Define which partition of the dataset should be used to fit the values of beta_0 and beta_1
+#If the dataset has a timestamp column, training_set should be defined as the dates that delimit the partition
+#If the dataset does not have a timestamp column, training_set should be defined as the indexes that delimit the partition
+#Note - The intervals are defined as [start,end) - the last value is not included
+training_set: [0,8000] 
+test_set: [8000,10000]
+timestamp_constraint: True
+
+environments_train:
+  batch:
+    shuffle_1:
+      size: 500
+      seed: 42
+  capacity:
+    team_1:
+      deferral_rate: 1
+      distribution: 'homogeneous'
+
+environments_test:
+  batch:
+    shuffle-1:
+      size: 500
+      seed: 42
+  capacity:
+    team_1-hom:
+      deferral_rate: 0.8
+      n_experts: 5
+      n_experts_seed: 42
+      variable_experts_per_batch: True
+      distribution: 'homogeneous'

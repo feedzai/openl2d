@@ -1,7 +1,39 @@
+
+dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'
+data_cfg_path: '../alert_data/dataset_cfg.yaml' # Dataset config file
+expert_folder_path:  '../../FiFAR/synthetic_experts' # Path containing the outputs from expert_gen.py
+destination_path_train: '../../FiFAR/testbed/train_alert' # Output directory of the generated training scenarios
+destination_path_test: '../../FiFAR/testbed/test' # Output directory of the generated test scenarios
+
 random_seed: 42
+
+#Define which partitions of the dataset should be used to generate the training and test scenarios
+#If the dataset has a timestamp column, training_set should be defined as the dates that delimit the partition
+#If the dataset does not have a timestamp column, training_set should be defined as the indexes that delimit the partition
+#Note - The intervals are defined as [start,end) - the last value is not included
+training_set: [3,7] 
+test_set: [7,8]
+
+# Set this value to true if you wish for batches to contain only instances with the same value for the TIMESTAMP column
+# i.e. in our experiments, a batch can only contain instances belonging to the same month
+timestamp_constraint: True
+
+
+#The following dictionaries define the capacity constraints for training and testing.
+#Each batch configuration is combined with each capacity configuration.
 
 environments_train:
   batch:
+  ###################################################
+  #-----------Defining the batch vector-------------#
+
+  #To define the batch vector, the user must set:
+  # - 'size'
+  # - 'seed'
+
+  #The user may generate several batch configurations
+  ###################################################
+  
     shuffle_1:
       size: 5000
       seed: 42
@@ -19,30 +51,55 @@ environments_train:
       seed: 46
 
   capacity:
+  ###################################################
+  #-----------Defining the capacity matrix-------------#
+
+  #To define the capacity matrix, the user must set:
+  # - 'deferral_rate' - [0,1]
+  # - 'distribution' - {'variable','homogeneous'}
+
+  #If the distribution is variable, the user must set:
+  # - 'distribution_stdev' - [0,1]
+  # - 'distribution_seed' - [0,1]
+  # - 'variable_capacity_per_batch' - {True,False}
+
+  #The user may also set the value of 'n_experts', 
+  #limiting the number of experts available in each batch.
+  #If 'n_experts' is set, the user must set
+  # - 'n_experts_seed' 
+  # - 'variable experts_per_batch' - {True, False}
+
+  #The user may generate several capacity configurations
+  ###################################################
     team_1:
       deferral_rate: 1
       n_experts: 10
       n_experts_seed: 42
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_2:
       deferral_rate: 1
       n_experts: 10
       n_experts_seed: 43
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_3:
       deferral_rate: 1
       n_experts: 10
       n_experts_seed: 44
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_4:
       deferral_rate: 1
       n_experts: 10
       n_experts_seed: 45
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_5:
       deferral_rate: 1
       n_experts: 10
       n_experts_seed: 46
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
 
 environments_test:
@@ -55,170 +112,215 @@ environments_test:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 42
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_2-hom:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 43
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_3-hom:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 44
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_4-hom:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 45
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     team_5-hom:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 46
+      variable_experts_per_batch: False
       distribution: 'homogeneous'
     #-----
     team_1-var_1:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 42
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 42
+      variable_capacity_per_batch: False
     team_2-var_1:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 43
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 42
+      variable_capacity_per_batch: False
     team_3-var_1:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 44
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 42
+      variable_capacity_per_batch: False
     team_4-var_1:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 45
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 42
+      variable_capacity_per_batch: False
     team_5-var_1:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 46
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 42
+      variable_capacity_per_batch: False
     #-----
     team_1-var_2:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 42
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 43
+      variable_capacity_per_batch: False
     team_2-var_2:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 43
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 43
+      variable_capacity_per_batch: False
     team_3-var_2:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 44
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 43
+      variable_capacity_per_batch: False
     team_4-var_2:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 45
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 43
+      variable_capacity_per_batch: False
     team_5-var_2:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 46
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 43
+      variable_capacity_per_batch: False
     #-----
     team_1-var_3:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 42
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 44
+      variable_capacity_per_batch: False
     team_2-var_3:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 43
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 44
+      variable_capacity_per_batch: False
     team_3-var_3:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 44
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 44
+      variable_capacity_per_batch: False
     team_4-var_3:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 45
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 44
+      variable_capacity_per_batch: False
     team_5-var_3:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 46
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 44
+      variable_capacity_per_batch: False
     #-----
     team_1-var_4:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 42
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 45
+      variable_capacity_per_batch: False
     team_2-var_4:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 43
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 45
+      variable_capacity_per_batch: False
     team_3-var_4:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 44
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 45
+      variable_capacity_per_batch: False
     team_4-var_4:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 45
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 45
+      variable_capacity_per_batch: False
     team_5-var_4:
       deferral_rate: 0.9090909090
       n_experts: 10
       n_experts_seed: 46
+      variable_experts_per_batch: False
       distribution: 'variable'
       distribution_stdev: 0.2
       distribution_seed: 45
+      variable_capacity_per_batch: False
     
     

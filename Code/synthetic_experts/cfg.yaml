@@ -1,12 +1,43 @@
-cost_cfg:
-  fp_cost: 0.057
-  fn_cost: 1.0
-    
+data_cfg_path: '../alert_data/dataset_cfg.yaml'
+dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'
+destination_path: '../../Test/synthetic_experts'
+
+
+
+#Define which partition of the dataset should be used to fit the values of beta_0 and beta_1
+#If the dataset has a timestamp column, fitting_set should be defined as the dates that delimit the partition
+#If the dataset does not have a timestamp column, fitting_set should be defined as the indexes that delimit the partition
+#Note - The intervals are defined as [start,end) - the last value is not included
+fitting_set: [6,7] #We want to use the totality of month 6
+
+
+#Define the baseline_group - This group must have all the necessary parameters defined. 
+#In subsequent groups, should a parameter be missing, the experts will be generated using the same parameters defined for the baseline_group
+baseline_group: 'standard'
+
+#Define the properties relating to your protected attribute - These can be ommited if there is no protected attribute
+#If your protected attribute is NUMERICAL, you must define:
+# - protected_threshold - value that separates the two distinct groups
+# - protected_values - whether the values 'higher' or 'lower' than the parameter are the protected group.
+protected_threshold: 50
+protected_values: 'higher'
+
+#If your protected attribute is CATEGORICAL, you must define:
+# - protected_class - value that corresponds to the protected group.
+
+
 experts:
   groups:
     standard:
       n: 50
       group_seed: 1
+      ################################################
+      #------------Feature Dependence Settings--------------#
+      #--OPTION 1: Individual Feature's Weight Distribution--#
+    
+      #Define w_dict, with one (mean, stdev) pair per feature in your dataset
+      #Attention! - These include the protected attribute and model score if they exist
+      
       w_dict:
         bank_branch_count_8w:
         - 0.0
@@ -101,17 +132,47 @@ experts:
         zip_count_4w:
         - 0.0
         - 0.05
-        
+
+      #-----OPTION 2: Spike and Slab Distribution----#
+      # Define w_mean, w_stdev and theta for the spike and slab distribution
+      # Note: you can optionally also define the weights for the protected attribute and the model_score separately, by defining
+      # - protected_mean, protected_stdev
+      # - score_mean, score_stdev
+
+      #w_mean: 0
+      #w_stdev: 0
+      #theta : 0 #Optional - if not defined, we assume theta = 1 -> all weights are non 0
+      #protected_mean: 0 #Optional - if not defined, the protected attribute's weight is also sampled from the spike and slab distribution
+      #protected_stdev: 0 #Optional - if not defined, the protected attribute's weight is also sampled from the spike and slab distribution
+      #score_mean: 0 #Optional - if not defined, the model score's weight is also sampled from the spike and slab distribution
+      #score_stdev: 0 #Optional - if not defined, the model score's weight is also sampled from the spike and slab distribution
+
+
       alpha_mean: 15
-      alpha_stdev: 3.5
+      alpha_stdev: 3.5 
+
+      ################################################
+      #------------Performance Settings--------------#
+      #-----OPTION 1: Defining Cost Distribution-----#
       cost:
-        target_mean: 0.035
+        target_mean: 0.035 
         target_stdev: 0.005
-        top_clip: 0.046
-        bottom_clip: 0.02
-        max_FPR: 1
-        min_FPR: 0.01
-        max_FNR: 1
-        min_FNR: 0.01
+        top_clip: 0.046 # Optional - if not defined, there is no upper bound on the cost
+        bottom_clip: 0.02  # Optional - if not defined, the lower bound for the cost will be set to 0
+      
+      #-OPTION 2: Defining FPR and FNR Distribution-#
+      #Example:
+      #fpr:
+        #target_mean: 0.10
+        #target_stdev: 0.05
+      #fnr:
+        #target_mean: 0.10
+        #target_stdev: 0.05  
+      
+      max_FPR: 1 # Optional - if not defined, the upper bound is set to 1
+      min_FPR: 0.01 # Optional - if not defined, the lower bound is set to 0
+      max_FNR: 1 # Optional - if not defined, the upper bound is set to 1
+      min_FNR: 0.01 # Optional - if not defined, the lower bound is set to 0
+      ################################################
 
       

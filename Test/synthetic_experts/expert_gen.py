@@ -54,7 +54,7 @@ with open(data_cfg_path, 'r') as infile:
     data_cfg = yaml.safe_load(infile)
 
 
-
+cat_dict = data_cfg['categorical_dict']
 data = pd.read_parquet(dataset_path)
 
 if 'lambda' in data_cfg:
@@ -71,9 +71,6 @@ except KeyError:
 if 'categorical' in data_cfg['data_cols']:
     CATEGORICAL_COLS = data_cfg['data_cols']['categorical']
     data[CATEGORICAL_COLS] = data[CATEGORICAL_COLS].astype('category')
-    if 'categorical_dict' not in data_cfg:
-        raise CustomException("Please define the categorical feature dictionary 'categorical_dict' in the dataset's configuration file.")
-    cat_dict = data_cfg['categorical_dict']
     data = cat_checker(data, CATEGORICAL_COLS, cat_dict)
 
 try:

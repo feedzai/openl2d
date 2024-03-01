@@ -1,0 +1,5 @@
+batch_id,batch_size,standard#0,standard#1,standard#2,standard#3,standard#4,biased#0,biased#1,biased#2,biased#3,biased#4,poor-performers#0,poor-performers#1,poor-performers#2,poor-performers#3,poor-performers#4
+1,500,0,0,0,0,0,0,80,0,80,80,0,0,80,0,80
+2,500,0,0,0,0,80,80,0,80,0,0,80,0,80,0,0
+3,500,0,0,80,0,0,0,0,0,80,80,80,0,0,80,0
+4,500,0,0,0,0,0,80,0,80,80,0,0,80,0,80,0

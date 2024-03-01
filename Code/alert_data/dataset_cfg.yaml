@@ -1,14 +1,20 @@
 data_cols:
-  label: 'fraud_bool'
-  timestamp: 'month'
-  protected: 'customer_age'
-  categorical:
+  label: 'fraud_bool' #Indicate the column corresponding to the label 
+  timestamp: 'month' #If the dataset has a temporal dependency on splits, define the timestamp column (This can be ommited)
+  protected: 'customer_age' #If the dataset has a protected attribute, define said attribute's column (This can be ommited)
+  model_score: 'model_score' #If the experts have access to a ML model's score, define its column (This can be ommited)
+  categorical: # Define the categorical feature's columns (This can be ommited)
     - "payment_type"
     - "employment_status"
     - "housing_status"
     - "source"
     - "device_os"
-  
+
+# Define the dictionary of possible categorical values
+# Key: categorical feature's column
+# Values: possible values for said feature
+
+#This ensures that the categorical features are encoded identically when passed to the LGBM models.
 categorical_dict:
   device_os:
   - linux
@@ -42,4 +48,6 @@ categorical_dict:
   - INTERNET
   - TELEAPP
 
-l: 0.057
+#Define the cost structure of the problem, by setting lambda = (cost of a false positive)/(cost of a false negative)
+lambda: 0.057
+
