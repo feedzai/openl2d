@@ -78,6 +78,9 @@ openl2d
 │   
 └─── FiFAR
     │   ...
+│   
+└─── OpenL2D Use Example
+    │   ...
 ```
 
 ### Step 2 - Activate the Environment
