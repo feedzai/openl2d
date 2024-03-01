@@ -177,4 +177,9 @@ experts:
       min_FNR: 0.01         # [0,1]         #Optional - if not defined, the lower bound is set to 0
       ################################################
 
+    #More expert groups may be defined
+    #In subsequent expert groups, only the parameters that differ from the baseline group need to be defined
+    #NOTE:  if a subsequent group uses a parameter that was not defined in the baseline group (i.e. theta), it will not be recognized.
+    #       In this case, users must set theta = 1 (default value) on the baseline group, and then they may define the subsequent group's theta value
+
       

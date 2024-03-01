@@ -9,8 +9,8 @@ human_ids:
 - biased#2
 - biased#3
 - biased#4
-- poor-performers#0
-- poor-performers#1
-- poor-performers#2
-- poor-performers#3
-- poor-performers#4
+- sparse-dependency#0
+- sparse-dependency#1
+- sparse-dependency#2
+- sparse-dependency#3
+- sparse-dependency#4

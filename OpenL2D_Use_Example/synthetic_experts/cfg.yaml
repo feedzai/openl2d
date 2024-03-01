@@ -15,16 +15,17 @@ experts:
       group_seed: 1
       w_mean: 0
       w_stdev: 1
+      theta: 1
       protected_mean: 0
       protected_stdev: 0
       alpha_mean: 20
       alpha_stdev: 5
       fpr:
-        target_mean: 0.20
-        target_stdev: 0.05
+        target_mean: 0.2
+        target_stdev: 0.1
       fnr:
-        target_mean: 0.20
-        target_stdev: 0.05  
+        target_mean: 0.2
+        target_stdev: 0.1 
       max_FPR: 1
       min_FPR: 0.01
       max_FNR: 1
@@ -33,13 +34,9 @@ experts:
       n: 5
       group_seed: 2
       protected_mean: 1
-      protected_stdev: 0
-    poor-performers:
+      protected_stdev: 0.1
+    sparse-dependency:
       n: 5
-      group_seed: 3
-      fpr:
-        target_mean: 0.40
-        target_stdev: 0.05
-      fnr:
-        target_mean: 0.40
-        target_stdev: 0.05  
+      group_seed: 1
+      theta: 0.3
+      
