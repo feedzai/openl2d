@@ -126,7 +126,7 @@ Optionally the user may also define:
 * The protected attribute column: which can be used to simulate experts with bias against a particular group based on said attribute.
 * The model_score column: which can be used to simulate experts who have access to exterior information such as an ML Model's score.
 
-  ```yaml
+```yaml
 data_cols:
   label: 'fraud_bool'        #Indicate the column corresponding to the label 
   timestamp: 'month'         #Optional: If the dataset has a temporal feature, define the timestamp column 
@@ -139,7 +139,7 @@ data_cols:
     - "source"
     - "device_os"
 ```
-* 
+
 #### 2. Defining the categorical dictionary.
 * Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
 
