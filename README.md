@@ -252,6 +252,7 @@ For a given group, the user **must** first set:
 The user must then define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper):
  * **Option 1** - Define each individual feature's weight distribution. This involves defining:
     * w_dict: containing one (mean, stdev) pair per feature in your dataset. These include the protected attribute and model score if they exist.
+    * *Example* - see file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml)
  * **Option 2** - Define the parameters for a spike and slab distribution:
     * w_mean: mean of the gaussian slab distribution
     * w_stdev: standard deviation of the gaussian slab distribution 
@@ -261,6 +262,7 @@ The user must then define the feature weight sampling process (see Section *Synt
       *  protected_stdev
       *  score_mean
       *  score_stdev
+    * *Example* - see file [OpenL2D_Use_Example/synthetic_experts/cfg.yaml](OpenL2D_Use_Example/synthetic_experts/cfg.yaml)  
 
 There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
 
