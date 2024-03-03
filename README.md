@@ -116,8 +116,20 @@ To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Co
 To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_data/dataset_cfg.yaml](Code/alert_data/dataset_cfg.yaml) must be adapted to your particular needs. 
 
 This involves
-#### Defining the protected attribute column.
-  
+#### Defining the dataset's columns.
+  ```yaml
+data_cols:
+  label: 'fraud_bool' #Indicate the column corresponding to the label 
+  timestamp: 'month' #If the dataset has a temporal dependency on splits, define the timestamp column (This can be ommited)
+  protected: 'customer_age' #If the dataset has a protected attribute, define said attribute's column (This can be ommited)
+  model_score: 'model_score' #If the experts have access to a ML model's score, define its column (This can be ommited)
+  categorical: # Define the categorical feature's columns (This can be ommited)
+    - "payment_type"
+    - "employment_status"
+    - "housing_status"
+    - "source"
+    - "device_os"
+```
 * Defining the categorical variables
 * Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
 
