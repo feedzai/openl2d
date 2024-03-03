@@ -124,7 +124,8 @@ This involves:
 Optionally the user may also define:
 * The timestamp column: which can be used posteriorly to define training and testing splits, and can be taken into account in the generation of capacity constraints.
 * The protected attribute column: which can be used to simulate experts with bias against a particular group based on said attribute.
-* The model_score column: which can be used to simulate experts who have access to exterior information such as an ML Model's score
+* The model_score column: which can be used to simulate experts who have access to exterior information such as an ML Model's score.
+
   ```yaml
 data_cols:
   label: 'fraud_bool'        #Indicate the column corresponding to the label 
