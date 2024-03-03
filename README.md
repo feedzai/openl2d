@@ -197,13 +197,38 @@ To generate synthetic expert decisions, a user must place the following scripts 
 
 The user then only needs to define the necessary parameters in the "cfg.yaml" file, as such:
 #### 1. Defining the input and output paths
-
+Example:
 ```yaml
 data_cfg_path: '../alert_data/dataset_cfg.yaml'                       #Path to the previously defined "dataset_cfg.yaml"
 dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'  #Path to the data on which to generate synthetic expert decisions
 destination_path: '../../FiFAR/synthetic_experts'                     #Output path for the generated expert decisions and sampled expert parameters             
 ```
+#### 2. Defining the partition on which to fit the expert's performance
+The user must define which partition of the dataset should be used to fit the values of beta_0 and beta_1
+* **Option 1** - If the dataset has a timestamp column, fitting_set should be defined as the dates that delimit the partition
+* **Option 2** - If the dataset does not have a timestamp column, fitting_set should be defined as the indexes that delimit the partition
+The intervals are defined as [start,end) - the last value is not included
 
+Example:
+```yaml
+fitting_set: [6,7] #We want to use the totality of month 6
+```
+
+#### 2. Defining the properties related to the protected attribute
+*Note* - These can be ommited if there is no protected attribute
+
+* **Option 1** - If your protected attribute is NUMERICAL, you must define:
+  * protected_threshold - value that separates the two distinct groups
+  * protected_values - whether the values 'higher' or 'lower' than the parameter are the protected group.
+* **Option 2** -If your protected attribute is CATEGORICAL, you must define:
+  * protected_class - value that corresponds to the protected group.
+
+protected_threshold: 50
+protected_values: 'higher'
+
+#Define the baseline_group - This group must have all the necessary parameters defined. 
+#In subsequent groups, should a parameter be missing, the experts will be generated using the same parameters defined for the baseline_group
+baseline_group: 'standard'
 
 There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
 
