@@ -10,11 +10,6 @@ destination_path: '../../FiFAR/synthetic_experts'                     #Output pa
 #Note - The intervals are defined as [start,end) - the last value is not included
 fitting_set: [6,7] #We want to use the totality of month 6
 
-
-#Define the baseline_group - This group must have all the necessary parameters defined. 
-#In subsequent groups, should a parameter be missing, the experts will be generated using the same parameters defined for the baseline_group
-baseline_group: 'standard'
-
 #Define the properties relating to your protected attribute - These can be ommited if there is no protected attribute
 #If your protected attribute is NUMERICAL, you must define:
 # - protected_threshold - value that separates the two distinct groups
@@ -182,4 +177,8 @@ experts:
     #NOTE:  if a subsequent group uses a parameter that was not defined in the baseline group (i.e. theta), it will not be recognized.
     #       In this case, users must set theta = 1 (default value) on the baseline group, and then they may define the subsequent group's theta value
 
-      
+
+#Define the baseline_group - This group must have all the necessary parameters defined. 
+#In subsequent groups, should a parameter be missing, the experts will be generated using the same parameters defined for the baseline_group
+baseline_group: 'standard'
+
