@@ -115,22 +115,31 @@ To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Co
 ### Defining the Input Dataset Properties
 To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_data/dataset_cfg.yaml](Code/alert_data/dataset_cfg.yaml) must be adapted to your particular needs. 
 
-This involves
-#### Defining the dataset's columns.
+This involves:
+#### 1. Defining the dataset's columns.
+
+* The user **must** define which column corresponds to the ground truth label
+* The categorical features **must** also be defined if they exist.
+
+Optionally the user may also define:
+* The timestamp column: which can be used posteriorly to define training and testing splits, and can be taken into account in the generation of capacity constraints.
+* The protected attribute column: which can be used to simulate experts with bias against a particular group based on said attribute.
+* The model_score column: which can be used to simulate experts who have access to exterior information such as an ML Model's score
   ```yaml
 data_cols:
   label: 'fraud_bool'        #Indicate the column corresponding to the label 
   timestamp: 'month'         #Optional: If the dataset has a temporal feature, define the timestamp column 
   protected: 'customer_age'  #Optional: If the dataset has a protected attribute, define said attribute's column
   model_score: 'model_score' #Optional: If the experts have access to a ML model's score, define its column
-  categorical:               Define the categorical feature's columns 
+  categorical:               #Define the categorical feature's columns 
     - "payment_type"
     - "employment_status"
     - "housing_status"
     - "source"
     - "device_os"
 ```
-* Defining the categorical variables
+* 
+#### 2. Defining the categorical dictionary.
 * Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
 
 ### Generating Synthetic Expert Decisions
