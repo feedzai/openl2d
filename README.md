@@ -345,10 +345,58 @@ test_set: [7,8]
 timestamp_constraint: True
 ```
 
-Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
 
-To generate a set of capacity constraints to be applied in testing, the user needs to define the capacity constraints of each scenario, again in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml), and run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within [OpenL2D/testbed/test](OpenL2D/testbed/test). This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
+#### 3. Setting the capacity constraints for the training and testing scenarios
 
+The user must define at least one batch and one capacity configuration for training and testing. Each batch configuration will be combined with each capacity configuration to generate an array of scenarios.
 
+To define the batch vector, the user must set:
+* 'size' - Number of instances within a batch
+* 'seed' - Seed used to distribute cases throughout batches.
+
+To define the capacity matrix, the user must set:
+* 'deferral_rate' - Fraction of instances that can be deferred to humans
+* 'distribution' - {'variable','homogeneous'} - Distribution of the work capacity of the expert team
+
+If the distribution is variable, the user must set:
+* 'distribution_stdev' - standard deviation of the gaussian distribution from which the expert's capacity constraints are sampled. This gaussian distribution's mean is 'deferral_rate'*'size'/'n_experts', that is, the value corresponding to an homogeneous distribution. The standard deviation is calculated as 'distribution_stdev' * 'deferral_rate' * 'size'/'n_experts'.
+* 'distribution_seed' - seed for the individual expert capacity sampling
+* 'variable_capacity_per_batch' - {True,False} - whether or not the same expert capacity is generated for all batches
+
+The user may also set the value of 'n_experts', limiting the number of experts available in each batch.
+If 'n_experts' is set, the user must set
+* 'n_experts_seed' - seed for the sampling of which experts are available
+* 'variable experts_per_batch' - {True, False} - whether or not the experts available per batch can be different.
+
+A simple example follows, and is available in [OpenL2D_Use_Example/testbed/cfg.yaml](OpenL2D_Use_Example/testbed/cfg.yaml):
+
+```yaml
+environments_train:
+  batch:
+    shuffle_1:
+      size: 500
+      seed: 42
+  capacity:
+    team_1:
+      deferral_rate: 1
+      distribution: 'homogeneous'
+
+environments_test:
+  batch:
+    shuffle-1:
+      size: 500
+      seed: 42
+  capacity:
+    team_1-hom:
+      deferral_rate: 0.8
+      n_experts: 5
+      n_experts_seed: 42
+      variable_experts_per_batch: True
+      distribution: 'homogeneous'
+```
+
+Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within the defined output path. Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
+
+To generate a set of capacity constraints to be applied in testing, the user needs to run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within within the defined output path. This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
 
 
