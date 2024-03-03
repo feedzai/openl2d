@@ -113,8 +113,11 @@ To reproduce the deferral testing run the script [Code/deferral/run_alert.py](Co
 ![alt text](Images/framework_diagram.png)
 
 ### Defining the Input Dataset Properties
-To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_data/dataset_cfg.yaml](Code/alert_data/dataset_cfg.yaml) must be adapted to your particular needs. This involves
-* Defining the protected attribute column.
+To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_data/dataset_cfg.yaml](Code/alert_data/dataset_cfg.yaml) must be adapted to your particular needs. 
+
+This involves
+##### Defining the protected attribute column.
+  
 * Defining the categorical variables
 * Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
 
