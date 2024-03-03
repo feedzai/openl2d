@@ -202,12 +202,19 @@ To generate synthetic expert decisions, a user must place the following scripts 
 * [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) - contains the user defined configurations to generate synthetic experts.
 
 The user then only needs to define the necessary parameters in the "cfg.yaml" file, as such:
+
 #### 1. Defining the input and output paths
-Example:
+
+The user must define the following paths, relative to the location of the "expert_gen.py" script:
+* data_cfg_path: Path to the previously defined "dataset_cfg.yaml"
+* dataset_path: Path to the data on which to generate synthetic expert decisions
+* destination_path: Output path for the generated expert decisions and sampled expert parameters     
+
+FiFAR Example:
 ```yaml
-data_cfg_path: '../alert_data/dataset_cfg.yaml'                       #Path to the previously defined "dataset_cfg.yaml"
-dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'  #Path to the data on which to generate synthetic expert decisions
-destination_path: '../../FiFAR/synthetic_experts'                     #Output path for the generated expert decisions and sampled expert parameters             
+data_cfg_path: '../alert_data/dataset_cfg.yaml'                       
+dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet' 
+destination_path: '../../FiFAR/synthetic_experts'                         
 ```
 #### 2. Defining the partition on which to fit the expert's performance
 The user must define which partition of the dataset should be used to fit the values of beta_0 and beta_1
@@ -215,12 +222,12 @@ The user must define which partition of the dataset should be used to fit the va
 * **Option 2** - If the dataset does not have a timestamp column, fitting_set should be defined as the indexes that delimit the partition
 The intervals are defined as [start,end) - the last value is not included
 
-Example:
+FiFAR Example:
 ```yaml
 fitting_set: [6,7] #We want to use the totality of month 6
 ```
 
-#### 2. Defining the properties related to the protected attribute
+#### 3. Defining the properties related to the protected attribute
 *Note* - These can be ommited if there is no protected attribute
 
 * **Option 1** - If your protected attribute is NUMERICAL, you must define:
@@ -229,12 +236,23 @@ fitting_set: [6,7] #We want to use the totality of month 6
 * **Option 2** -If your protected attribute is CATEGORICAL, you must define:
   * protected_class - value that corresponds to the protected group.
 
+FiFAR Example:
+```yaml
 protected_threshold: 50
 protected_values: 'higher'
+```
 
-#Define the baseline_group - This group must have all the necessary parameters defined. 
-#In subsequent groups, should a parameter be missing, the experts will be generated using the same parameters defined for the baseline_group
-baseline_group: 'standard'
+#### 3. Defining the expert group properties
+The experts are defined under the 'experts' key in the "cfg.yaml" File.
+
+For a given group, the user **must** first set:
+* n - The number of experts belonging to said group
+* group_seed - The random seed used in the sampling processes involved in the expert generation.
+
+The user must then define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper):
+ * **Option 1** - Define each individual feature's weight distribution. This involves defining:
+    *w_dict: which contains one (mean, stdev) pair per feature in your dataset
+Attention! - These include the protected attribute and model score if they exist
 
 There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
 
