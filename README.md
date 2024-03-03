@@ -348,7 +348,8 @@ timestamp_constraint: True
 
 #### 3. Setting the capacity constraints for the training and testing scenarios
 
-The user must define at least one batch and one capacity configuration for training and testing. Each batch configuration will be combined with each capacity configuration to generate an array of scenarios.
+The user must define at least one batch and one capacity configuration for training and testing. 
+Each batch configuration will be combined with each capacity configuration to generate an array of scenarios.
 
 To define the batch vector, the user must set:
 * 'size' - Number of instances within a batch
@@ -394,6 +395,8 @@ environments_test:
       variable_experts_per_batch: True
       distribution: 'homogeneous'
 ```
+
+For an example with more batch and capacity configurations in testing and in training, see [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml).
 
 Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within the defined output path. Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
 
