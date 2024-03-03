@@ -126,6 +126,7 @@ Optionally the user may also define:
 * The protected attribute column: which can be used to simulate experts with bias against a particular group based on said attribute.
 * The model_score column: which can be used to simulate experts who have access to exterior information such as an ML Model's score.
 
+FiFAR Example:
 ```yaml
 data_cols:
   label: 'fraud_bool'        #Indicate the column corresponding to the label 
@@ -142,12 +143,14 @@ data_cols:
 
 #### 2. Defining the categorical dictionary.
 
-```yaml
-# Define the dictionary of possible categorical values
-# Key: categorical feature's column
-# Values: possible values for said feature
+For each categorical feature, the user must define the dictionary of possible categorical values, by setting
+ * Key: categorical feature's column
+ * Values: all possible values for said feature
 
-#This ensures that the categorical features are encoded identically when passed to the LGBM models.
+This is done to ensure that the categorical features are encoded identically when passed to the LGBM models.
+
+FiFAR Example:
+```yaml
 categorical_dict:
   device_os:
   - linux
@@ -183,8 +186,11 @@ categorical_dict:
 ```
 
 #### 3. Defining the cost structure of the classification task
+The user must also define the cost structure of the problem, by setting lambda = (cost of a false positive)/(cost of a false negative)
+This value will be used in case the user wishes to sample expert performance as measured by the misclassification cost.
+
+FiFAR example:
 ```yaml
-#Define the cost structure of the problem, by setting lambda = (cost of a false positive)/(cost of a false negative)
 lambda: 0.057
 ```
 
