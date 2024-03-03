@@ -190,11 +190,19 @@ lambda: 0.057
 
 ### Generating Synthetic Expert Decisions
 To generate synthetic expert decisions, a user must place the following scripts in a folder:
-* [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py)
-* [Code/synthetic_experts/expert_src.py](Code/synthetic_experts/expert_src.py)
-* [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml)
 
-define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). 
+* [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py) - responsible for sampling the expert parameters and generating the expert objects
+* [Code/synthetic_experts/expert_src.py](Code/synthetic_experts/expert_src.py) - contains the source code for the expert objects
+* [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) - contains the user defined configurations to generate synthetic experts.
+
+The user then only needs to define the necessary parameters in the "cfg.yaml" file, as such:
+#### 1. Defining the input and output paths
+
+```yaml
+data_cfg_path: '../alert_data/dataset_cfg.yaml'                       #Path to the previously defined "dataset_cfg.yaml"
+dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'  #Path to the data on which to generate synthetic expert decisions
+destination_path: '../../FiFAR/synthetic_experts'                     #Output path for the generated expert decisions and sampled expert parameters             
+```
 
 
 There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
