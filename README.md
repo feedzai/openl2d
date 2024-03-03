@@ -141,7 +141,52 @@ data_cols:
 ```
 
 #### 2. Defining the categorical dictionary.
-* Defining a dictionary with the possible values for each category - this ensures that the LightGBM models always encode the categories in the same way.
+
+```yaml
+# Define the dictionary of possible categorical values
+# Key: categorical feature's column
+# Values: possible values for said feature
+
+#This ensures that the categorical features are encoded identically when passed to the LGBM models.
+categorical_dict:
+  device_os:
+  - linux
+  - macintosh
+  - other
+  - windows
+  - x11
+  employment_status:
+  - CA
+  - CB
+  - CC
+  - CD
+  - CE
+  - CF
+  - CG
+  housing_status:
+  - BA
+  - BB
+  - BC
+  - BD
+  - BE
+  - BF
+  - BG
+  payment_type:
+  - AA
+  - AB
+  - AC
+  - AD
+  - AE
+  source:
+  - INTERNET
+  - TELEAPP
+```
+
+#### 3. Defining the cost structure of the classification task
+```yaml
+#Define the cost structure of the problem, by setting lambda = (cost of a false positive)/(cost of a false negative)
+lambda: 0.057
+```
 
 ### Generating Synthetic Expert Decisions
 To generate synthetic expert decisions, a user must define the necessary parameters in the file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml). There are two possible ways to define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper): by individually setting the distribution of each weight, or by defining the parameters of the spike and slab distribution, and manually defining the distribution of the model_score and protected attribute weights. 
