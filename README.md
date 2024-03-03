@@ -300,54 +300,49 @@ The user then only needs to run the script [Code/synthetic_experts/expert_gen.py
 
 
 ### Generating Training and Testing Scenarios
-To generate one or more training scenarios, consisting of the set of training instances with one associated expert prediction per instance, the user needs to define the capacity constraints of each desired scenario, in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml). In this config file, the user must define the set of batch and capacity properties they desire, for the training and testing environments. An example follows:
+The settings for the generation of training and testing scenarios are defined in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml).
+
+#### 1. Defining the input and output paths
+The user must first define the paths pertaining to the dataset and generated expert predictions, as well as the output paths for the testing and training scenarios:
+* dataset_path: Path to the dataset on which expert decisions were generated
+* data_cfg_path: Said dataset's config file
+* expert_folder_path: Path containing the outputs from expert_gen.py
+* destination_path_train: Output directory of the generated training scenarios
+* destination_path_test: Output directory of the generated test scenarios
+
+FiFAR Example:
 
 ```yaml
-environments_train:
-  batch:
-    shuffle_1:
-      size: 5000
-      seed: 42
-    shuffle_2:
-      size: 5000
-      seed: 43
+dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'
+data_cfg_path: '../alert_data/dataset_cfg.yaml' 
+expert_folder_path:  '../../FiFAR/synthetic_experts'
+destination_path_train: '../../FiFAR/testbed/train_alert'
+destination_path_test: '../../FiFAR/testbed/test' 
+```
 
-  capacity:
-    team_1:
-      deferral_rate: 1
-      n_experts: 10 #If n_experts is ommited, the entire team is used
-      n_experts_seed: 42
-      distribution: 'homogeneous' # If the distribution is homogeneous, we can ommit the other parameters
-    team_2:
-      deferral_rate: 1
-      n_experts: 10
-      n_experts_seed: 43
-      distribution: 'variable'
-      distribution_seed: 42
-      distribution_stdev: 0.2
+#### 2. Setting the random seed, training and testing splits, and whether there are timestamp constraints 
 
-environments_test:
-  batch:
-    shuffle_1:
-      size: 5000
-      seed: 42
-    shuffle_2:
-      size: 5000
-      seed: 43
+The user can set the random seed for the generation of the testing and training scenarios, by defining 'random_seed'
 
-  capacity:
-    team_1:
-      deferral_rate: 0.6
-      n_experts: 10
-      n_experts_seed: 42
-      distribution: 'homogeneous'
-    team_2:
-      deferral_rate: 0.6
-      n_experts: 10
-      n_experts_seed: 43
-      distribution: 'variable'
-      distribution_seed: 42
-      distribution_stdev: 0.2
+The user must then define which partitions of the dataset should be used to generate the training and test scenarios, by defining
+* training_set
+* test_set
+This can be done in one of two ways, depending on whether the dataset contains a timestamp column.
+* **Option 1** - If the dataset has a timestamp column, fitting_set should be defined as the dates that delimit the partition
+* **Option 2** - If the dataset does not have a timestamp column, fitting_set should be defined as the indexes that delimit the partition
+The intervals are defined as [start,end) - the last value is not included
+
+If there is a time related restriction on how batches must be distributed, the user may set 'timestamp_constraint' as True, ensuring that only instances with the same timestamp can belong to a batch. This is useful, for example, to generate batches which contain instances pertaining to the same day.
+
+FiFAR Example:
+
+```yaml
+random_seed: 42
+training_set: [3,7] 
+test_set: [7,8]
+
+#in our experiments, a batch can only contain instances belonging to the same month
+timestamp_constraint: True
 ```
 
 Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within FiFAR/testbed/train". Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
