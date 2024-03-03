@@ -300,7 +300,14 @@ The user then only needs to run the script [Code/synthetic_experts/expert_gen.py
 
 
 ### Generating Training and Testing Scenarios
-The settings for the generation of training and testing scenarios are defined in the file [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml).
+
+To generate these scenarios, a user must place the following scripts in a folder:
+
+* [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py)- responsible for generating training scenarios
+* [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py) - responsible for generating testing scenarios
+* [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml) - contains the user defined configurations to generate the testbed.
+
+The user then only needs to define the necessary parameters in the "cfg.yaml" file, as such:
 
 #### 1. Defining the input and output paths
 The user must first define the paths pertaining to the dataset and generated expert predictions, as well as the output paths for the testing and training scenarios:
@@ -398,8 +405,8 @@ environments_test:
 
 For an example with more batch and capacity configurations in testing and in training, see [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml).
 
-Then, the user may run the script [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py). For each desired dataset, this script creates a subfolder within the defined output path. Each dataset's subfolder contains that dataset's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
+Then, the user may run the script 'testbed_train_alert_generation.py'. For each desired scenario, this script creates a subfolder within the defined output path. Each dataset's subfolder contains that training scenarios's capacity constraints tables ("batches.csv" and "capacity.csv") and the dataset with limited expert predictions ("train.parquet").
 
-To generate a set of capacity constraints to be applied in testing, the user needs to run the script [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py). For each of the defined test scenarios, the script creates a subfolder within within the defined output path. This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
+To generate a set of capacity constraints to be applied in testing, the user needs to run the script 'testbed_test_generation.py'. For each of the defined test scenarios, the script creates a subfolder within within the defined output path. This subfolder contains the capacity constraint tables ("batches.csv" and "capacity.csv") to be used in testing.
 
 
