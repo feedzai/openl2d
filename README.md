@@ -269,11 +269,34 @@ For both options, the user must also define the distribution of the *alpha* para
 * alpha_mean: mean of the gaussian distribution from which alpha is sampled
 * alpha_stdev: standard deviation of the gaussian distribution from which alpha is sampled
 
+The user **must** then define the performance distribution of the expert group:
+ * **Option 1** - Defining the cost distribution, by setting:
+    * target_mean: Mean of the gaussian distribution from which the expert's expected misclassification cost is sampled
+    * target_stdev: Standard deviation of the gaussian distribution from which the expert's expected misclassification cost is sampled
+    * OPTIONAL - top_clip: Maximum value that can be sampled for the cost
+        * If not defined, there is no upper bound on the cost
+    * OPTIONAL - bottom_clip: Minimum value that can be sampled for the cost
+        * If not defined, the lower bound for the cost will be set to 0
+    * *Example* - see file [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml)
+  
+ * **Option 2** - Defining the fpr and fnr distributions, by setting, for each:
+    * target_mean: Mean of the gaussian distribution from which the expert's fpr/fnr is sampled
+    * target_stdev: Standard deviation of the gaussian distribution from which the expert's fpr/fnr is sampled
+    * *Example* - see file [OpenL2D_Use_Example/synthetic_experts/cfg.yaml](OpenL2D_Use_Example/synthetic_experts/cfg.yaml)
 
+ Optionally, the user may also define, for both of the aforementioned options:
+ * max_FPR - if not defined, the upper bound is set to 1
+ * min_FPR - if not defined, the lower bound is set to 0
+ * max_FNR - if not defined, the upper bound is set to 1
+ * min_FNR - if not defined, the lower bound is set to 0
 
+More expert groups may be defined under the 'experts' key. First, the user needs to set the 'baseline_group'.
+In subsequent expert groups, only the parameters that differ from the baseline group need to be defined.
+*NOTE*: If a subsequent group uses a parameter that was not defined in the baseline group (i.e. theta), it will not be recognized. In this case, users must set theta = 1 (default value) on the baseline group, and then they may define the subsequent group's theta value.
 
+For more details on each parameter and the decision generation process, consult Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf).
 
-For more details on each parameter and the decision generation process, consult Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf). Then, the user needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
+The user then only needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
 
 
 ### Generating Training and Testing Scenarios
