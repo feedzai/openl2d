@@ -119,11 +119,11 @@ This involves
 #### Defining the dataset's columns.
   ```yaml
 data_cols:
-  label: 'fraud_bool' #Indicate the column corresponding to the label 
-  timestamp: 'month' #If the dataset has a temporal dependency on splits, define the timestamp column (This can be ommited)
-  protected: 'customer_age' #If the dataset has a protected attribute, define said attribute's column (This can be ommited)
-  model_score: 'model_score' #If the experts have access to a ML model's score, define its column (This can be ommited)
-  categorical: # Define the categorical feature's columns (This can be ommited)
+  label: 'fraud_bool'        #Indicate the column corresponding to the label 
+  timestamp: 'month'         #Optional: If the dataset has a temporal feature, define the timestamp column 
+  protected: 'customer_age'  #Optional: If the dataset has a protected attribute, define said attribute's column
+  model_score: 'model_score' #Optional: If the experts have access to a ML model's score, define its column
+  categorical:               Define the categorical feature's columns 
     - "payment_type"
     - "employment_status"
     - "housing_status"
