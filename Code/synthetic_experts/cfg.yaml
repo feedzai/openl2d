@@ -1,6 +1,6 @@
 data_cfg_path: '../alert_data/dataset_cfg.yaml'
 dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'
-destination_path: '../../Test/synthetic_experts'
+destination_path: '../../FiFAR/synthetic_experts'
 
 
 
