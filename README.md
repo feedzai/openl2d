@@ -199,7 +199,7 @@ To generate synthetic expert decisions, a user must place the following scripts 
 
 * [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py) - responsible for sampling the expert parameters and generating the expert objects
 * [Code/synthetic_experts/expert_src.py](Code/synthetic_experts/expert_src.py) - contains the source code for the expert objects
-* [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) - contains the user defined configurations to generate synthetic experts.
+* [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) - contains the user defined configurations to generate synthetic experts. This file also contains a detailed description of the necessary user inputs
 
 The user then only needs to define the necessary parameters in the "cfg.yaml" file, as such:
 
@@ -305,7 +305,7 @@ To generate these scenarios, a user must place the following scripts in a folder
 
 * [Code/testbed/testbed_train_alert_generation.py](Code/testbed/testbed_train_alert_generation.py)- responsible for generating training scenarios
 * [Code/testbed/testbed_test_generation.py](Code/testbed/testbed_test_generation.py) - responsible for generating testing scenarios
-* [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml) - contains the user defined configurations to generate the testbed.
+* [Code/testbed/cfg.yaml](Code/testbed/cfg.yaml) - contains the user defined configurations to generate the testbed. This file also contains a detailed description of the necessary user inputs
 
 The user then only needs to define the necessary parameters in the "cfg.yaml" file, as such:
 
