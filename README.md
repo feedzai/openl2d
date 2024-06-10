@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Public dataset limitations have significantly hindered the development and benchmarking of _learning to defer_ (L2D) algorithms, which aim to optimally combine human and AI capabilities in hybrid decision-making systems. The development of these systems is primarily hindered by the high cost of obtaining human predictions for training and evaluation, leading researchers to often consider simplistic simulated human behaviour in their benchmarks. To overcome this challenge, we introduce OpenL2D, a novel framework designed to generate synthetic expert decisions and testbed settings for L2D methods. OpenL2D facilitates the creation of synthetic experts with adjustable bias and feature dependence, simulates realistic human work capacity constraints, and provides diverse training and testing conditions. We employ OpenL2D on a public fraud detection dataset to generate the _Financial Fraud Alert Review Dataset_ (FiFAR), containing predictions from a team of 50 fraud analysts for 30K alerted instances. We benchmark L2D baselines under a diverse array of conditions, subject to expert capacity constraints, demonstrating the unique, real-world challenges posed by FiFAR relative to previous benchmarks.
+Learning to Defer (L2D) algorithms aim to improve human-AI collaboration in decision-making by deferring decisions to human experts when they are more likely to be correct than a model. The development of these systems is primarily hindered by the high cost of obtaining expert predictions for training and evaluation, often leading researchers to consider simplistic simulated expert behavior in their benchmarks. To address this, we introduce OpenL2D, a novel framework that generates realistic synthetic experts with adjustable bias and feature dependence. OpenL2D also creates expert work capacity constraints, limiting deferrals to experts within a given time window, thus allowing researchers to test L2D in realistic scenarios. We apply OpenL2D to a public fraud detection dataset to create the financial fraud alert review dataset (FiFAR), containing predictions from 50 fraud analysts for 30K alerted instances. We validate FiFAR's synthetic experts based on decision-making literature and their similarity to real fraud analysts. Finally, we benchmark L2D baselines under diverse conditions to emphasize the importance of considering complex expert decision-making processes in L2D.
 
 ## Overview
 
@@ -38,7 +38,8 @@ conda activate openl2d-env
 
 ## Using FiFAR
 
-The FiFAR dataset is publicly available [here](https://drive.google.com/file/d/1ZHleGXqi3Oxu-gmvRnKEsiBXjjAMAdi4/view?usp=sharing). 
+The FiFAR dataset is publicly available [here (pending figshare link)]().
+
 This dataset includes
 
 * Version 1 of the Base Variant of the Bank Account Fraud Dataset.
@@ -58,14 +59,7 @@ We also facilitate further analysis of our generated experts and the conducted b
   * evaluation of the performance and calibration of Classifier *h*, OvA Classifiers, and DeCCaF's team correctness prediction models.
 * [Code/synthetic_experts/expert_analysis.ipynb](Code/synthetic_experts/expert_analysis.ipynb) - which contains the evaluation of the expert decision-making process properties (intra and inter-rater agreement, feature dependence, fairness and performance) 
 
-## Replicating the Data Generation Process and L2D Benchmarking
-
-To replicate the generation of FiFAR, as well as our experiments, please execute the following steps:
-
-**Attention**: Run each python script **inside** the folder where it is located, to ensure the relative paths within each script work correctly
-
-### Step 1 - Clone the Repo and Download Dataset
-After cloning the repo, please place FiFAR's folder inside the repo's folder, ensuring that your directory looks like this
+To use our code on FiFAR out-of-the-box, note that you should place it within the Repo's directory as such:
 
 ```
 openl2d
@@ -78,6 +72,40 @@ openl2d
 │   
 └─── FiFAR
     │   ...
+│   
+└─── OpenL2D Use Example
+    │   ...
+```
+
+
+## Replicating the Data Generation Process and L2D Benchmarking
+
+To replicate the generation of FiFAR, as well as our experiments, please execute the following steps:
+
+**Attention**: Run each python script **inside** the folder where it is located, to ensure the relative paths within each script work correctly
+
+**Note**: Should you wish to only replicate a few of the steps, ensure that said step's output is deleted (i.e., delete the trained alert model if you wish to retrain it).
+
+### Step 1 - Clone the Repo and Download the Base Dataset
+
+If you wish to replicate the data generation process and L2D Benchmarking, you must download either FiFAR or the [Base.csv](https://www.kaggle.com/datasets/sgpjesus/bank-account-fraud-dataset-neurips-2022/versions/1?select=Base.csv) file of the BAF dataset.
+
+After cloning the repo, please place a new directory named "FiFAR" inside the repo's folder, ensuring that your directory looks like this. Note that the FiFAR directory should only contain a folder named "alert_data" with the Base.csv file within it
+
+```
+openl2d
+│   README.md
+│   .gitignore  
+│   openl2d-environment.yml
+│
+└─── Code
+│   │   ...
+│   
+└─── FiFAR
+    │   
+    └─── alert_data
+         │   
+         └─── Base.csv
 │   
 └─── OpenL2D Use Example
     │   ...
