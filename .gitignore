@@ -3,3 +3,9 @@
 rep_check.ipynb
 /Code/synthetic_experts/Images/
 /FiFAR.zip
+**/__pycache__/
+**/adult.data
+**/adult.test
+OpenL2D_Use_Example/data/preprocessed.parquet
+/l2d_benchmarking
+/alert_model
