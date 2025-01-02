@@ -53,11 +53,11 @@ for train in os.listdir(f'../../FiFAR/testbed/train_alert'):
     train_y = (train_set['decision'] == train_set['fraud_bool']).astype(int)
     val_y = (val_set['decision'] == val_set['fraud_bool']).astype(int)
 
-    if not (os.path.exists(f'../../FiFAR/expert_models/deccaf/{train}/')):
-        os.makedirs(f'../../FiFAR/expert_models/deccaf/{train}/')
+    if not (os.path.exists(f'../../l2d_benchmarking/expert_models/deccaf/{train}/')):
+        os.makedirs(f'../../l2d_benchmarking/expert_models/deccaf/{train}/')
 
-    if not (os.path.exists(f'../../FiFAR/expert_models/deccaf/{train}/best_model.pickle')):
-        opt = hpo.HPO(train_x,val_x,train_y,val_y,train_w, val_w, method = 'TPE', path = f'../../FiFAR/expert_models/deccaf/{train}/')
+    if not (os.path.exists(f'../../l2d_benchmarking/expert_models/deccaf/{train}/best_model.pickle')):
+        opt = hpo.HPO(train_x,val_x,train_y,val_y,train_w, val_w, method = 'TPE', path = f'../../l2d_benchmarking/expert_models/deccaf/{train}/')
         opt.initialize_optimizer(CATEGORICAL_COLS, 10)
 
                 
@@ -66,9 +66,9 @@ test = pd.read_parquet('../../FiFAR/alert_data/processed_data/alerts.parquet')
 test = test.loc[test['month'] == 7]
 X_test = test.drop(columns = ['fraud_bool','model_score','month']) 
 
-with open(f"../../FiFAR/classifier_h/selected_model/best_model.pickle", 'rb') as fp:
+with open(f"../../l2d_benchmarking/classifier_h/selected_model/best_model.pickle", 'rb') as fp:
     classifier_h = pickle.load(fp)
-with open(f"../../FiFAR/classifier_h/selected_model/model_properties.yaml", 'r') as fp:
+with open(f"../../l2d_benchmarking/classifier_h/selected_model/model_properties.yaml", 'r') as fp:
     classifier_h_properties = yaml.safe_load(fp)
 
 def sig(x):
@@ -83,11 +83,11 @@ X_test = test.drop(columns = ['month','fraud_bool'])
 
 preds = dict()
 
-for env in os.listdir(f'../../FiFAR/expert_models/deccaf/'):
+for env in os.listdir(f'../../l2d_benchmarking/expert_models/deccaf/'):
     train_set = pd.read_parquet(f'../../FiFAR/testbed/train_alert/{env}/train.parquet')
     table = pd.DataFrame(index = test.index)
         
-    with open(f"../../FiFAR/expert_models/deccaf/{env}/best_model.pickle", "rb") as input_file:
+    with open(f"../../l2d_benchmarking/expert_models/deccaf/{env}/best_model.pickle", "rb") as input_file:
         model = pickle.load(input_file)
     
     for expert in train_set['assignment'].unique():
@@ -102,9 +102,9 @@ for env in os.listdir(f'../../FiFAR/expert_models/deccaf/'):
     table.loc[:,'classifier_h'] = np.maximum(h_preds,  1-h_preds)
     preds[env] = table
 
-os.makedirs('../../FiFAR/deferral/l2d_predictions', exist_ok=True)
+os.makedirs('../../l2d_benchmarking/deferral/l2d_predictions', exist_ok=True)
 
-with open(f"../../FiFAR/deferral/l2d_predictions/deccaf.pkl", "wb") as out_file:
+with open(f"../../l2d_benchmarking/deferral/l2d_predictions/deccaf.pkl", "wb") as out_file:
     pickle.dump(preds, out_file)
 
 

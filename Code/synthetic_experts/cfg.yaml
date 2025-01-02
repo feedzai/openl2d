@@ -10,15 +10,6 @@ destination_path: '../../FiFAR/synthetic_experts'                     #Output pa
 #Note - The intervals are defined as [start,end) - the last value is not included
 fitting_set: [6,7] #We want to use the totality of month 6
 
-#Define the properties relating to your protected attribute - These can be ommited if there is no protected attribute
-#If your protected attribute is NUMERICAL, you must define:
-# - protected_threshold - value that separates the two distinct groups
-# - protected_values - whether the values 'higher' or 'lower' than the parameter are the protected group.
-protected_threshold: 50
-protected_values: 'higher'
-
-#If your protected attribute is CATEGORICAL, you must define:
-# - protected_class - value that corresponds to the protected group.
 
 
 experts:
@@ -138,10 +129,12 @@ experts:
       #w_mean:            Numerical Value
       #w_stdev:           Numerical Value
       #theta :            [0,1]             #Optional - if not defined, we assume theta = 1 -> all weights are non 0
-      #protected_mean:    Numerical Value   #Optional - if not defined, the protected attribute's weight is also sampled from the spike and slab distribution
-      #protected_stdev:   Numerical Value   #Optional - if not defined, the protected attribute's weight is also sampled from the spike and slab distribution
+      #protected_mean:    Numerical Value, list of Numerical Values   #Optional - if not defined, the protected attribute's weight is also sampled from the spike and slab distribution
+      #protected_stdev:   Numerical Value, list of Numerical Values   #Optional - if not defined, the protected attribute's weight is also sampled from the spike and slab distribution
       #score_mean:        Numerical Value   #Optional - if not defined, the model score's weight is also sampled from the spike and slab distribution
       #score_stdev:       Numerical Value   #Optional - if not defined, the model score's weight is also sampled from the spike and slab distribution
+
+      #For an example with multiple protected attributes, see the directory "OpenL2D_Use_Example", where we define the weights for multiple protected attributes
       ################################################
       
       alpha_mean: 15

@@ -90,7 +90,9 @@ class SigmoidExpert(AbstractExpert):
             if self.score_w is not None:
                 self.w[X.columns.get_loc(score_col)] = self.score_w
             if self.protected_w is not None:
-                self.w[X.columns.get_loc(protected_col)] = self.protected_w
+                for protected_w, protected_col_ in zip(self.protected_w, protected_col):
+                    self.w[X.columns.get_loc(protected_col_['feature'])] = protected_w
+
         else:
             np.random.seed(self.seed)
             self.w = np.zeros(X.shape[1])
@@ -150,7 +152,6 @@ class SigmoidExpert(AbstractExpert):
         self.calc_probs_fn(X=X, y=y)
         error_prob_fit = self.error_prob.loc[X.index,:]
         fn_mean_b = error_prob_fit.loc[y == 1, 'p_of_fn'].mean()
-
         assert((fn_mean_a - self.fnr) * (fn_mean_b - self.fnr) < 0)
 
         self.fnr_beta = (fnr_b + fnr_a)/2

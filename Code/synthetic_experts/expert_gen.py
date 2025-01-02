@@ -95,22 +95,8 @@ else:
 
 if 'protected' in data_cfg['data_cols']:
     PROTECTED_COL = data_cfg['data_cols']['protected']
-    if PROTECTED_COL in data_cfg['data_cols']['categorical']:
-        protected_type = 'categorical'
-        try:
-            protected_class = cfg['protected_class']
-        except KeyError:
-            print("Please define the protected class in the file 'cfg.yaml'")
-    else:
-        protected_type = 'numerical'
-        try:
-            protected_threshold = cfg['protected_threshold']
-        except KeyError:
-            print("Please define the protected attribute's threshold in the file 'cfg.yaml'")
-        try:
-            protected_values = cfg['protected_values']
-        except KeyError:
-            print("Please define the protected attribute's values (higher or lower than threshold) in the file 'cfg.yaml'")
+    if not isinstance(PROTECTED_COL, list):
+        PROTECTED_COL = [PROTECTED_COL]
 else:
     PROTECTED_COL = None
 
@@ -142,18 +128,19 @@ experts_non_fit_set_X = non_fit_set.copy().drop(columns=LABEL_COL)
 
 #Change customer_age variable to a binary
 if PROTECTED_COL is not None:
-    if protected_type == 'numerical':
-        if protected_values == 'higher':
-            experts_fit_set_X[PROTECTED_COL] = (experts_fit_set_X[PROTECTED_COL] >= protected_threshold).astype(int)
-            experts_non_fit_set_X[PROTECTED_COL] = (experts_non_fit_set_X[PROTECTED_COL] >= protected_threshold).astype(int)
-        if protected_values == 'lower':
-            experts_fit_set_X[PROTECTED_COL] = (experts_fit_set_X[PROTECTED_COL] <= protected_threshold).astype(int)
-            experts_non_fit_set_X[PROTECTED_COL] = (experts_non_fit_set_X[PROTECTED_COL] <= protected_threshold).astype(int)
+    for feat in PROTECTED_COL:
+        if feat['type'] == 'numerical':
+            if feat["protected_class"] == 'higher':
+                experts_fit_set_X[feat['feature']] = (experts_fit_set_X[feat['feature']] >= feat["protected_threshold"]).astype(int)
+                experts_non_fit_set_X[feat['feature']] = (experts_non_fit_set_X[feat['feature']] >=  feat["protected_threshold"]).astype(int)
+            if feat["protected_class"] == 'lower':
+                experts_fit_set_X[feat['feature']] = (experts_fit_set_X[feat['feature']] <=  feat["protected_threshold"]).astype(int)
+                experts_non_fit_set_X[feat['feature']] = (experts_non_fit_set_X[feat['feature']] <=  feat["protected_threshold"]).astype(int)
 
-    if protected_type == 'categorical':
-        experts_fit_set_X[PROTECTED_COL] = (experts_fit_set_X[PROTECTED_COL] == protected_class).astype(int)
-        experts_non_fit_set_X[PROTECTED_COL] = (experts_non_fit_set_X[PROTECTED_COL] == protected_class).astype(int)
-    
+        if feat['type'] == 'categorical':
+            experts_fit_set_X[feat['feature']] = (experts_fit_set_X[feat['feature']] == feat["protected_class"]).astype(int)
+            experts_non_fit_set_X[feat['feature']] = (experts_non_fit_set_X[feat['feature']] == feat["protected_class"]).astype(int)
+        
     
 #Transform the numerical columns into quantiles and subtract 0.5 so they exist in the [-0.5, 0.5] interval
 cols_to_quantile = experts_fit_set_X.drop(columns=CATEGORICAL_COLS).columns.tolist()
@@ -253,11 +240,12 @@ for group_name, group_cfg in ensemble_cfg.items():
             )
         coefs_gen['score'] = [None]*group_cfg['n']
 
-        coefs_gen['protected'] = np.random.normal(
+        coefs_gen['protected'] = [np.random.normal(
                     loc=0,
                     scale=0,
                     size=group_cfg['n']
-            )
+            )]*len(PROTECTED_COL)
+        
         coefs_gen['protected'] = [None]*group_cfg['n']
         group_cfg['w_stdev'] = None
         group_cfg['w_mean'] = None
@@ -274,20 +262,30 @@ for group_name, group_cfg in ensemble_cfg.items():
         if PROTECTED_COL is None:
             if (f'protected_mean' in group_cfg.keys()) or (f'protected_stdev' in group_cfg.keys()):
                 raise CustomException("\\n\n---EXPERT GENERATION CONFIG ERROR---\n\nNo Column corresponding to the protected attribute was defined in the dataset_cfg.yaml file\nIf no model score is present, the parameters 'protected_mean' and 'protected_stdev' cannot be present in the cfg.yaml")
-        for coef in ['score', 'protected']:
-            if (f'{coef}_mean' in group_cfg.keys()) and (f'{coef}_stdev' in group_cfg.keys()):
-                coefs_gen[coef] = np.random.normal(
-                        loc=group_cfg[f'{coef}_mean'],
-                        scale=group_cfg[f'{coef}_stdev'],
+            
+        if (f'score_mean' in group_cfg.keys()) and (f'score_stdev' in group_cfg.keys()):
+            coefs_gen["score"] = np.random.normal(
+                    loc=group_cfg[f'score_mean'],
+                    scale=group_cfg[f'score_stdev'],
+                    size=group_cfg['n']
+            )
+        else:
+            coefs_gen["score"] = np.random.normal(
+                    loc=0,
+                    scale=0,
+                    size=group_cfg['n']
+            )
+            coefs_gen["score"] = [None]*group_cfg['n']
+
+        if (f'protected_mean' in group_cfg.keys()) and (f'protected_stdev' in group_cfg.keys()):
+            coefs_gen["protected"] = []
+            for i in range(len(PROTECTED_COL)):
+                print(i)
+                coefs_gen["protected"].append(np.random.normal(
+                        loc=group_cfg[f'protected_mean'][i],
+                        scale=group_cfg[f'protected_stdev'][i],
                         size=group_cfg['n']
-                )
-            else:
-                coefs_gen[coef] = np.random.normal(
-                        loc=0,
-                        scale=0,
-                        size=group_cfg['n']
-                )
-                coefs_gen[coef] = [None]*group_cfg['n']
+                ))
         
         group_cfg['w_dict'] = None
     
@@ -377,7 +375,7 @@ for group_name, group_cfg in ensemble_cfg.items():
             alpha = coefs_gen['alpha'][i],
             fpr_noise = 0.0,
             fnr_noise = 0.0,
-            protected_w = coefs_gen['protected'][i],
+            protected_w = [coefs[i] for coefs in coefs_gen['protected']],
             score_w = coefs_gen['score'][i],
             seed = expert_seeds[i],
             theta = group_cfg['theta'],

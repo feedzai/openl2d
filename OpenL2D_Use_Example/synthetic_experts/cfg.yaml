@@ -2,41 +2,75 @@ data_cfg_path: '../data/dataset_cfg.yaml'
 dataset_path: '../data/preprocessed.parquet'
 destination_path: './expert_team/'
 
-fitting_set: [8000,10000]
+fitting_set: [0,20000]
 
 baseline_group: 'standard'
 
-protected_class: 2
+# In dataset.cfg we defined the protected classes as ["sex", "binarized_race", "age"]
 
 experts:
   groups:
     standard:
       n: 5
-      group_seed: 1
+      group_seed: 0
       w_mean: 0
-      w_stdev: 1
+      w_stdev: 0.5
       theta: 1
-      protected_mean: 0
-      protected_stdev: 0
+      protected_mean:
+        - 0
+        - 0
+        - 0
+      protected_stdev: 
+        - 0
+        - 0
+        - 0
       alpha_mean: 20
       alpha_stdev: 5
       fpr:
-        target_mean: 0.2
-        target_stdev: 0.1
+        target_mean: 0.15
+        target_stdev: 0.03
       fnr:
-        target_mean: 0.2
-        target_stdev: 0.1 
+        target_mean: 0.15
+        target_stdev: 0.03
       max_FPR: 1
       min_FPR: 0.01
       max_FNR: 1
       min_FNR: 0.01
-    biased:
-      n: 5
-      group_seed: 2
-      protected_mean: 1
-      protected_stdev: 0.1
-    sparse-dependency:
+    biased_vs_females:
       n: 5
       group_seed: 1
-      theta: 0.3
+      protected_mean:
+        - -1
+        - 0
+        - 0
+      protected_stdev: 
+        - 0.1
+        - 0
+        - 0
+    biased_vs_non_white:
+      n: 5
+      group_seed: 2
+      protected_mean:
+        - 0
+        - -1
+        - 0
+      protected_stdev: 
+        - 0
+        - 0.1
+        - 0
+    biased_vs_older:
+      n: 5
+      group_seed: 3
+      protected_mean:
+        - 0
+        - 0
+        - -1
+      protected_stdev: 
+        - 0
+        - 0
+        - 0.1
+    sparse-dependency:
+      n: 5
+      group_seed: 4
+      theta: 0.5
       

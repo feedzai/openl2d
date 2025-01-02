@@ -33,7 +33,7 @@ with open(data_cfg_path, 'r') as infile:
 
 BAF.loc[:,data_cfg['data_cols']['categorical']] = BAF.loc[:,data_cfg['data_cols']['categorical']].astype('category')
 
-if not os.path.isfile('../../FiFAR/alert_model/best_model.pickle'):
+if not os.path.isfile('../../alert_model/best_model.pickle'):
     print('The Alert Model is not Trained! - Please run ./alert_model/training_and_predicting.py')
 else:
     BAF_dep = pd.read_parquet('../../FiFAR/alert_data/processed_data/BAF_alert_model_score.parquet')

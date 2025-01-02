@@ -214,7 +214,6 @@ def generate_environments(df, batch_cfg: dict, capacity_cfg: dict, output_dir=No
     for batch_scheme, batch_properties in batch_cfg.items():
         for capacity_scheme, capacity_properties in capacity_cfg.items():
             print(f'Generating environments for the combination {batch_scheme},{capacity_scheme}')
-            print(cfg['timestamp_constraint'])
             if ('timestamp' in data_cfg['data_cols']) and cfg['timestamp_constraint']:
                 batches_df = generate_batches(
                     df=df,

@@ -1,7 +1,21 @@
 data_cols:
   label: 'fraud_bool' #Indicate the column corresponding to the label 
   timestamp: 'month' #If the dataset has a temporal dependency on splits, define the timestamp column (This can be ommited)
-  protected: 'customer_age' #If the dataset has a protected attribute, define said attribute's column (This can be ommited)
+  
+  #Define the properties relating to your protected attribute - These can be ommited if there is no protected attribute
+  #you must define:
+  # - feature - the column name of the protected attribute
+  # - type - whether the protected attribute is NUMERICAL or CATEGORICAL
+  #If your protected attribute is NUMERICAL, you must define:
+  # - protected_threshold - value that separates the two distinct groups
+  # - protected_class- whether the values 'higher' or 'lower' than the parameter are the protected group.
+  #If your protected attribute is CATEGORICAL, you must define:
+  # - protected_class - value that corresponds to the protected group.
+  protected:
+    - feature: age
+      protected_class: higher
+      protected_threshold: 50
+      type: numeric 
   model_score: 'model_score' #If the experts have access to a ML model's score, define its column (This can be ommited)
   categorical: # Define the categorical feature's columns (This can be ommited)
     - "payment_type"

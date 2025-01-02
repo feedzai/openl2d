@@ -60,11 +60,11 @@ y_train = train['fraud_bool']
 X_val = ml_val.drop(columns = 'fraud_bool') 
 y_val = ml_val['fraud_bool']
 
-if not (os.path.exists(Path(__file__).parent/'../../FiFAR/alert_model/best_model.pickle')):
+if not (os.path.exists(Path(__file__).parent/'../../alert_model/best_model.pickle')):
     opt = hpo_fpr.HPO(X_train,X_val,y_train,y_val, method = 'TPE', path = f"./model")
     opt.initialize_optimizer(CATEGORICAL_COLS, 25)
 
-with open(Path(__file__).parent/'../../FiFAR/alert_model/best_model.pickle', 'rb') as infile:
+with open(Path(__file__).parent/'../../alert_model/best_model.pickle', 'rb') as infile:
         model = pickle.load(infile)
 
 y_pred = model.predict_proba(X_val)
@@ -83,7 +83,7 @@ model_properties = {'fpr':0.05,
                     }
 
 
-file_to_store = open(Path(__file__).parent/"../../FiFAR/alert_model/model_properties.pickle", "wb")
+file_to_store = open(Path(__file__).parent/"../../alert_model/model_properties.pickle", "wb")
 pickle.dump(model_properties, file_to_store)
 file_to_store.close()
 
