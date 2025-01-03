@@ -1,4 +1,4 @@
-﻿# OpenL2D: A Benchmarking Framework for Learning to Defer in Human-AI Decision-Making
+﻿# A benchmarking framework and dataset for learning to defer in human-AI decision-making
 
 ## Abstract
 
