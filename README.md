@@ -19,7 +19,7 @@ In this repo, we provide users with:
 
 * Instructions and code necessary to:
   * Use the OpenL2D synthetic data generation framework.
-  * Generate the FiFAR dataset, available [here](https://drive.google.com/file/d/1ZHleGXqi3Oxu-gmvRnKEsiBXjjAMAdi4/view?usp=sharing).
+  * Generate the FiFAR dataset, available [here]().
   * Conduct our L2D benchmarks.
 * Notebooks for evaluation of FiFAR experts' properties and L2D benchmarks.
 
