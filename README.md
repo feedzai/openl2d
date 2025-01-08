@@ -1,4 +1,4 @@
-﻿# OpenL2D: A Benchmarking Framework for Learning to Defer in Human-AI Decision-Making
+﻿# A benchmarking framework and dataset for learning to defer in human-AI decision-making
 
 ## Abstract
 
@@ -19,7 +19,7 @@ In this repo, we provide users with:
 
 * Instructions and code necessary to:
   * Use the OpenL2D synthetic data generation framework.
-  * Generate the FiFAR dataset, available [here](https://drive.google.com/file/d/1ZHleGXqi3Oxu-gmvRnKEsiBXjjAMAdi4/view?usp=sharing).
+  * Generate the FiFAR dataset, available [here]().
   * Conduct our L2D benchmarks.
 * Notebooks for evaluation of FiFAR experts' properties and L2D benchmarks.
 
@@ -215,7 +215,7 @@ This value is ommited in the configuration pertaining to the Adult dataset (see 
 ### Generating Synthetic Expert Decisions
 To generate synthetic expert decisions, a user must place the following scripts in a folder:
 
-* [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py) - responsible for sampling the expert parameters and generating the expert objects
+* [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py) - responsible for sampling the expert parameters, generating the expert objects and subsequently generating their predictions.
 * [Code/synthetic_experts/expert_src.py](Code/synthetic_experts/expert_src.py) - contains the source code for the expert objects
 * [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) - contains the user defined configurations to generate synthetic experts. This file also contains a detailed description of the necessary user inputs
 
@@ -235,7 +235,7 @@ dataset_path: '../../FiFAR/alert_data/processed_data/alerts.parquet'
 destination_path: '../../FiFAR/synthetic_experts'                         
 ```
 #### 2. Defining the partition on which to fit the expert's performance
-The user must define which partition of the dataset should be used to fit the values of beta_0 and beta_1
+The user must define which partition of the dataset should be used to fit the values of beta_0 and beta_1. (For a detailed explanation on how these values are sampled, see Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf)).
 * **Option 1** - If the dataset has a timestamp column, fitting_set should be defined as the dates that delimit the partition
 * **Option 2** - If the dataset does not have a timestamp column, fitting_set should be defined as the indexes that delimit the partition
 The intervals are defined as [start,end) - the last value is not included
@@ -253,9 +253,20 @@ fitting_set: [0,20000] #We use instances 0-19999, as indexed in the preprocessed
 #### 3. Defining the expert group properties
 The experts are defined under the 'experts' key in the "cfg.yaml" File.
 
-For a given group, the user **must** first set:
+Multiple "groups" of experts can be defined, by creating multiple keys under the 'experts' key. 
+
+For a given group of experts, the user **must** first set:
 * n - The number of experts belonging to said group
 * group_seed - The random seed used in the sampling processes involved in the expert generation.
+
+Experts within each group will be named "{group_name}#{i}", where i ranges from 0 to n-1, where n is the total number of experts within said group.
+
+First, the user needs to set the 'baseline_group'.
+In subsequent expert groups, only the parameters that differ from the baseline group need to be defined.
+
+*NOTE*: If a subsequent group uses a parameter that was not defined in the baseline group (i.e. theta), it will not be recognized. In this case, users must set theta = 1 (default value) on the baseline group, and then they may define the subsequent group's theta value.
+
+For examples on how to define multiple groups, see the files [Code/synthetic_experts/cfg.yaml](Code/synthetic_experts/cfg.yaml) and [OpenL2D_Use_Example/synthetic_experts/cfg.yaml](OpenL2D_Use_Example/synthetic_experts/cfg.yaml).
 
 The user must then define the feature weight sampling process (see Section *Synthetic Data Generation Framework - OpenL2D* of the Paper):
  * **Option 1** - Define each individual feature's weight distribution. This involves defining:
@@ -422,10 +433,6 @@ The user **must** then define the performance distribution of the expert group:
  * max_FNR - if not defined, the upper bound is set to 1
  * min_FNR - if not defined, the lower bound is set to 0
 
-More expert groups may be defined under the 'experts' key. First, the user needs to set the 'baseline_group'.
-In subsequent expert groups, only the parameters that differ from the baseline group need to be defined.
-*NOTE*: If a subsequent group uses a parameter that was not defined in the baseline group (i.e. theta), it will not be recognized. In this case, users must set theta = 1 (default value) on the baseline group, and then they may define the subsequent group's theta value.
-
 For more details on each parameter and the decision generation process, consult Section *Synthetic Data Generation Framework - OpenL2D* of the [paper](Documents/Paper.pdf).
 
 The user then only needs to run the script [Code/synthetic_experts/expert_gen.py](Code/synthetic_experts/expert_gen.py). This script produces the decision table as well as information regarding the expert decision generation properties (see Section 4 of the [paper](Documents/Paper.pdf)).
@@ -589,7 +596,6 @@ openl2d
 Finally, should you wish to use the model binaries obtained in our original experiments, extract the files [alert_model.zip](alert_model.zip) and [l2d_benchmarking.zip](l2d_benchmarking.zip) to the root directory. The code will attempt to load the trained models from the resulting folders before running any model training or deferral.
 
 **Note**: Should you wish to only replicate a subset of the steps, ensure that said step's output (present within the folders resulting from the extraction of [alert_model.zip](alert_model.zip) and [l2d_benchmarking.zip](l2d_benchmarking.zip)) is deleted (i.e., delete the trained alert model if you wish to retrain it).
-
 
 ### Step 2 - Activate the Environment
 To activate the Python environment with the necessary dependencies please follow [these steps](#Creating-the-Python-Environment)
