@@ -79,7 +79,13 @@ openl2d
 
 ![alt text](Images/framework_diagram.png)
 
-Over the course of this step-by-step guide, we will demonstrate how OpenL2D was used to generate the FiFAR dataset. Additionally, to showcase our framework's flexibility, we also show how to use OpenL2D in the commonly used “Adult” dataset, aimed at predicting whether an individual’s income is greater than 50K dollars per year, based on demographic information. 
+Over the course of this step-by-step guide, we will demonstrate how OpenL2D was used to generate the FiFAR dataset. 
+
+Additionally, to showcase our framework's flexibility, we also show how to use OpenL2D in the commonly used "Adult" dataset, aimed at predicting whether an individual’s income is greater than 50K dollars per year, based on demographic information. 
+
+The folder [OpenL2D_Use_Example](OpenL2D_Use_Example/) contains all the necessary files to start creating your own experts for the "Adult" dataset, including the [expert_analysis.ipynb](OpenL2D_Use_Example/expert_analysis.ipynb) notebook, designed to aid in evaluating your experts' behavior properties to facilitate the iterative process of obtaining your desired expert team. 
+
+Note that this notebook was designed to be generation agnostic, being useful for any OpenL2D usage even in different datasets, as long as the folder structure and relative paths are respected.
 
 ### Defining the Input Dataset Properties
 To use OpenL2D to generate experts on any tabular dataset, the file [Code/alert_data/dataset_cfg.yaml](Code/alert_data/dataset_cfg.yaml) must be adapted to your particular needs. 
